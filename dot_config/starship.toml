@@ -1,0 +1,153 @@
+#REF: https://www.gitmemory.com/issue/starship/starship/528/706738881
+# custom prompt
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$shlvl\
+$time\
+$battery\
+$git_commit\
+$git_branch\
+$git_state\
+$git_status\
+$vcsh\
+$hg_branch\
+$docker_context\
+$package\
+$cmake\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$golang\
+$helm\
+$java\
+$julia\
+$kotlin\
+$nim\
+$nodejs\
+$ocaml\
+$perl\
+$php\
+$purescript\
+$python\
+$red\
+$ruby\
+$rust\
+$scala\
+$swift\
+$terraform\
+$vlang\
+$vagrant\
+$zig\
+$nix_shell\
+$conda\
+$memory_usage\
+$aws\
+$gcloud\
+$openstack\
+$env_var\
+$crystal\
+$kubernetes\
+$custom
+$line_break\
+$lua\
+$jobs\
+$status\
+$shell\
+$directory\
+$character"""
+
+right_format="""
+$cmd_duration
+"""
+
+[line_break]
+disabled = true
+
+
+[kubernetes]
+format = '[](fg:#3970e4)[ ⎈ $context](bg:#3970e4 fg:#ffffff)[](bg:#3970e4 fg:#9db8e9)[$namespace ](bg:#9db8e9 fg:black)[ ](fg:#9db8e9)' 
+
+disabled = false
+[kubernetes.context_aliases]
+"gke_nakama-test-project-378601_us-central1_nakama-cluster-1" = "Test Nakama Cluster"
+
+[aws]
+disabled = false 
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "⚡️"
+discharging_symbol = "💀"
+
+[[battery.display]]
+threshold = 10
+style = "bold red"
+
+[[battery.display]] 
+threshold = 30
+style = "bold yellow"
+
+[[battery.display]] 
+threshold = 100
+style = "bold green"
+discharging_symbol = "🔋"
+
+
+[package]
+disabled = true
+
+[username]
+disabled = true
+
+[git_branch]
+symbol=" " 
+format="[\\[$symbol$branch\\]]($style)"
+
+# VCS
+#[git_branch]
+#symbol = "  " 
+#style = "#f05133"
+#format = "\b\b[](fg:#4169e1 bg:$style)[$symbol$branch](fg:white bg:$style)[](fg:$style) "
+
+[shell]
+disabled = false
+fish_indicator = " _"
+bash_indicator = " \\$_"
+powershell_indicator = " _"
+unknown_indicator = "X"
+format = "[](fg:#1e1e1e bg:#f9a600)[$indicator](fg:black bg:#f9a600)[](fg:#f9a600 bg:1e1e1e)"
+#format = "$indicator"
+
+[directory]
+format = "[](fg:#1e1e1e bg:#f9a600)[ $path]($style)[$read_only]($read_only_style)[](fg:#f9a600 bg:#1e1e1e)"
+style = "bg:#f9a600 fg:black"
+
+[git_status]
+ahead = "⇡${count}"
+behind = "⇣${count}"
+format = "([\\[$all_status$ahead_behind\\]]($style))"
+
+[character]
+success_symbol="[](bold green)"
+error_symbol="[](bold red)"
+vicmd_symbol="[](bold green)"
+
+[hostname]
+disabled = true
+
+[time]
+disabled = false
+format = '[\[$time\]]($style)'
+
+[nodejs]
+format = "[ $symbol($version )]($style)"
+
+[ruby]
+format = "[$symbol($version )]($style)"
+

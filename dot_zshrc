@@ -6,3 +6,5 @@ eval "$(fnm env --use-on-cd)"
 
 alias ll=exa
 alias nvim=lvim
+
+export GITHUB_USERNAME=KorboCoder
