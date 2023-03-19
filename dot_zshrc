@@ -1,0 +1,8 @@
+# starship init
+eval "$(starship init zsh)"
+
+eval "$(fnm env --use-on-cd)"
+#fnm completions --shell zsh
+
+alias ll=exa
+alias nvim=lvim
