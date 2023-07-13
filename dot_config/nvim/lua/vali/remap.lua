@@ -21,8 +21,15 @@ vim.keymap.set("n", "<leader>x", "\"_x")
 
 -- telescope
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+vim.keymap.set('n', '<leader>st', "<cmd>Telescope live_grep<cr>", { desc = '[S]earch [T]ext' })
+vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[Git] [C]heckout' })
+vim.keymap.set('n', '<leader>sh', "<cmd>Telescope help_tags<cr>", { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sm', "<cmd>Telescope man_pages<cr>", { desc = '[S]earch [M]an' })
+vim.keymap.set('n', '<leader>sr', "<cmd>Telescope oldfiles<cr>", { desc = '[S]earch [R]ecent' })
+vim.keymap.set('n', '<leader>sk', "<cmd>Telescope keymaps<cr>", { desc = '[S]earch [K]eymaps' })
+vim.keymap.set('n', '<leader>sc', "<cmd>Telescope commands<cr>", { desc = '[S]earch [C]ommands' })
 
 -- undotree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = '[u]ndo tree' })
