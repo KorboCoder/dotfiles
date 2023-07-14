@@ -5,8 +5,10 @@ vim.g.maplocalleader = ' '
 -- setup plugins
 require("vali.lazy")
 
+
 -- set vim configurations
 require("vali.set")
 
 -- setup key mappings
-require("vali.remap")
+require("vali.remap");
+

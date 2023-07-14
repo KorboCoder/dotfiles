@@ -5,7 +5,46 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.2',
-        dependencies = { 'nvim-lua/plenary.nvim' }
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        opts = {
+            defaults = {
+                layout_strategy = "flex",
+                sorting_strategy = "ascending",
+                layout_config = {
+                    horizontal = { prompt_position = 'top'}
+                },
+            },
+        },
+    },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            flavour = "macchiato",
+            transparent_background = true,
+            term_colors = true,
+            dim_inactive = {
+                enabled = true,
+                shade = "dark",
+                percentage = 0.15
+            }
+        },
+
+        config = function()
+            -- require("catppuccin").setup({
+            --     flavour = "macchiato",
+            --     transparent_background = true,
+            --     term_colors = false,
+            --     dim_inactive = {
+            --         enabled = true,
+            --         shade = "dark",
+            --         percentage = 0.15
+            --     }
+            -- })
+            vim.cmd([[colorscheme catppuccin]])
+        end
     },
     {
         "folke/tokyonight.nvim",
@@ -13,11 +52,11 @@ return {
         priority = 1000,
         opts = {},
         config = function()
-            vim.cmd([[colorscheme tokyonight-night]])
-            -- require("tokyonight").setup({
-            --     style = "night",
-            --   transparent = true
-            -- })
+            require("tokyonight").setup({
+                style = "night",
+                transparent = true
+            })
+            -- vim.cmd([[colorscheme tokyonight-night]])
         end,
     },
     -- {
@@ -81,18 +120,18 @@ return {
             lsp.setup()
         end
     },
-    { "folke/which-key.nvim",               opts = {} },
+    { "folke/which-key.nvim",       opts = {} },
     {
         "numToStr/Comment.nvim",
         config = function() require('Comment').setup() end
     },
-    { "lukas-reineke/indent-blankline.nvim" },
     {
         "nvim-lualine/lualine.nvim",
         opts = {
             options = {
                 icons_enabled = true,
-                theme = 'auto'
+                theme = 'auto',
+                globalstatus = true
             }
         }
     },
@@ -111,6 +150,59 @@ return {
                 show_current_context_start = true, }
         end
     },
+    {
+        'lewis6991/gitsigns.nvim',
+        opt = {}
+    },
+
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        --     config = function()
+        --         require("oil").setup()
+        --     end
+    },
+    {
+        'mawkler/modicator.nvim',
+        init = function()
+            -- These are required for Modicator to work
+            vim.o.cursorline = true
+            vim.o.number = true
+            vim.o.termguicolors = true
+        end,
+        opt = {}
+    },
+    {
+        'RRethy/vim-illuminate'
+    },
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        opts = {} -- this is equalent to setup({}) function
+    },
+    {
+        'chrisbra/csv.vim'
+    },
+    -- {
+    --
+    --     'yamatsum/nvim-cursorline',
+    --     config = function()
+    --         require('nvim-cursorline').setup({
+    --             cursorline = {
+    --                 enable = true,
+    --                 timeout = 0,
+    --                 number = false,
+    --             },
+    --             cursorword = {
+    --                 enable = true,
+    --                 min_length = 3,
+    --                 hl = { underline = true },
+    --             }
+    --         })
+    --     end
+    -- },
     -- plugins from other files
     require('vali.autoformat')
 

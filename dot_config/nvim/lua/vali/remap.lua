@@ -1,6 +1,6 @@
 -- go to explorer
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = '[e]xplorer' })
-
+vim.keymap.set("n", "<leader>e", require("oil").open, { desc = '[e]xplorer' })
+vim.keymap.set("n", "-", require("oil").open)
 
 -- move selected chunk
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -8,10 +8,12 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
 
--- yank to system clipboard
+-- yank/paste from system clipboard
 vim.keymap.set("n", "<leader>y", "\"+y", { desc = '[y]ank to system' })
 vim.keymap.set("v", "<leader>y", "\"+y", { desc = '[y]ank to system' })
 vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = '[Y]ank line to system' })
+vim.keymap.set("n", "<leader>p", "\"+p", { desc = '[p]aste from system' })
+vim.keymap.set("n", "<leader>P", "\"+P", { desc = '[P]aste from system' })
 
 -- store to void
 vim.keymap.set("n", "<leader>d", "\"_d")
@@ -23,6 +25,7 @@ vim.keymap.set("n", "<leader>x", "\"_x")
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+
 vim.keymap.set('n', '<leader>st', "<cmd>Telescope live_grep<cr>", { desc = '[S]earch [T]ext' })
 vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[Git] [C]heckout' })
 vim.keymap.set('n', '<leader>sh', "<cmd>Telescope help_tags<cr>", { desc = '[S]earch [H]elp' })
@@ -236,7 +239,7 @@ cmp.setup {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         },
-        ['<Esc>'] = cmp.mapping.abort(),
+        -- ['<Esc>'] = cmp.mapping.abort(),
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()

@@ -1,10 +1,161 @@
-# starship init
+if [[ -n "${ZELLIJ}" ]]; then
+  export TMUX=$ZELLIJ
+fi
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+
+if [[ -n "${ZELLIJ}" ]]; then
+  unset TMUX
+fi
+#NVM setup  
+# CLI stuff I've installed
+# bat
+# btop
+# dust
+# exa
+# fd
+# fzf
+# jq
+# ncdu
+# neoftech
+# nvm
+# prettyping
+# ranger
+# tokei
+# w3m
+# jqp
+# duf
+# xh
+# dog
+# fd
+# ripgrep
+# git checkout with fzf: https://medium.com/@mrWinston/smarter-git-checkout-using-fzf-to-supercharge-your-commandline-7507db600996
+gcha() {
+  git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
+}
+gch() {
+  git checkout "$(git branch | fzf | tr -d '[:space:]')"
+}
+
+
+# gcloud setup
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+
+HISTSIZE=10000
+HISTFILESIZE=20000
+eval "$(mcfly init zsh)"
+eval $(thefuck --alias pota)
+# fix jupyter PATH issue with monterey
+export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
+
+# zsh autosuggestion
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
+# source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Fix starship load wrapping issue
+export LC_ALL=en_US.UTF-8
+
+# zsh you should use
+export YSU_MESSAGE_POSITION="after"
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+ # [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+# starship steup
 eval "$(starship init zsh)"
 
-eval "$(fnm env --use-on-cd)"
-#fnm completions --shell zsh
+# colors
+export CLICOLOR=1
 
-alias ll=exa
-alias nvim=lvim
+# compdef init
+autoload -Uz compinit
+compinit
 
-export GITHUB_USERNAME=KorboCoder
+test -f .work-zshrc && source .work-zshrc # 2> /dev/null
+# detailas ls
+alias ll="exa -lah"
+alias ls="exa"
+
+# pretty ping
+alias pping="prettyping --nolegend"
+
+# edit this .zshrc file
+alias zshconfig="nvim ~/.zshrc"
+
+# reload this zshfile
+alias zshreload="source ~/.zshrc"
+
+# fzf setup
+alias fhistory="history | fzf"
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
+# set ctype locale to C
+export LC_CTYPE="C"
+
+function jsonbat (){
+  cat $1 |  json_pp | bat -l json; 
+}
+
+
+# fix to iterm nav hotkeys
+bindkey "\e\e[D" backward-word
+bindkey "\e\e[C" forward-word
+
+#krew setup
+export PATH="${PATH}:${HOME}/.krew/bin"
+
+# add short git alises
+# ref: https://gist.github.com/mwhite/6887990
+# function_exists() {
+    # declare -f -F $1 > /dev/null
+    # return $?
+# }
+#
+# for al in `git --list-cmds=alias`; do
+    # alias g$al="git $al"
+#
+    # complete_func=_git_$(git --list-cmds=alias $al)
+    # function_exists $complete_fnc && __git_complete g$al $complete_func
+# done
+#
+#
+#
+
+
+function get-millis(){
+  date +%s000
+}
+
+
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
+fi
+
+###-begin-cdk-completions-###
+_cdk_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" cdk --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _cdk_yargs_completions cdk
+###-end-cdk-completions-###
+if [[ ($TERM_PROGRAM != "vscode") && ($TERM_PROGRAM != "WarpTerminal") && (-z $TMUX) ]]; then
+  # zellij attach --index "0" --create
+  eval "$(zellij setup --generate-auto-start zsh)"
+fi
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
