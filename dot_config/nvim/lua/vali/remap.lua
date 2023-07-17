@@ -1,45 +1,98 @@
+local wk = require('which-key')
+
+-- <NoP> for <space> to prevent going to next line in modes
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
 -- go to explorer
-vim.keymap.set("n", "<leader>e", require("oil").open, { desc = '[e]xplorer' })
 vim.keymap.set("n", "-", require("oil").open)
 
 -- move selected chunk
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
+local leaderN = { prefix = "<leader>", mode = "n" }
+local leaderV = { prefix = "<leader>", mode = "v" }
+local leaderNV = { prefix = "<leader>", mode = { "n", "v" } }
 
+-- clipboard operations
+wk.register(
+    {
+        Y = {
+            "\"+Y", 'yank line to system'
+        },
+        p = {
+            "\"+p", 'paste from system'
+        },
+        d = {
+            "\"_d", 'delete to void'
+        },
+        x = {
+            "\"_x", 'delete char to void'
+        }
 
--- yank/paste from system clipboard
-vim.keymap.set("n", "<leader>y", "\"+y", { desc = '[y]ank to system' })
-vim.keymap.set("v", "<leader>y", "\"+y", { desc = '[y]ank to system' })
-vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = '[Y]ank line to system' })
-vim.keymap.set("n", "<leader>p", "\"+p", { desc = '[p]aste from system' })
-vim.keymap.set("n", "<leader>P", "\"+P", { desc = '[P]aste from system' })
+    },
+    leaderN
+)
 
--- store to void
-vim.keymap.set("n", "<leader>d", "\"_d")
-vim.keymap.set("v", "<leader>d", "\"_d")
-vim.keymap.set("n", "<leader>x", "\"_x")
+wk.register(
+    {
+        y = {
+            "\"+y", 'yank to system'
+        },
+        d = {
+            "\"_d", 'delete to void'
+        }
 
-
--- telescope
+    },
+    leaderNV
+)
+-- search operations
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+wk.register({
+        s = {
+            name = "+Search",
+            f = {
+                builtin.find_files, "Files"
+            },
+            t = {
+                builtin.current_buffer_fuzzy_find, 'Text'
+            },
+            T = {
+                "<cmd>Telescope live_grep<cr>", 'Global Text'
+            },
+            h = {
+                "<cmd>Telescope help_tags<cr>", 'Help'
+            },
+            m = {
+                "<cmd>Telescope man_pages<cr>", 'Man'
+            },
+            r = {
+                "<cmd>Telescope oldfiles<cr>", "Recent"
+            },
+            k = {
+                "<cmd>Telescope keymaps<cr>", "Keymaps"
+            },
+            c = {
+                "<cmd>Telescope commands<cr>", "Commands"
+            },
+            C = {
+                "<cmd>Telescope command_history<cr>", "Command History"
+            }
+        }
+    },
+    leaderN
+)
 
-vim.keymap.set('n', '<leader>st', "<cmd>Telescope live_grep<cr>", { desc = '[S]earch [T]ext' })
-vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[Git] [C]heckout' })
-vim.keymap.set('n', '<leader>sh', "<cmd>Telescope help_tags<cr>", { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sm', "<cmd>Telescope man_pages<cr>", { desc = '[S]earch [M]an' })
-vim.keymap.set('n', '<leader>sr', "<cmd>Telescope oldfiles<cr>", { desc = '[S]earch [R]ecent' })
-vim.keymap.set('n', '<leader>sk', "<cmd>Telescope keymaps<cr>", { desc = '[S]earch [K]eymaps' })
-vim.keymap.set('n', '<leader>sc', "<cmd>Telescope commands<cr>", { desc = '[S]earch [C]ommands' })
+vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[G]it [C]heckout' })
 
 -- undotree
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = '[u]ndo tree' })
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
 
 -- harpoon
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
+
 
 vim.keymap.set("n", "<leader>ha", mark.add_file)
 vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
@@ -53,6 +106,7 @@ vim.keymap.set("n", "<C-l>", function() ui.nav_file(4) end)
 -- fugitive
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git);
 
+-- Reference for following: https://github.com/nvim-lua/kickstart.nvim
 -- treesitter
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter

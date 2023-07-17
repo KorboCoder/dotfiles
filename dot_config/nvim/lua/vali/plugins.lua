@@ -11,7 +11,7 @@ return {
                 layout_strategy = "flex",
                 sorting_strategy = "ascending",
                 layout_config = {
-                    horizontal = { prompt_position = 'top'}
+                    horizontal = { width = 0.95, height = 0.95, preview_width = 100, prompt_position = 'top' }
                 },
             },
         },
@@ -123,7 +123,7 @@ return {
     { "folke/which-key.nvim",       opts = {} },
     {
         "numToStr/Comment.nvim",
-        config = function() require('Comment').setup() end
+        opts = {}
     },
     {
         "nvim-lualine/lualine.nvim",
