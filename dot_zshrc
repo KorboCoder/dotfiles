@@ -1,5 +1,5 @@
 if [[ -n "${ZELLIJ}" ]]; then
-  export TMUX=$ZELLIJ
+export TMUX=$ZELLIJ
 fi
 
 # Fig pre block. Keep at the top of this file.
@@ -30,6 +30,9 @@ fi
 # dog
 # fd
 # ripgrep
+# lazygit
+# lazydocker
+# rip(rm-imrpvoed)
 # git checkout with fzf: https://medium.com/@mrWinston/smarter-git-checkout-using-fzf-to-supercharge-your-commandline-7507db600996
 gcha() {
   git checkout "$(git branch --all | fzf | tr -d '[:space:]')"

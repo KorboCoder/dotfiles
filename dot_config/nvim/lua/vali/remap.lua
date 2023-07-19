@@ -82,6 +82,23 @@ wk.register({
     },
     leaderN
 )
+wk.register({
+    t = {
+        name = "Test",
+        -- l = { "<cmd>lua require('jester').run_last()<cr>", "Last" },
+        -- L = { "<cmd>lua require('jester').debug_last()<cr>", "Debug Last" },
+        -- n = { "<cmd>lua require('jester').run()<cr>", "Nearest" },
+        -- N = { "<cmd>lua require('jester').debug()<cr>", "Debug Nearest" },
+        -- f = { "<cmd>lua require('jester').file()<cr>", "File" },
+        l = { "<cmd>lua require('neotest').run.run_last()<cr>", "Last" },
+        L = { "<cmd>lua require('neotest').run.run_last({strategy = \"dap\"})<cr>", "Debug Last" },
+        n = { "<cmd>lua require('neotest').run.run()<cr>", "Nearest" },
+        N = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug Nearest" },
+        f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "File" },
+        w = { "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", "Watch" },
+        d = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug" }
+    }
+})
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[G]it [C]heckout' })
@@ -97,10 +114,10 @@ local ui = require("harpoon.ui")
 vim.keymap.set("n", "<leader>ha", mark.add_file)
 vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
 
-vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
-vim.keymap.set("n", "<C-j>", function() ui.nav_file(2) end)
-vim.keymap.set("n", "<C-k>", function() ui.nav_file(3) end)
-vim.keymap.set("n", "<C-l>", function() ui.nav_file(4) end)
+vim.keymap.set("n", "<leader>hh", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<leader>hj", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<leader>hk", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<leader>hl", function() ui.nav_file(4) end)
 
 
 -- fugitive
@@ -197,7 +214,8 @@ local on_attach = function(_, bufnr)
 
         vim.keymap.set('v', keys, func, { buffer = bufnr, desc = desc })
     end
-    vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
+
+    vmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -236,7 +254,7 @@ local servers = {
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
-    -- tsserver = {},
+    tsserver = {},
 
     lua_ls = {
         Lua = {
@@ -278,6 +296,10 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -314,7 +336,11 @@ cmp.setup {
         end, { 'i', 's' }),
     },
     sources = {
+        { name = 'path'},
         { name = 'nvim_lsp' },
+        { name = 'buffer' },
         { name = 'luasnip' },
+        { name = 'ray-x/lsp_signature.nvim' }
+        -- { name = 'nvim_lsp_signature_help' }
     },
 }

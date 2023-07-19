@@ -1,3 +1,7 @@
+-- Plugisn to check out:
+-- https://alpha2phi.medium.com/neovim-for-beginners-lsp-part-2-37f9f72779b6#aae3
+-- inlay hints
+--
 -- Setup all plugins here
 
 return {
@@ -11,7 +15,7 @@ return {
                 layout_strategy = "flex",
                 sorting_strategy = "ascending",
                 layout_config = {
-                    horizontal = { width = 0.95, height = 0.95, preview_width = 100, prompt_position = 'top' }
+                    horizontal = { width = 0.95, height = 0.95, prompt_position = 'top' }
                 },
             },
         },
@@ -28,22 +32,32 @@ return {
             dim_inactive = {
                 enabled = true,
                 shade = "dark",
-                percentage = 0.15
+                percentage = 0.50
+            },
+            dap = {
+                enabled = true,
+                enable_ui = true
             }
         },
 
         config = function()
-            -- require("catppuccin").setup({
-            --     flavour = "macchiato",
-            --     transparent_background = true,
-            --     term_colors = false,
-            --     dim_inactive = {
-            --         enabled = true,
-            --         shade = "dark",
-            --         percentage = 0.15
-            --     }
-            -- })
-            vim.cmd([[colorscheme catppuccin]])
+            require("catppuccin").setup({
+                flavour = "macchiato",
+                transparent_background = true,
+                term_colors = true,
+                dim_inactive = {
+                    enabled = true,
+                    shade = "dark",
+                    percentage = 0.75
+                },
+                integrations = {
+                    indent_blankline = {
+                        enabled = true,
+                        colored_indent_levels = true
+                    }
+                }
+            })
+            vim.cmd([[colorscheme catppuccin-macchiato]])
         end
     },
     {
@@ -76,6 +90,10 @@ return {
         build = ':TSUpdate',
     },
     {
+        "ThePrimeagen/refactoring.nvim",
+        opts = {}
+    },
+    {
         "nvim-treesitter/playground",
     },
     {
@@ -85,7 +103,18 @@ return {
         "mbbill/undotree"
     },
     {
-        "tpope/vim-fugitive"
+        "tpope/vim-fugitive",
+        keys = {
+      { "<leader>gg", "<cmd>Git<CR>", desc = "Git" },
+      { "<leader>gb", "<cmd>GBrowse<CR>", desc = "Git Browse" },
+      { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
+      { "<leader>gp", "<cmd>G push<CR>", desc = "Git Push" },
+      { "<leader>gr", "<cmd>Gread<CR>", desc = "Git Read" },
+      { "<leader>gw", "<cmd>Gwrite<CR>", desc = "Git Write" },
+    },
+    },
+    {
+        "tpope/vim-rhubarb"
     },
     {
         'VonHeikemen/lsp-zero.nvim',
@@ -107,6 +136,12 @@ return {
             { 'L3MON4D3/LuaSnip' },             -- Required
             { 'saadparwaiz1/cmp_luasnip' },     -- Optional
             { 'rafamadriz/friendly-snippets' }, -- Optional
+            -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+            { 'ray-x/lsp_signature.nvim' },
+            {
+                'lvimuser/lsp-inlayhints.nvim',
+                opts = {},
+            },
             -- LSp status updates
             { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
 
@@ -118,6 +153,13 @@ return {
 
             lsp.preset('recommended')
             lsp.setup()
+            require('lsp_signature').setup({
+                bind = true,
+                doc_lines = 50,
+                handler_opts = {
+                    border = "rounded"
+                }
+            })
         end
     },
     { "folke/which-key.nvim",       opts = {} },
@@ -145,14 +187,41 @@ return {
             show_trailing_blankline_indent = false,
         },
         config = function()
-            require("indent_blankline").setup { space_char_blankline = " ",
+            require("indent_blankline").setup { 
+                space_char_blankline = " ",
                 show_current_context = true,
-                show_current_context_start = true, }
+                show_current_context_start = true, 
+                char_highlight_list = {
+                    "IndentBlanklineIndent1",
+                    "IndentBlanklineIndent2",
+                    "IndentBlanklineIndent3",
+                    "IndentBlanklineIndent4",
+                    "IndentBlanklineIndent5",
+                    "IndentBlanklineIndent6",
+                },
+            }
         end
     },
     {
         'lewis6991/gitsigns.nvim',
-        opt = {}
+        opts = {
+            signs = {
+                add = { text = '+' },
+                change = { text = '~' },
+                delete = { text = '_' },
+                topdelete = { text = '‾' },
+                changedelete = { text = '~' },
+            },
+            on_attach = function(bufnr)
+                vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+                    { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+                vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
+                    { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+                vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk,
+                    { buffer = bufnr, desc = '[P]review [H]unk' })
+            end,
+        },
+
     },
 
     {
@@ -172,7 +241,7 @@ return {
             vim.o.number = true
             vim.o.termguicolors = true
         end,
-        opt = {}
+        opts = {}
     },
     {
         'RRethy/vim-illuminate'
@@ -183,7 +252,28 @@ return {
         opts = {} -- this is equalent to setup({}) function
     },
     {
-        'chrisbra/csv.vim'
+
+        "nvim-neotest/neotest",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            {"haydenmeade/neotest-jest", lazy = false},
+            "antoinemadec/FixCursorHold.nvim"
+        },
+        config = function()
+            require('neotest').setup({
+            adapters = {
+                require('neotest-jest')({
+                    jestCommand = "npm test --",
+                    jestConfigFile = "custom.jest.config.ts",
+                    env = { CI = true },
+                    cwd = function(path)
+                        return vim.fn.getcwd()
+                    end,
+                }),
+            }
+            })
+        end
     },
     -- {
     --
@@ -204,7 +294,8 @@ return {
     --     end
     -- },
     -- plugins from other files
-    require('vali.autoformat')
+    require('vali.autoformat'),
+    require('vali.debug')
 
 
 }

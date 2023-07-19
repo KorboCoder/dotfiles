@@ -1,5 +1,6 @@
 vim.opt.nu = true
 vim.opt.relativenumber = true
+vim.opt.ruler = false
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -23,12 +24,14 @@ vim.opt.showmode = false
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
+vim.g.indent_blankline_char ='┆'
+-- vim.g.indent_blankline_char_list = {'┆', '┊' }
 
 vim.opt.updatetime = 500
 
 vim.opt.colorcolumn = "80,125,125"
 
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menu,menuone,preview'
 
 -- indent setup
 vim.opt.list = true
@@ -45,3 +48,49 @@ vim.opt.listchars:append "eol:↴"
 --         end
 --     end),
 -- })
+
+
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
+
+
+local lspconfig = require('lspconfig')
+lspconfig.tsserver.setup({
+    on_attach = function(client, bufnr)
+        require("lsp-inlayhints").on_attach(client, bufnr)
+    end,
+    settings = {
+        typescript = {
+            inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+            }
+        },
+        javascript = {
+            inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+            }
+        }
+    }
+})
