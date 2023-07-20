@@ -24,9 +24,13 @@ return {
             -- 'mxsdev/nvim-dap-vscode-js',
             'thenbe/nvim-dap-vscode-js',
             branch = 'configure-lazynvim',
-            opts = {
-                debugger_path ='/Users/vali/.local/share/nvim/lazy/vscode-js-debug' 
-            }
+            config = function()
+
+                local lazypath = vim.fn.stdpath("data") .. "/lazy/"
+                require('dap-vscode-js').setup({
+                    debugger_path = lazypath .. 'vscode-js-debug'
+                })
+            end
         },
         {
             "microsoft/vscode-js-debug",

@@ -1,11 +1,12 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
-    unbind "Ctrl o"
-    unbind "Ctrl h"
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
         bind "Ctrl x" { SwitchToMode "Session"; }
+        unbind "Ctrl o"
+            unbind "Ctrl h"
+            unbind "Ctrl q"
     }
     locked {
         bind "Ctrl g" { SwitchToMode "Normal"; }
@@ -40,15 +41,15 @@ keybinds {
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
         bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
     }
-//    move {
-//        bind "Ctrl h" { SwitchToMode "Normal"; }
-//        bind "n" "Tab" { MovePane; }
-//        bind "p" { MovePaneBackwards; }
-//        bind "h" "Left" { MovePane "Left"; }
-//        bind "j" "Down" { MovePane "Down"; }
-//        bind "k" "Up" { MovePane "Up"; }
-//        bind "l" "Right" { MovePane "Right"; }
-//    }
+    //    move {
+    //        bind "Ctrl h" { SwitchToMode "Normal"; }
+    //        bind "n" "Tab" { MovePane; }
+    //        bind "p" { MovePaneBackwards; }
+    //        bind "h" "Left" { MovePane "Left"; }
+    //        bind "j" "Down" { MovePane "Down"; }
+    //        bind "k" "Up" { MovePane "Up"; }
+    //        bind "l" "Right" { MovePane "Right"; }
+    //    }
     tab {
         bind "Ctrl t" { SwitchToMode "Normal"; }
         bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
@@ -139,7 +140,7 @@ keybinds {
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Ctrl q" { Quit; }
+        //        bind "Ctrl q" { Quit; }
         bind "Alt n" { NewPane; }
         bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
         bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
@@ -168,9 +169,9 @@ keybinds {
     shared_except "tab" "locked" {
         bind "Ctrl t" { SwitchToMode "Tab"; }
     }
-//    shared_except "move" "locked" {
-//        bind "Ctrl h" { SwitchToMode "Move"; }
-//    }
+    //    shared_except "move" "locked" {
+    //        bind "Ctrl h" { SwitchToMode "Move"; }
+    //    }
     shared_except "tmux" "locked" {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
     }
@@ -244,7 +245,7 @@ plugins {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
- theme "catppuccin-macchiato"
+theme "catppuccin-macchiato"
 
 // The name of the default layout to load on startup
 // Default: "default"

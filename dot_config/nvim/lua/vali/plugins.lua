@@ -1,7 +1,9 @@
 -- Plugisn to check out:
 -- https://alpha2phi.medium.com/neovim-for-beginners-lsp-part-2-37f9f72779b6#aae3
 -- inlay hints
---
+-- telescope-file-browser.nvim
+-- telescope-ui-select.nvim or dressing.nvim
+-- config template: dope, https://www.youtube.com/watch?app=desktop&v=Vghglz2oR0c
 -- Setup all plugins here
 
 return {
