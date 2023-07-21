@@ -36,7 +36,7 @@ vim.o.completeopt = 'menu,menuone,preview'
 -- indent setup
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
-vim.opt.listchars:append "eol:↴"
+-- vim.opt.listchars:append "eol:↴"
 
 -- Enable preview at start for oil
 -- vim.api.nvim_create_autocmd("User", {

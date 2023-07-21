@@ -3,7 +3,7 @@
 -- inlay hints
 -- telescope-file-browser.nvim
 -- telescope-ui-select.nvim or dressing.nvim
--- config template: dope, https://www.youtube.com/watch?app=desktop&v=Vghglz2oR0c
+-- config template: dope, https://www.youtube.com/watch?app=desktop&v=Vghglz2oR0c, https://github.com/ChristianChiarulli/nvim/tree/1631262e8df1de2ad0ecfd5f7dffd9c4476d7933
 -- Setup all plugins here
 
 return {
@@ -20,7 +20,22 @@ return {
                     horizontal = { width = 0.95, height = 0.95, prompt_position = 'top' }
                 },
             },
+            extensions = {
+                file_browser = {
+                    hijack_netrw = true
+                }
+            }
         },
+    },
+    -- {
+    --     "nvim-telescope/telescope-file-browser.nvim",
+    --     config = function()
+    --         require("telescope").load_extension "file_browser"
+    --     end
+    -- },
+    {
+        'stevearc/dressing.nvim',
+        opts = {},
     },
     {
         "catppuccin/nvim",
@@ -48,7 +63,7 @@ return {
                 transparent_background = true,
                 term_colors = true,
                 dim_inactive = {
-                    enabled = true,
+                    enabled = false,
                     shade = "dark",
                     percentage = 0.75
                 },
@@ -56,7 +71,12 @@ return {
                     indent_blankline = {
                         enabled = true,
                         colored_indent_levels = true
-                    }
+                    },
+                    harpoon = true,
+                    neotest = true,
+                    illuminate = true,
+                    which_key = true
+
                 }
             })
             vim.cmd([[colorscheme catppuccin-macchiato]])
@@ -74,6 +94,18 @@ return {
             })
             -- vim.cmd([[colorscheme tokyonight-night]])
         end,
+    },
+    {
+        "levouh/tint.nvim",
+        opts = {
+            tint = -20,
+            saturation = 0.5
+        }
+    },
+    {
+        "nvim-zh/colorful-winsep.nvim",
+        config = true,
+        event = { "WinNew" },
     },
     -- {
     --     "Mofiqul/vscode.nvim",
@@ -276,6 +308,22 @@ return {
             }
             })
         end
+    },
+    {
+        "iamcco/markdown-preview.nvim",
+        build = "cd app && npm install",
+        ft = "markdown",
+        lazy = true,
+        keys = { { "gm", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" } },
+        config = function()
+            vim.g.mkdp_auto_close = true
+            vim.g.mkdp_open_to_the_world = false
+            vim.g.mkdp_open_ip = "127.0.0.1"
+            vim.g.mkdp_port = "8888"
+            vim.g.mkdp_browser = ""
+            vim.g.mkdp_echo_preview_url = true
+            vim.g.mkdp_page_title = "${name}"
+        end,
     },
     -- {
     --

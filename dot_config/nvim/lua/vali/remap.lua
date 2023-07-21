@@ -4,6 +4,7 @@ local wk = require('which-key')
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- go to explorer
+-- vim.keymap.set("n", "-", "Ex")
 vim.keymap.set("n", "-", require("oil").open)
 
 -- move selected chunk
