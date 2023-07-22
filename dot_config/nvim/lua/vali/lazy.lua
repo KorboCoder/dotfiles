@@ -1,4 +1,7 @@
+-- lazy path
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+-- install lazy
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git",
@@ -10,4 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup(require("vali.plugins"), opts)
+
+-- setup plugins
+-- TODO: look into stuff i can disable for performance
+require("lazy").setup("vali.plugins", {})
