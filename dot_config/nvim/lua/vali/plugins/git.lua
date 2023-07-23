@@ -32,7 +32,7 @@ return {
             end,
         },
         keys = {
-            {"<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame"}
+            {"<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame"}
         }
 
     },
