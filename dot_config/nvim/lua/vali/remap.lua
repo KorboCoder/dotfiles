@@ -78,6 +78,15 @@ wk.register({
             },
             C = {
                 "<cmd>Telescope command_history<cr>", "Command History"
+            },
+            n = {
+                "<cmd>Noice telescope<cr>", "Notif History"
+            },
+            s = {
+                "<cmd>Telescope lsp_document_symbols<cr>", "Document Sybols"
+            },
+            S = {
+                "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"
             }
         }
     },
@@ -102,7 +111,10 @@ wk.register({
 })
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_branches<cr>", { desc = '[G]it [C]heckout' })
+vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.lazygit_toggle()<cr>", { desc = "Lazygit" })
+vim.keymap.set('n', '<leader>gb', "<cmd>Telescope git_branches<cr>", { desc = 'Checkout Branch' })
+vim.keymap.set('n', '<leader>gs', "<cmd>Telescope git_status<cr>", {desc = "Git Status"})
+vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_commits<cr>", {desc = "Checkout Commit"})
 
 -- undotree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
@@ -119,10 +131,6 @@ vim.keymap.set("n", "<leader>hh", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<leader>hj", function() ui.nav_file(2) end)
 vim.keymap.set("n", "<leader>hk", function() ui.nav_file(3) end)
 vim.keymap.set("n", "<leader>hl", function() ui.nav_file(4) end)
-
-
--- fugitive
-vim.keymap.set("n", "<leader>gs", vim.cmd.Git);
 
 -- Reference for following: https://github.com/nvim-lua/kickstart.nvim
 -- treesitter
@@ -224,9 +232,9 @@ local on_attach = function(_, bufnr)
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
+    -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    --
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
@@ -341,7 +349,7 @@ cmp.setup {
         { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'luasnip' },
-        { name = 'ray-x/lsp_signature.nvim' }
+        -- { name = 'ray-x/lsp_signature.nvim' }
         -- { name = 'nvim_lsp_signature_help' }
     },
 }

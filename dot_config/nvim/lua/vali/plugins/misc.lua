@@ -6,7 +6,7 @@
 -- config template: dope, https://www.youtube.com/watch?app=desktop&v=Vghglz2oR0c, https://github.com/ChristianChiarulli/nvim/tree/1631262e8df1de2ad0ecfd5f7dffd9c4476d7933
 
 return {
-
+    -- preview markdown in browser
     {
         "iamcco/markdown-preview.nvim",
         build = "cd app && npm install",
@@ -23,6 +23,15 @@ return {
             vim.g.mkdp_page_title = "${name}"
         end,
     },
+    -- terminal integration
+    {
+        'akinsho/toggleterm.nvim', version = "*",
+        opts = {
+            open_mapping = [[<c-\>]],
+            direction = "float"
+        }
+    },
+    -- undo history management
     {
         "mbbill/undotree"
     },

@@ -20,7 +20,7 @@ return {
             { 'saadparwaiz1/cmp_luasnip' },     -- Optional
             { 'rafamadriz/friendly-snippets' }, -- Optional
             -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-            { 'ray-x/lsp_signature.nvim' },
+            -- { 'ray-x/lsp_signature.nvim' },
             {
                 'lvimuser/lsp-inlayhints.nvim',
                 opts = {},
@@ -36,13 +36,13 @@ return {
 
             lsp.preset('recommended')
             lsp.setup()
-            require('lsp_signature').setup({
-                bind = true,
-                doc_lines = 50,
-                handler_opts = {
-                    border = "rounded"
-                }
-            })
+            -- require('lsp_signature').setup({
+            --     bind = true,
+            --     doc_lines = 50,
+            --     handler_opts = {
+            --         border = "rounded"
+            --     }
+            -- })
         end
     },
 }

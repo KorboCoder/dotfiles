@@ -25,7 +25,9 @@ return {
                     harpoon = true,
                     neotest = true,
                     illuminate = true,
-                    which_key = true
+                    which_key = true,
+                    noice = true,
+                    notify = true
 
                 }
             })

@@ -58,28 +58,6 @@ return {
             }
         end
     },
-    -- show git changes in the sign column
-    {
-        'lewis6991/gitsigns.nvim',
-        opts = {
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
-            },
-            on_attach = function(bufnr)
-                vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
-                    { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-                vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
-                    { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-                vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk,
-                    { buffer = bufnr, desc = '[P]review [H]unk' })
-            end,
-        },
-
-    },
     -- change cursorlinenumber depending on mode
     {
         'mawkler/modicator.nvim',
@@ -95,6 +73,7 @@ return {
     {
         'RRethy/vim-illuminate'
     },
+    -- popup what keymaps do
     {
         "folke/which-key.nvim",
         opts = {
@@ -115,5 +94,43 @@ return {
             -- control how fast window appears
             vim.o.timeoutlen = 200
         end
+    },
+    -- better  ui for messages, cmdline and popupmenu
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+            -- you can enable a preset for easier configuration
+            presets = {
+                bottom_search = false, -- use a classic bottom cmdline for search
+                command_palette = false, -- position the cmdline and popupmenu together
+                long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = true, -- disable lsp doc border since we have another plugi handling it
+            },
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            {
+                "rcarriga/nvim-notify",
+                opts = {
+                    background_colour = "#000000",
+                    stages = "static"
+                }
+            },
+        }
     }
 }
