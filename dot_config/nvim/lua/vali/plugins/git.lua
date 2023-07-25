@@ -4,7 +4,7 @@ return {
         "tpope/vim-fugitive",
         keys = {
             { "<leader>gs", "<cmd>Git<CR>",         desc = "Git Status" },
-            { "<leader>go", "<cmd>GBrowse<CR>",     desc = "Open in browser" },
+            { "<leader>go", ":GBrowse<CR>",         desc = "Open in browser", mode = { "n", "v" } },
             { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
             { "<leader>gp", "<cmd>G push<CR>",      desc = "Git Push" },
             { "<leader>gr", "<cmd>Gread<CR>",       desc = "Git Read" },

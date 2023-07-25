@@ -3,10 +3,6 @@ local wk = require('which-key')
 -- <NoP> for <space> to prevent going to next line in modes
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
--- go to explorer
--- vim.keymap.set("n", "-", "Ex")
-vim.keymap.set("n", "-", require("oil").open)
-
 -- move selected chunk
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -111,10 +107,14 @@ wk.register({
 })
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.lazygit_toggle()<cr>", { desc = "Lazygit" })
+vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
 vim.keymap.set('n', '<leader>gb', "<cmd>Telescope git_branches<cr>", { desc = 'Checkout Branch' })
 vim.keymap.set('n', '<leader>gs', "<cmd>Telescope git_status<cr>", {desc = "Git Status"})
 vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_commits<cr>", {desc = "Checkout Commit"})
+
+
+-- lazydocker
+vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>", { desc = "Lazydocker" })
 
 -- undotree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
@@ -136,7 +136,7 @@ vim.keymap.set("n", "<leader>hl", function() ui.nav_file(4) end)
 -- treesitter
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'comment', 'jsdoc' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -201,7 +201,8 @@ require('nvim-treesitter.configs').setup {
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
+    require("lsp-inlayhints").on_attach(client, bufnr)
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -263,7 +264,32 @@ local servers = {
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
-    tsserver = {},
+    tsserver = {
+        typescript = {
+            inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+            }
+        },
+        javascript = {
+            inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+            }
+        }
+    },
 
     lua_ls = {
         Lua = {
@@ -301,6 +327,7 @@ mason_lspconfig.setup_handlers {
 -- See `:help cmp`
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
+local lspkind = require('lspkind')
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
@@ -309,11 +336,14 @@ cmp.setup {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
     },
+    -- TODO: add typescript snippets
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
         end,
     },
+
+    formatting = { format = lspkind.cmp_format({ mode = 'symbol_text' }) },
     mapping = cmp.mapping.preset.insert {
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -321,8 +351,8 @@ cmp.setup {
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {},
         ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+            -- behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
         },
         -- ['<Esc>'] = cmp.mapping.abort(),
         ['<Tab>'] = cmp.mapping(function(fallback)

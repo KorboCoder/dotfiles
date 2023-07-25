@@ -4,7 +4,7 @@
 -- telescope-file-browser.nvim
 -- telescope-ui-select.nvim or dressing.nvim
 -- config template: dope, https://www.youtube.com/watch?app=desktop&v=Vghglz2oR0c, https://github.com/ChristianChiarulli/nvim/tree/1631262e8df1de2ad0ecfd5f7dffd9c4476d7933
-
+-- https://github.com/ecosse3/nvim
 return {
     -- preview markdown in browser
     {

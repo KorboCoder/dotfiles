@@ -18,7 +18,17 @@ return {
     -- nice diagnosis UI
     {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        opts = {}
+        config = true,
+        -- keys = {
+        --     {"<leader>l", "<cmd>lua require('lsp_lines').toggle()<cr>", "Toggle lsp_lines"}
+        -- },
+        init = function()
+            vim.diagnostic.config({
+                virtual_text = false,
+                virtual_lines = true
+            })
+            vim.keymap.set('n', "<leader>l", "<cmd>lua require('lsp_lines').toggle()<cr>", { desc = "Toggle lsp_lines" })
+        end
     },
     -- edit pairs easier
     {

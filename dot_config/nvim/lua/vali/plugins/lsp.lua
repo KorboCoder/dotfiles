@@ -23,13 +23,20 @@ return {
             -- { 'ray-x/lsp_signature.nvim' },
             {
                 'lvimuser/lsp-inlayhints.nvim',
-                opts = {},
+                config = true,
+                keys = {
+                    { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
+                },
             },
             -- LSp status updates
             { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
 
             -- Additional nvim lua configuration
             'folke/neodev.nvim',
+
+            --  vscode like symbols
+            { 'onsails/lspkind.nvim' }
+
         },
         config = function()
             local lsp = require('lsp-zero')
@@ -45,4 +52,20 @@ return {
             -- })
         end
     },
+    {
+        enabled = false,
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        opts = {
+            settings = {
+                separate_diagnostic_server = true,
+                tsserver_file_preferences = {
+                    includeInlayParameterNameHints = "all",
+                    includeCompletionsForModuleExports = true,
+                    quotePreference = "auto",
+                },
+            },
+        },
+    }
 }
+

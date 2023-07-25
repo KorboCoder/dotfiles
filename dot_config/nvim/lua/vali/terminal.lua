@@ -2,10 +2,10 @@
 local M = {}
 
 -- work with lazy git inside the terminal
-M.lazygit_toggle = function()
+M.cmd_toggle = function(cmd)
   local Terminal = require("toggleterm.terminal").Terminal
-  local lazygit = Terminal:new {
-    cmd = "lazygit",
+  local tempterm = Terminal:new {
+    cmd = cmd,
     hidden = true,
     direction = "float",
     float_opts = {
@@ -19,7 +19,8 @@ M.lazygit_toggle = function()
     on_close = function(_) end,
     count = 99,
   }
-  lazygit:toggle()
+  tempterm:toggle()
 end
+
 return M
 

@@ -45,8 +45,8 @@ return {
         config = function()
             require("indent_blankline").setup {
                 space_char_blankline = " ",
-                show_current_context = true,
-                show_current_context_start = true,
+                show_current_context = false,
+                show_current_context_start = false,
                 char_highlight_list = {
                     "IndentBlanklineIndent1",
                     "IndentBlanklineIndent2",
@@ -131,6 +131,21 @@ return {
                     stages = "static"
                 }
             },
+        }
+    },
+    -- focus on one bufffer
+    {
+        "folke/zen-mode.nvim",
+        opts = {
+            window = {
+                width = 130
+            }
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+        keys = {
+            { 'gz', ':ZenMode<CR>', desc = "Zen Mode" }
         }
     }
 }

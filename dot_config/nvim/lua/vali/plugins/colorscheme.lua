@@ -27,7 +27,7 @@ return {
                     illuminate = true,
                     which_key = true,
                     noice = true,
-                    notify = true
+                    notify = true,
 
                 }
             })

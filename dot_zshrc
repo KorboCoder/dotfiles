@@ -86,6 +86,9 @@ alias ls="exa"
 # pretty ping
 alias pping="prettyping --nolegend"
 
+# lazygit
+alias gg="lazygit"
+
 # edit this .zshrc file
 alias zshconfig="nvim ~/.zshrc"
 

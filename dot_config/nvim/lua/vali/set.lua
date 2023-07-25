@@ -1,7 +1,6 @@
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.ruler = false
-
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -20,6 +19,9 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
+-- vim.opt.spell = true
+-- vim.opt.spelllang = { 'en_us' }
+
 vim.opt.showmode = false
 
 vim.opt.scrolloff = 8
@@ -29,7 +31,7 @@ vim.g.indent_blankline_char ='┆'
 
 vim.opt.updatetime = 500
 
-vim.opt.colorcolumn = "80,125,125"
+vim.opt.colorcolumn = "80,125"
 
 vim.o.completeopt = 'menu,menuone,preview'
 
@@ -37,18 +39,6 @@ vim.o.completeopt = 'menu,menuone,preview'
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 -- vim.opt.listchars:append "eol:↴"
-
--- Enable preview at start for oil
--- vim.api.nvim_create_autocmd("User", {
---     pattern = "OilEnter",
---     callback = vim.schedule_wrap(function(args)
---         local oil = require("oil")
---         if vim.api.nvim_get_current_buf() == args.data.buf and oil.get_cursor_entry() then
---             oil.select({ preview = true })
---         end
---     end),
--- })
-
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -61,36 +51,78 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+-- suppose to be the default highlight for LspInlayHint but background is not being set
+-- decided to set the default manually here
+local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
+local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
 
-local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup({
-    on_attach = function(client, bufnr)
-        require("lsp-inlayhints").on_attach(client, bufnr)
+-- telescope on neovim enter
+
+-- Reference: https://www.reddit.com/r/neovim/comments/zco47a/open_neovim_into_folder_with_telescope_open_in/
+-- local is_git_dir = function()
+--     return os.execute('git rev-parse --is-inside-work-tree >> /dev/null 2>&1')
+-- end
+-- vim.api.nvim_create_autocmd('VimEnter', {
+--     callback = function()
+--         local bufferPath = vim.fn.expand('%:p')
+--         if vim.fn.isdirectory(bufferPath) ~= 0 then
+--             local ts_builtin = require('telescope.builtin')
+--             vim.api.nvim_buf_delete(0, { force = true })
+--             if is_git_dir() == 0 then
+--                 ts_builtin.git_files({ show_untracked = true })
+--             else
+--                 ts_builtin.find_files()
+--             end
+--         end
+--     end,
+-- })
+
+-- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup
+-- Disable netrw
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+
+-- Open Telescope on startup if the first argument is a directory
+local ts_group = vim.api.nvim_create_augroup("TelescopeOnEnter", { clear = true })
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+    callback = function()
+        local first_arg = vim.v.argv[3]
+        if first_arg and vim.fn.isdirectory(first_arg) == 1 then
+            -- Vim creates a buffer for folder. Close it.
+            vim.cmd(":bd 1")
+            require("telescope.builtin").find_files({ search_dirs = { first_arg } })
+        end
     end,
-    settings = {
-        typescript = {
-            inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-            }
-        },
-        javascript = {
-            inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-            }
-        }
-    }
-})
+    group = ts_group,
+});
+
+-- local lspconfig = require('lspconfig')
+-- lspconfig.tsserver.setup({
+--     settings = {
+--         typescript = {
+--             inlayHints = {
+--                 includeInlayParameterNameHints = 'all',
+--                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+--                 includeInlayFunctionParameterTypeHints = true,
+--                 includeInlayVariableTypeHints = true,
+--                 includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+--                 includeInlayPropertyDeclarationTypeHints = true,
+--                 includeInlayFunctionLikeReturnTypeHints = true,
+--                 includeInlayEnumMemberValueHints = true,
+--             }
+--         },
+--         javascript = {
+--             inlayHints = {
+--                 includeInlayParameterNameHints = 'all',
+--                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+--                 includeInlayFunctionParameterTypeHints = true,
+--                 includeInlayVariableTypeHints = true,
+--                 includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+--                 includeInlayPropertyDeclarationTypeHints = true,
+--                 includeInlayFunctionLikeReturnTypeHints = true,
+--                 includeInlayEnumMemberValueHints = true,
+--             }
+--         }
+--     }
+-- })
