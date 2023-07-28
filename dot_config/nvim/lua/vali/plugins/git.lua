@@ -22,6 +22,13 @@ return {
                 topdelete = { text = '‾' },
                 changedelete = { text = '~' },
             },
+            signcolumn = true,
+            numhl = true,
+            linehl = true,
+            current_line_blame_opts = {
+                virt_text_pos = 'right_align',
+                delay = 500,
+            },
             on_attach = function(bufnr)
                 vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
                     { buffer = bufnr, desc = 'Prev Hunk' })
@@ -31,10 +38,9 @@ return {
                     { buffer = bufnr, desc = 'Preview Hunk' })
             end,
         },
-        keys = {
-            {"<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame"}
-        }
-
+        init = function()
+            vim.keymap.set('n', "<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", { desc = "Blame" })
+        end
     },
     -- open github with GBrowse
     {

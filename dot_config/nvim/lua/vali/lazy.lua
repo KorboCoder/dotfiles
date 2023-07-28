@@ -16,4 +16,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- setup plugins
 -- TODO: look into stuff i can disable for performance
-require("lazy").setup("vali.plugins", {})
+require("lazy").setup("vali.plugins", {
+    ui = {
+        border = "single"
+    }
+})

@@ -1,13 +1,22 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 if [[ -n "${ZELLIJ}" ]]; then
 export TMUX=$ZELLIJ
 fi
 
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
 if [[ -n "${ZELLIJ}" ]]; then
   unset TMUX
 fi
+# User configuration
+# Always work in a tmux session if tmux is installed
+# https://github.com/chrishunt/dot-files/blob/master/.zshrc
+# https://gist.github.com/chakrit/5004006
+if which tmux 2>&1 >/dev/null; then
+  if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ] && [ "$IS_TOGGLETERM" != "true" ]; then
+    tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+  fi
+fi
+
 #NVM setup  
 # CLI stuff I've installed
 # bat
@@ -41,6 +50,9 @@ gch() {
   git checkout "$(git branch | fzf | tr -d '[:space:]')"
 }
 
+# vi mode
+# bindkey -v
+# export KEYTIMEOUT=1
 
 # gcloud setup
 source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
@@ -55,18 +67,21 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 # zsh autosuggestion
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-# source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 # Fix starship load wrapping issue
 export LC_ALL=en_US.UTF-8
 
-# zsh you should use
+# zsh-you-should-use settings: https://github.com/MichaelAquilina/zsh-you-should-use
 export YSU_MESSAGE_POSITION="after"
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
  # [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+# set java jdk to homebrew installation
+export JAVA_HOME=/opt/homebrew/opt/openjdk/
 
 # starship steup
 eval "$(starship init zsh)"
@@ -87,10 +102,14 @@ alias ls="exa"
 alias pping="prettyping --nolegend"
 
 # lazygit
+export XDG_CONFIG_HOME="$HOME/.config"
 alias gg="lazygit"
 
 # edit this .zshrc file
 alias zshconfig="nvim ~/.zshrc"
+
+# configure tmux
+alias tmuxconfig="nvim ~/.tmux.conf"
 
 # reload this zshfile
 alias zshreload="source ~/.zshrc"
@@ -107,10 +126,15 @@ function jsonbat (){
   cat $1 |  json_pp | bat -l json; 
 }
 
-
+# function f12 {
+#     print -n "\e[[24"
+#
+# }
+# zle -N f12
 # fix to iterm nav hotkeys
 bindkey "\e\e[D" backward-word
 bindkey "\e\e[C" forward-word
+# bindkey "^[[24;2~" f12
 
 #krew setup
 export PATH="${PATH}:${HOME}/.krew/bin"
@@ -158,10 +182,10 @@ _cdk_yargs_completions()
 }
 compdef _cdk_yargs_completions cdk
 ###-end-cdk-completions-###
-if [[ ($TERM_PROGRAM != "vscode") && ($TERM_PROGRAM != "WarpTerminal") && (-z $TMUX) ]]; then
-  # zellij attach --index "0" --create
-  eval "$(zellij setup --generate-auto-start zsh)"
-fi
+# if [[ ($TERM_PROGRAM != "vscode") && ($TERM_PROGRAM != "WarpTerminal") && (-z $TMUX) ]]; then
+#   # zellij attach --index "0" --create
+#   eval "$(zellij setup --generate-auto-start zsh)"
+# fi
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

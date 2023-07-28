@@ -10,6 +10,12 @@ return {
                 build = function()
                     pcall(vim.cmd, 'MasonUpdate')
                 end,
+                opts = {
+                    ui = {
+                        border = "rounded",
+
+                    }
+                }
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 

@@ -6,6 +6,7 @@ return {
     },
     -- fade background of unselected window
     {
+        enabled = false,
         "levouh/tint.nvim",
         opts = {
             tint = -20,
@@ -26,8 +27,106 @@ return {
                 icons_enabled = true,
                 theme = 'auto',
                 globalstatus = true
-            }
+            },
+            sections = {
+                lualine_a = { "mode" },
+                lualine_b = { "branch", "diff" },
+                lualine_c = {
+                    {
+                        "diagnostics",
+                        -- symbols = {
+                        --     error = icons.diagnostics.Error,
+                        --     warn = icons.diagnostics.Warn,
+                        --     info = icons.diagnostics.Info,
+                        --     hint = icons.diagnostics.Hint,
+                        -- },
+                    },
+                    {
+                        "filetype",
+                        icon_only = false,
+                        icon = { align = 'right' },
+                        padding = {
+                            left = 1, right = 0 }
+                    },
+                    { "filename", path = 1, symbols = { modified = "✏️", readonly = " 🔒", unnamed = "" } },
+                    -- stylua: ignore
+                    -- {
+                    --     function() return require("nvim-navic").get_location() end,
+                    --     cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+                    -- },
+                },
+                lualine_x = {
+                    -- stylua: ignore
+                    {
+                        function() return require("noice").api.status.command.get() end,
+                        cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+                        -- color = Util.fg("Statement"),
+                    },
+                    -- stylua: ignore
+                    {
+                        function() return require("noice").api.status.mode.get() end,
+                        cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+                        -- color = Util.fg("Constant"),
+                    },
+                    -- stylua: ignore
+                    {
+                        function() return "  " .. require("dap").status() end,
+                        cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+                        -- color = Util.fg("Debug"),
+                    },
+                    {
+                        require("lazy.status").updates,
+                        cond = require("lazy.status").has_updates,
+                        -- color = Util.fg("Special")
+                    },
+                    -- {
+                    --     "diff",
+                    --     -- symbols = {
+                    --     --     added = icons.git.added,
+                    --     --     modified = icons.git.modified,
+                    --     --     removed = icons.git.removed,
+                    --     -- },
+                    -- },
+                },
+                lualine_y = {
+                    "encoding",
+                },
+                lualine_z = {
+                    { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
+                    { "location", padding = { left = 0, right = 1 } },
+                }
+            },
+            extensions = { "lazy", "toggleterm", "nvim-dap-ui", "fugitive" },
         }
+    },
+    {
+        "SmiteshP/nvim-navic",
+        lazy = true,
+        init = function()
+            vim.g.navic_silence = true
+        end,
+        opts = function()
+            return {
+                lsp = {
+                    auto_attach = true
+                },
+                separator = " ",
+                highlight = true,
+                depth_limit = 5,
+            }
+        end
+    },
+    {
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        opts = {
+            show_dirname = false,
+        },
     },
     -- nice icons
     {
@@ -79,13 +178,13 @@ return {
         opts = {
             -- layout similar to helix editor
             window = {
-                margin = {1, 0, 1, 0.7},
+                margin = { 1, 0, 1, 0.7 },
                 border = "double",
                 position = "bottom",
             },
             layout = {
                 height = { max = 200 },
-                width = { min  = 10, max = 100},
+                width = { min = 10, max = 100 },
                 -- no idea what this does
                 align = "right"
             },
@@ -111,11 +210,11 @@ return {
             },
             -- you can enable a preset for easier configuration
             presets = {
-                bottom_search = false, -- use a classic bottom cmdline for search
-                command_palette = false, -- position the cmdline and popupmenu together
+                bottom_search = false,        -- use a classic bottom cmdline for search
+                command_palette = false,      -- position the cmdline and popupmenu together
                 long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = true, -- disable lsp doc border since we have another plugi handling it
+                inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = true,        -- disable lsp doc border since we have another plugi handling it
             },
         },
         dependencies = {
@@ -129,6 +228,9 @@ return {
                 opts = {
                     background_colour = "#000000",
                     stages = "static"
+                },
+                keys = {
+                    { "<leader>cn", function() require("notify").dismiss({ silent = true }) end, desc = "Clear Notifs" }
                 }
             },
         }
@@ -147,5 +249,12 @@ return {
         keys = {
             { 'gz', ':ZenMode<CR>', desc = "Zen Mode" }
         }
-    }
+    },
+    -- animated ui
+    {
+        enabled = false,
+        'echasnovski/mini.animate',
+        version = '*',
+        config = true
+    },
 }

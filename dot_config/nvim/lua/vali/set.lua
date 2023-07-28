@@ -5,7 +5,7 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-
+vim.g.editorconfig = true -- use .editorconfig file
 vim.opt.smartindent = true
 
 vim.opt.wrap = false
@@ -56,6 +56,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
 local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
 vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
+
+-- Set groovy as language for Jenkinsfile*
+vim.api.nvim_command('au BufNewFile,BufRead Jenkinsfile* setf groovy')
 
 -- telescope on neovim enter
 

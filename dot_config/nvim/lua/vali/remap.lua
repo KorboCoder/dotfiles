@@ -14,15 +14,6 @@ local leaderNV = { prefix = "<leader>", mode = { "n", "v" } }
 -- clipboard operations
 wk.register(
     {
-        Y = {
-            "\"+Y", 'yank line to system'
-        },
-        p = {
-            "\"+p", 'paste from system'
-        },
-        d = {
-            "\"_d", 'delete to void'
-        },
         x = {
             "\"_x", 'delete char to void'
         }
@@ -33,11 +24,17 @@ wk.register(
 
 wk.register(
     {
+        p = {
+            "\"+p", 'paste from system'
+        },
         y = {
             "\"+y", 'yank to system'
         },
         d = {
             "\"_d", 'delete to void'
+        },
+        _ = {
+           "\"_", 'to void register'
         }
 
     },
@@ -46,10 +43,10 @@ wk.register(
 -- search operations
 local builtin = require('telescope.builtin')
 wk.register({
-        s = {
+        f = {
             name = "+Search",
             f = {
-                builtin.find_files, "Files"
+                function() builtin.find_files() end, "Files"
             },
             t = {
                 builtin.current_buffer_fuzzy_find, 'Text'
@@ -106,31 +103,15 @@ wk.register({
     }
 })
 
-vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+-- lazygit
 vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
-vim.keymap.set('n', '<leader>gb', "<cmd>Telescope git_branches<cr>", { desc = 'Checkout Branch' })
-vim.keymap.set('n', '<leader>gs', "<cmd>Telescope git_status<cr>", {desc = "Git Status"})
-vim.keymap.set('n', '<leader>gc', "<cmd>Telescope git_commits<cr>", {desc = "Checkout Commit"})
-
 
 -- lazydocker
 vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>", { desc = "Lazydocker" })
 
--- undotree
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = 'Undo Tree' })
-
--- harpoon
-local mark = require("harpoon.mark")
-local ui = require("harpoon.ui")
-
-
-vim.keymap.set("n", "<leader>ha", mark.add_file)
-vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
-
-vim.keymap.set("n", "<leader>hh", function() ui.nav_file(1) end)
-vim.keymap.set("n", "<leader>hj", function() ui.nav_file(2) end)
-vim.keymap.set("n", "<leader>hk", function() ui.nav_file(3) end)
-vim.keymap.set("n", "<leader>hl", function() ui.nav_file(4) end)
+-- normal terminal
+vim.keymap.set({ 't', 'i', 'n' }, '<C-Bslash>', "<cmd>lua require 'vali.terminal'.cmd_toggle()<cr>",
+    { desc = "Floating Terminal" })
 
 -- Reference for following: https://github.com/nvim-lua/kickstart.nvim
 -- treesitter
@@ -203,6 +184,9 @@ require('nvim-treesitter.configs').setup {
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
     require("lsp-inlayhints").on_attach(client, bufnr)
+    if client.server_capabilities.documentSymbolProvider then
+        require('nvim-navic').attach(client, bufnr)
+    end
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -230,7 +214,9 @@ local on_attach = function(client, bufnr)
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('<F12>', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('<S-F12>', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
     -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -255,8 +241,7 @@ local on_attach = function(client, bufnr)
 end
 
 -- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
+--  Feel free to add/remove any LSPs that you want here. They will automatically be installedu
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
@@ -336,7 +321,6 @@ cmp.setup {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
     },
-    -- TODO: add typescript snippets
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)

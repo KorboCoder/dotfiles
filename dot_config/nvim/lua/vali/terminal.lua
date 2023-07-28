@@ -1,25 +1,71 @@
 -- Reference: https://github.com/LunarVim/LunarVim/blob/d663929036e23bd54427cf3e78dedf5b34ab97fc/lua/lvim/core/terminal.lua#L101
 local M = {}
 
--- work with lazy git inside the terminal
-M.cmd_toggle = function(cmd)
-  local Terminal = require("toggleterm.terminal").Terminal
+local Terminal = require("toggleterm.terminal").Terminal
+local curr_term = nil
+
+-- create a terminal instance
+local create_terminal = function(name)
   local tempterm = Terminal:new {
-    cmd = cmd,
+    cmd = name,
     hidden = true,
     direction = "float",
+    env = {
+        IS_TOGGLETERM = "true"
+    },
     float_opts = {
-      border = "none",
-      width = 100000,
-      height = 100000,
+      border = "double",
+            width = function()
+                return math.floor(vim.o.columns * 0.9)
+            end,
+            height = function()
+                return math.floor(vim.o.lines * 0.9)
+            end,
     },
     on_open = function(_)
       vim.cmd "startinsert!"
     end,
-    on_close = function(_) end,
+    on_close = function(_)
+        -- on close remove whatever is ther current terminal, if there are bugs
+        -- on unregistering other terminals can do additional id checks here
+        curr_term = nil;
+    end,
     count = 99,
   }
-  tempterm:toggle()
+  return tempterm
+end
+
+-- map terminal instances here for persistance
+local terminal_map = {
+    default = create_terminal(),
+    lazygit = create_terminal('lazygit'),
+    lazydocker = create_terminal('lazydocker')
+}
+
+-- function for toggleling terminals
+M.cmd_toggle = function(cmd)
+    -- if no cmd param set a 'default'
+    cmd = cmd or "default"
+
+    -- if there's an existing terminal toggle it
+    if(curr_term) then
+        curr_term:toggle();
+        return;
+    end
+
+    local selected_term = nil;
+
+    if (terminal_map[cmd]) then
+        selected_term = terminal_map[cmd];
+    else
+        vim.notify("Terminal for " .. cmd .. " doesn't exist in map", vim.log.levels.ERROR);
+        return
+    end
+
+    curr_term = selected_term;
+    selected_term:toggle();
+
+
 end
 
 return M
