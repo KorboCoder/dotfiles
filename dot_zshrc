@@ -14,6 +14,7 @@ fi
 if which tmux 2>&1 >/dev/null; then
   if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ] && [ "$IS_TOGGLETERM" != "true" ]; then
     tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+    exit
   fi
 fi
 
