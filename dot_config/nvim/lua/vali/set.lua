@@ -19,8 +19,8 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
--- vim.opt.spell = true
--- vim.opt.spelllang = { 'en_us' }
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
 
 vim.opt.showmode = false
 

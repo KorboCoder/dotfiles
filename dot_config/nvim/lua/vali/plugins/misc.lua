@@ -47,5 +47,12 @@ return {
             { "<leader>qd", function() require("persistence").stop() end,                desc =
             "Don't Save Current Session" },
         },
+    },
+    {
+        "lervag/vimtex",
+        init = function()
+            vim.g.vimtex_compiler_method = 'latexmk'
+            vim.g.vimtex_view_method = 'skim'
+        end
     }
 }
