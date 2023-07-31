@@ -101,7 +101,7 @@ wk.register({
         w = { "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", "Watch" },
         d = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug" }
     }
-})
+}, leaderN)
 
 -- lazygit
 vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
