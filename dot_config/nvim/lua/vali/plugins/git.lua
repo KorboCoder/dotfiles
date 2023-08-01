@@ -24,7 +24,7 @@ return {
             },
             signcolumn = true,
             numhl = true,
-            linehl = true,
+            -- linehl = true,
             current_line_blame_opts = {
                 virt_text_pos = 'right_align',
                 delay = 500,
@@ -36,6 +36,8 @@ return {
                     { buffer = bufnr, desc = 'Next Hunk' })
                 vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk,
                     { buffer = bufnr, desc = 'Preview Hunk' })
+                vim.keymap.set('n', '<leader>gH', require('gitsigns').toggle_linehl,
+                    { buffer = bufnr, desc = 'Toggle Line Highlight' })
             end,
         },
         init = function()

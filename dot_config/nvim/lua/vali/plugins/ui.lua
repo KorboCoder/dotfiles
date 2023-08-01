@@ -6,7 +6,7 @@ return {
     },
     -- fade background of unselected window
     {
-        enabled = false,
+        enabled = true,
         "levouh/tint.nvim",
         opts = {
             tint = -20,
