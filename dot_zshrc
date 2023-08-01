@@ -56,7 +56,7 @@ gch() {
 # export KEYTIMEOUT=1
 
 # gcloud setup
-source "$(brew --prefix)mshare/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 HISTSIZE=10000
