@@ -17,6 +17,7 @@ return {
             "nvim-telescope/telescope-file-browser.nvim"
         },
         keys = {
+            { "<leader>f<tab>", "<cmd>Telescope<cr>",         desc = "Telescope" },
             { "<leader>u",  "<cmd>Telescope undo<cr>",         desc = "Undo Tree" },
             { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = 'Checkout Branch' },
             { '<leader>gs', "<cmd>Telescope git_status<cr>",   desc = "Git Status" },

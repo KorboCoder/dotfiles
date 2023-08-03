@@ -48,6 +48,12 @@ wk.register({
             f = {
                 function() builtin.find_files() end, "Files"
             },
+            b = {
+                "<cmd>Telescope buffers<cr>", "Buffers"
+            },
+            d = {
+                "<cmd>Telescope diagnostics<cr>", "Diagnostics"
+            },
             t = {
                 builtin.current_buffer_fuzzy_find, 'Text'
             },
@@ -61,7 +67,7 @@ wk.register({
                 "<cmd>Telescope man_pages<cr>", 'Man'
             },
             r = {
-                "<cmd>Telescope oldfiles<cr>", "Recent"
+                "<cmd>Telescope registers<cr>", "Registers"
             },
             k = {
                 "<cmd>Telescope keymaps<cr>", "Keymaps"
@@ -93,13 +99,18 @@ wk.register({
         -- n = { "<cmd>lua require('jester').run()<cr>", "Nearest" },
         -- N = { "<cmd>lua require('jester').debug()<cr>", "Debug Nearest" },
         -- f = { "<cmd>lua require('jester').file()<cr>", "File" },
+        t = { "<cmd>lua require('neotest').run.run({suite = true})<cr>", "All" },
         l = { "<cmd>lua require('neotest').run.run_last()<cr>", "Last" },
         L = { "<cmd>lua require('neotest').run.run_last({strategy = \"dap\"})<cr>", "Debug Last" },
         n = { "<cmd>lua require('neotest').run.run()<cr>", "Nearest" },
         N = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug Nearest" },
         f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "File" },
         w = { "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", "Watch" },
-        d = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug" }
+        d = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug" },
+        s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Summary" },
+        o = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", "Output Panel" },
+        O = { "<cmd>lua require('neotest').output.open({ enter = true, auto_close = true})<cr>", "Output Window" },
+
     }
 }, leaderN)
 

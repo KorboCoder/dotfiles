@@ -7,6 +7,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.g.editorconfig = true -- use .editorconfig file
 vim.opt.smartindent = true
+vim.opt.formatoptions = "jcroqlnt" -- tcqj
 
 vim.opt.wrap = false
 
@@ -18,6 +19,9 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.splitkeep = "screen"
 
 vim.opt.spell = true
 vim.opt.spelllang = { 'en_us' }
@@ -49,6 +53,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
   group = highlight_group,
   pattern = '*',
+})
+
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = vim.api.nvim_create_augroup("vali_last_loc", {clear = true}),
+  callback = function()
+    local exclude = { "gitcommit" }
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
 })
 
 -- suppose to be the default highlight for LspInlayHint but background is not being set

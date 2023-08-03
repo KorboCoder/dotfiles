@@ -37,6 +37,7 @@ return {
     -- nice diagnosis UI
     {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+        branch = "main",
         config = function()
             local lsp_lines = require('lsp_lines')
             lsp_lines.setup()
@@ -133,6 +134,16 @@ return {
                     a = a,
                 })
             end)
+        end,
+    },
+    { 
+        "danymat/neogen", 
+        dependencies = "nvim-treesitter/nvim-treesitter", 
+        version = "*",
+        config = function(_, opts)
+            local neogen = require("neogen")
+            neogen.setup(opts)
+            vim.keymap.set("n", "<leader>cc",neogen.generate, {desc = "Add Annotation"})
         end,
     }
 
