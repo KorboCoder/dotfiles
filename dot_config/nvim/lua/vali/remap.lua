@@ -4,8 +4,15 @@ local wk = require('which-key')
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- move selected chunk
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
+
+-- indent to the right
+vim.keymap.set("v", "<", "<gv", {noremap = true})
+vim.keymap.set("v", "<", "<gv", {noremap = true})
+-- alternative to see if i like this
+vim.keymap.set("v", "<s-tab>", "<gv", {noremap = true})
+vim.keymap.set("v", "<tab>", ">gv", {noremap = true})
 
 local leaderN = { prefix = "<leader>", mode = "n" }
 local leaderV = { prefix = "<leader>", mode = "v" }
