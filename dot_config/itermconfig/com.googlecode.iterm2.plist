@@ -2217,6 +2217,28 @@
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>
+				<key>0x48-0x60000-0x4</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>H</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
+				<key>0x4c-0x60000-0x25</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>L</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
 				<key>0x5b-0x80000-0x21</key>
 				<dict>
 					<key>Action</key>
@@ -2324,6 +2346,17 @@
 					<string></string>
 					<key>Text</key>
 					<string>n</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
+				<key>0x7f-0x100000-0x33</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>0x15</string>
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>
@@ -2707,13 +2740,13 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<true/>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Rows</key>
 			<integer>50</integer>
 			<key>Screen</key>

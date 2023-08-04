@@ -124,6 +124,10 @@ vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('
 vim.keymap.set({ 't', 'i', 'n' }, '<C-Bslash>', "<cmd>lua require 'vali.terminal'.cmd_toggle()<cr>",
     { desc = "Floating Terminal" })
 
+-- Clear search with <esc>
+vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
+
 -- Reference for following: https://github.com/nvim-lua/kickstart.nvim
 -- treesitter
 require('nvim-treesitter.configs').setup {
@@ -223,6 +227,7 @@ local on_attach = function(client, bufnr)
     vmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+    vmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('<F12>', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -326,6 +331,10 @@ local luasnip = require 'luasnip'
 local lspkind = require('lspkind')
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
+luasnip.config.set_config({
+    updateevents = "TextChanged,TextChangedI",
+    enable_autosnippets = true
+})
 
 cmp.setup {
     window = {
@@ -349,7 +358,28 @@ cmp.setup {
             -- behavior = cmp.ConfirmBehavior.Replace,
             select = false,
         },
-        -- ['<Esc>'] = cmp.mapping.abort(),
+        ['<C-k>'] = cmp.mapping(function(fallback)
+            if luasnip.expand_or_jump() then
+                luasnip.expand_or_jump()
+            else
+                fallback()
+            end
+        end, {'i','s'}),
+        ['<C-l>'] = cmp.mapping(function(fallback)
+            if luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+            else
+                fallback()
+            end
+        end, {'i','s'}),
+        ['<C-h>'] = cmp.mapping(function(fallback)
+            if luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, {'i','s'}),
+        ['<Esc>'] = cmp.mapping.abort(),
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()

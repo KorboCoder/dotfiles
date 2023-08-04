@@ -35,6 +35,12 @@ return {
         {
             "microsoft/vscode-js-debug",
             build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+        },
+        -- nice virtual text to see values
+        {
+            'theHamsta/nvim-dap-virtual-text',
+            config = true
+
         }
     },
     config = function()
@@ -68,6 +74,7 @@ return {
             dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
         end, { desc = 'Debug: Set Breakpoint' })
 
+        vim.keymap.set('n', '<leader>dr', dap.repl.open, { desc = 'Open Repl' })
         vim.keymap.set('n', "<leader>dw", function() require("dap.ui.widgets").hover() end, { desc = "Widgets" })
         -- Reference for additional dap setup: https://github.com/aaronmcadam/dotfiles/blob/c883d941764fa0153991c6ee91cd8dcb27c174c3/nvim/.config/nvim/lua/azvim/plugins/configs/dap.lua#L23
         -- Dap UI setup

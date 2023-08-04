@@ -22,18 +22,14 @@ return {
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },             -- Required
             { 'hrsh7th/cmp-nvim-lsp' },         -- Required
-            { 'L3MON4D3/LuaSnip' },             -- Required
+            { 'L3MON4D3/LuaSnip', build = "make install_jsregexp" },             -- Required
+            { 'hrsh7th/cmp-buffer' },             -- Required
+            { 'hrsh7th/cmp-path' },             -- Required
+            { 'hrsh7th/cmp-nvim-lua' },             -- Required
             { 'saadparwaiz1/cmp_luasnip' },     -- Optional
             { 'rafamadriz/friendly-snippets' }, -- Optional
             -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             -- { 'ray-x/lsp_signature.nvim' },
-            {
-                'lvimuser/lsp-inlayhints.nvim',
-                config = true,
-                keys = {
-                    { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
-                },
-            },
             -- LSp status updates
             { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
 
@@ -57,6 +53,13 @@ return {
             --     }
             -- })
         end
+    },
+    {
+        'lvimuser/lsp-inlayhints.nvim',
+        config = true,
+        keys = {
+            { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
+        },
     },
     {
         enabled = false,
