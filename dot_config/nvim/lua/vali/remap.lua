@@ -8,11 +8,24 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- indent to the right
-vim.keymap.set("v", "<", "<gv", {noremap = true})
-vim.keymap.set("v", ">", ">gv", {noremap = true})
+vim.keymap.set("v", "<", "<gv", { noremap = true })
+vim.keymap.set("v", ">", ">gv", { noremap = true })
 -- alternative to see if i like this
-vim.keymap.set("v", "<s-tab>", "<gv", {noremap = true})
-vim.keymap.set("v", "<tab>", ">gv", {noremap = true})
+vim.keymap.set("v", "<s-tab>", "<gv", { noremap = true })
+vim.keymap.set("v", "<tab>", ">gv", { noremap = true })
+
+-- Move to window using the <ctrl> hjkl keys
+vim.keymap.set("n", "<c-h>", "<C-w>h", { desc = "Go to left window", noremap = true})
+vim.keymap.set("n", "<c-j>", "<C-w>j", { desc = "Go to lower window", noremap = true})
+vim.keymap.set("n", "<c-k>", "<C-w>k", { desc = "Go to upper window", noremap = true})
+vim.keymap.set("n", "<c-l>", "<C-w>l", { desc = "Go to right window", noremap = true})
+
+-- Resize window using <ctrl> arrow keys
+vim.keymap.set("n", "<C-M-k>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+vim.keymap.set("n", "<C-M-j>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<C-M-h>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<C-M-l>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+
 
 local leaderN = { prefix = "<leader>", mode = "n" }
 local leaderV = { prefix = "<leader>", mode = "v" }
@@ -41,7 +54,7 @@ wk.register(
             "\"_d", 'delete to void'
         },
         _ = {
-           "\"_", 'to void register'
+            "\"_", 'to void register'
         }
 
     },
@@ -125,7 +138,8 @@ wk.register({
 vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
 
 -- lazydocker
-vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>", { desc = "Lazydocker" })
+vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>",
+    { desc = "Lazydocker" })
 
 -- normal terminal
 vim.keymap.set({ 't', 'i', 'n' }, '<C-Bslash>', "<cmd>lua require 'vali.terminal'.cmd_toggle()<cr>",
@@ -139,7 +153,8 @@ vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
 -- treesitter
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'comment', 'jsdoc' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'comment',
+        'jsdoc' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -262,4 +277,3 @@ local on_attach = function(client, bufnr)
         vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
 end
-
