@@ -136,15 +136,27 @@ return {
             end)
         end,
     },
-    { 
-        "danymat/neogen", 
-        dependencies = "nvim-treesitter/nvim-treesitter", 
+    {
+        "danymat/neogen",
+        dependencies = "nvim-treesitter/nvim-treesitter",
         version = "*",
         config = function(_, opts)
             local neogen = require("neogen")
             neogen.setup(opts)
-            vim.keymap.set("n", "<leader>cc",neogen.generate, {desc = "Add Annotation"})
+            vim.keymap.set("n", "<leader>cc", neogen.generate, { desc = "Add Annotation" })
         end,
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            vim.keymap.set("n", "<leader>zx", function() require("trouble").open() end)
+            vim.keymap.set("n", "<leader>zw", function() require("trouble").open("workspace_diagnostics") end)
+            vim.keymap.set("n", "<leader>zd", function() require("trouble").open("document_diagnostics") end)
+            vim.keymap.set("n", "<leader>zq", function() require("trouble").open("quickfix") end)
+            vim.keymap.set("n", "<leader>zl", function() require("trouble").open("loclist") end)
+            vim.keymap.set("n", "gR", function() require("trouble").open("lsp_references") end)
+        end
     }
 
 }
