@@ -115,7 +115,7 @@ alias gg="lazygit"
 alias zshconfig="nvim ~/.zshrc"
 
 # open ~/.config/nvimo
-alias nconfig="(cd ~/.config/nvim; nvim .)"
+alias nconfig="(cd ~/.config/nvim; nvim)"
 
 # configure tmux
 alias tmuxconfig="nvim ~/.tmux.conf"

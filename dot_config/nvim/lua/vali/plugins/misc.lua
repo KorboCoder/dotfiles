@@ -36,18 +36,43 @@ return {
             { "<leader>u", vim.cmd.UndoTreeToggle, desc = 'Undo Tree' }
         }
     },
+    -- auto session restore
+    {
+        'rmagatti/auto-session',
+        config = function()
+            require('auto-session').setup({
+                auto_session_use_git_branch = true,
+                auto_save_enabled = true,
+                auto_restore_enabled = true,
+                auto_session_suppress_dirs = { "~/" }
+            })
+            vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+            vim.keymap.set("n", "<leader>qr", "<cmd>SessionRestore<cr>", { desc = "Restore Session" })
+            vim.keymap.set("n", "<leader>qs", function() require("auto-session.session-lens").search_session() end,
+                { desc = "Search Sessions" })
+            vim.keymap.set("n", "<leader>qd", "<cmd>Autosession delete<cr>", { desc = "Delete Sessions" })
+        end
+    },
+    -- session management by folke
     {
         "folke/persistence.nvim",
-        event = "BufReadPre",
-        opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" } },
+        enabled = false,
+        event   = "BufReadPre",
+        opts    = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" } },
         -- stylua: ignore
-        keys = {
+        keys    = {
             { "<leader>qs", function() require("persistence").load() end,                desc = "Restore Session" },
             { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-            { "<leader>qd", function() require("persistence").stop() end,                desc =
-            "Don't Save Current Session" },
+            {
+                "<leader>qd",
+                function() require("persistence").stop() end,
+                desc =
+                "Don't Save Current Session"
+            },
         },
     },
+    --  neovim latex support
     {
         "lervag/vimtex",
         init = function()

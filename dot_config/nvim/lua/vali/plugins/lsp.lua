@@ -20,18 +20,32 @@ return {
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp', },                                            -- Required
-            { 'hrsh7th/cmp-nvim-lsp' },                                         -- Required
+            { 'hrsh7th/nvim-cmp', },                                                 -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },                                              -- Required
             { 'L3MON4D3/LuaSnip',                 build = "make install_jsregexp" }, -- Required
-            { 'hrsh7th/cmp-buffer' },                                           -- Required
-            { 'hrsh7th/cmp-path' },                                             -- Required
-            { 'hrsh7th/cmp-nvim-lua' },                                         -- Required
-            { 'saadparwaiz1/cmp_luasnip' },                                     -- Optional
-            { 'rafamadriz/friendly-snippets' },                                 -- Optional
+            { 'hrsh7th/cmp-buffer' },                                                -- Required
+            { 'hrsh7th/cmp-path' },                                                  -- Required
+            { 'hrsh7th/cmp-nvim-lua' },                                              -- Required
+            { 'saadparwaiz1/cmp_luasnip' },                                          -- Optional
+            { 'rafamadriz/friendly-snippets' },                                      -- Optional
             -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             -- { 'ray-x/lsp_signature.nvim' },
             -- LSp status updates
-            { 'j-hui/fidget.nvim',                tag = 'legacy',                 opts = {} },
+            {
+                enabled = true,
+                'j-hui/fidget.nvim',
+                tag = 'legacy',
+                event = "LspAttach",
+                opts = {
+                    window = {
+                        blend = 0,
+                        border = "single"
+                    },
+                    text = {
+                        spinner = "meter"
+                    }
+                }
+            },
 
             -- Additional nvim lua configuration
             'folke/neodev.nvim',
