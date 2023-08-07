@@ -231,7 +231,7 @@ return {
                 "rcarriga/nvim-notify",
                 opts = {
                     background_colour = "#000000",
-                    stages = "static"
+                    stages = "static",
                 },
                 keys = {
                     { "<leader>cn", function() require("notify").dismiss({ silent = true }) end, desc = "Clear Notifs" }

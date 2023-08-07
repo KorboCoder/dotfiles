@@ -92,7 +92,6 @@ return {
                 vmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
                 nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                 nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-                vmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 nmap('<F12>', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -208,31 +207,47 @@ return {
                 },
                 formatting = { format = lspkind.cmp_format({ mode = 'symbol_text' }) },
                 mapping = cmp.mapping.preset.insert {
-                    ['<C-n>'] = cmp.mapping.select_next_item(),
-                    ['<C-p>'] = cmp.mapping.select_prev_item(),
+                    -- ['<C-n>'] = cmp.mapping.select_next_item(),
+                    -- ['<C-p>'] = cmp.mapping.select_prev_item(),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                     -- to exit completion tab if i want to close
-                    ['<C-Space>'] = cmp.mapping.abort(),
+                    -- ['<C-Space>'] = cmp.mapping.complete {},
+                    -- Toggle copmletion menu. Ref: https://github.com/hrsh7th/nvim-cmp/issues/429#issuecomment-954121524
+                    ['<C-Space>'] = cmp.mapping({
+                        i = function()
+                            if cmp.visible() then
+                                cmp.abort()
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                        c = function()
+                            if cmp.visible() then
+                                cmp.close()
+                            else
+                                cmp.complete()
+                            end
+                        end }),
                     ['<CR>'] = cmp.mapping.confirm {
                         -- behavior = cmp.ConfirmBehavior.Replace,
                         select = false,
                     },
-                    ['<C-k>'] = cmp.mapping(function(fallback)
-                        if luasnip.expand_or_jump() then
-                            luasnip.expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { 'i', 's' }),
-                    ['<C-l>'] = cmp.mapping(function(fallback)
+                    -- ['<C-k>'] = cmp.mapping(function(fallback)
+                    --     if luasnip.expand_or_jump() then
+                    --         luasnip.expand_or_jump()
+                    --     else
+                    --         fallback()
+                    --     end
+                    -- end, { 'i', 's' }),
+                    ['<C-j>'] = cmp.mapping(function(fallback)
                         if luasnip.expand_or_locally_jumpable() then
                             luasnip.expand_or_jump()
                         else
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ['<C-h>'] = cmp.mapping(function(fallback)
+                    ['<C-k>'] = cmp.mapping(function(fallback)
                         if luasnip.locally_jumpable(-1) then
                             luasnip.jump(-1)
                         else

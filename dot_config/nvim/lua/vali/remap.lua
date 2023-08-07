@@ -137,9 +137,9 @@ wk.register({
 -- lazygit
 vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
 
--- lazydocker
-vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>",
-    { desc = "Lazydocker" })
+-- -- lazydocker
+-- vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>",
+--     { desc = "Lazydocker" })
 
 -- normal terminal
 vim.keymap.set({ 't', 'i', 'n' }, '<C-Bslash>', "<cmd>lua require 'vali.terminal'.cmd_toggle()<cr>",
