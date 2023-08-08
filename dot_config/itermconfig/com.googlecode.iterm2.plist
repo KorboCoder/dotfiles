@@ -3949,9 +3949,11 @@
 	<key>TabsHaveCloseButton</key>
 	<true/>
 	<key>TerminalMargin</key>
-	<integer>2</integer>
+	<integer>5</integer>
 	<key>TerminalVMargin</key>
 	<integer>0</integer>
+	<key>UseBlackFillerColorForTmuxInFullScreen</key>
+	<true/>
 	<key>UseBorder</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
