@@ -51,6 +51,7 @@ return {
             -- "ThePrimeagen/harpoon"
         },
         opts = {
+            labels = { '1', '2', '3', '4' },
             window_options = {
                 relative = "cursor",
                 col = 10
@@ -66,7 +67,15 @@ return {
         "folke/flash.nvim",
         event = "VeryLazy",
         ---@type Flash.Config
-        opts = {},
+        opts = {
+            label = {
+                uppercase = false,
+                style = "overlay",
+                -- after = false,
+                -- before = true
+            }
+
+        },
         -- stylua: ignore
         keys = {
             { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
