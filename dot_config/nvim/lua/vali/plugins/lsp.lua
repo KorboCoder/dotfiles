@@ -4,7 +4,7 @@ return {
         branch = 'v2.x',
         dependencies = {
             -- LSP Support
-            { 'neovim/nvim-lspconfig' }, -- Required
+            { 'neovim/nvim-lspconfig', branch = "master" }, -- Required
             {                            -- Optional
                 'williamboman/mason.nvim',
                 build = function()
@@ -28,6 +28,7 @@ return {
             { 'hrsh7th/cmp-nvim-lua' },                                              -- Required
             { 'saadparwaiz1/cmp_luasnip' },                                          -- Optional
             { 'rafamadriz/friendly-snippets' },                                      -- Optional
+            { 'folke/neodev.nvim', opts = {} },
             -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             -- { 'ray-x/lsp_signature.nvim' },
             -- LSp status updates
@@ -157,8 +158,12 @@ return {
 
                 lua_ls = {
                     Lua = {
-                        workspace = { checkThirdParty = false },
+                        workspace = { checkThirdParty = true },
                         telemetry = { enable = false },
+                        diagnostics = {
+
+                            disable = {"undefined-field"},
+                        }
                     },
                 },
             }
