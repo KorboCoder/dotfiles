@@ -44,22 +44,29 @@ wk.register(
 
 wk.register(
     {
-        p = {
-            "\"+p", 'paste from system'
-        },
-        y = {
-            "\"+y", 'yank to system'
-        },
         d = {
             "\"_d", 'delete to void'
         },
         _ = {
             "\"_", 'to void register'
+        },
+        ['+'] = {
+            "\"+", 'to system register'
         }
 
     },
     leaderNV
 )
+
+wk.register(
+    {
+        p = {
+            "\"_dP", 'paste without changing register'
+        },
+    },
+    leaderV
+)
+
 -- search operations
 local builtin = require('telescope.builtin')
 wk.register({
