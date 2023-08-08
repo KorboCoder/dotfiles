@@ -3,15 +3,16 @@ local M = {}
 
 local Terminal = require("toggleterm.terminal").Terminal
 local curr_term = nil
+local NO_SESSION = "no-session"
 
 -- create a terminal instance
-local create_terminal = function(name)
+local create_terminal = function(name, toggletermId)
   local tempterm = Terminal:new {
     cmd = name,
     hidden = true,
     direction = "float",
     env = {
-        IS_TOGGLETERM = "true"
+        TOGGLETERM_ID = toggletermId
     },
     float_opts = {
       border = "double",
@@ -37,9 +38,9 @@ end
 
 -- map terminal instances here for persistance
 local terminal_map = {
-    default = create_terminal(),
-    lazygit = create_terminal('lazygit'),
-    lazydocker = create_terminal('lazydocker')
+    default = create_terminal(nil, vim.fn.getcwd()),
+    lazygit = create_terminal('lazygit', NO_SESSION),
+    lazydocker = create_terminal('lazydocker', NO_SESSION)
 }
 
 -- function for toggleling terminals

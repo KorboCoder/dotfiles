@@ -12,9 +12,14 @@ fi
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
 # https://gist.github.com/chakrit/5004006
 if which tmux 2>&1 >/dev/null; then
-  if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ] && [ "$IS_TOGGLETERM" != "true" ]; then
-    tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
-    exit
+  if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ]; then
+        if [ -z "$TOGGLETERM_ID" ]; then
+            tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+            exit
+        elif [ $TOGGLETERM_ID != "no-session" ]; then
+            tmux new-session -t $TOGGLETERM_ID \; set-option destroy-unattached || tmux new-session -s $TOGGLETERM_ID
+            exit
+        fi
   fi
 fi
 
