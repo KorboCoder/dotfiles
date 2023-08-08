@@ -142,7 +142,6 @@ wk.register({
 }, leaderN)
 
 -- lazygit
-vim.keymap.set('n', '<leader>gg', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazygit')<cr>", { desc = "Lazygit" })
 
 -- -- lazydocker
 -- vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>",
