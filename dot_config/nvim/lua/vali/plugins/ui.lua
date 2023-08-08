@@ -91,6 +91,51 @@ return {
                     -- },
                 },
                 lualine_y = {
+                    {
+                    -- Yoinked from:  https://github.com/LunarVim/LunarVim/blob/420817e617dcc05fa110b59f3e7af64096d3f2ea/lua/lvim/core/lualine/components.lua
+                    -- for knowing which language server is attached
+                    function()
+                        local buf_clients = vim.lsp.get_active_clients { bufnr = 0 }
+                        if #buf_clients == 0 then
+                            return "LSP Inactive"
+                        end
+
+                        local buf_ft = vim.bo.filetype
+                        local buf_client_names = {}
+                        local copilot_active = false
+
+                        -- add client
+                        for _, client in pairs(buf_clients) do
+                            if client.name ~= "null-ls" and client.name ~= "copilot" then
+                                table.insert(buf_client_names, client.name)
+                            end
+
+                            if client.name == "copilot" then
+                                copilot_active = true
+                            end
+                        end
+
+                        -- -- add formatter
+                        -- local formatters = require "lvim.lsp.null-ls.formatters"
+                        -- local supported_formatters = formatters.list_registered(buf_ft)
+                        -- vim.list_extend(buf_client_names, supported_formatters)
+                        --
+                        -- -- add linter
+                        -- local linters = require "lvim.lsp.null-ls.linters"
+                        -- local supported_linters = linters.list_registered(buf_ft)
+                        -- vim.list_extend(buf_client_names, supported_linters)
+
+                        local unique_client_names = table.concat(buf_client_names, ", ")
+                        local language_servers = string.format("[%s]", unique_client_names)
+
+                        -- if copilot_active then
+                        --     language_servers = language_servers .. "%#SLCopilot#" .. " " .. lvim.icons.git.Octoface .. "%*"
+                        -- end
+
+                        return language_servers
+                    end,
+                    color = { gui = "bold" },
+                },
                     "encoding",
                 },
                 lualine_z = {
