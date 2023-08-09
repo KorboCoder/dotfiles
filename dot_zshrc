@@ -7,20 +7,33 @@ fi
 if [[ -n "${ZELLIJ}" ]]; then
   unset TMUX
 fi
+
+
+is_nvim_term() {
+    parent_process=$(ps -o comm= -p $PPID)
+    if [[ $parent_process == *"nvim"* ]]; then
+        return 0  # Return success (true)
+    else
+        return 1  # Return failure (false)
+    fi
+}
+
 # User configuration
 # Always work in a tmux session if tmux is installed
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
 # https://gist.github.com/chakrit/5004006
-if which tmux 2>&1 >/dev/null; then
-  if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ]; then
-        if [ -z "$TOGGLETERM_ID" ]; then
-            tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
-            exit
-        elif [ $TOGGLETERM_ID != "no-session" ]; then
-            tmux new-session -t $TOGGLETERM_ID \; set-option destroy-unattached || tmux new-session -s $TOGGLETERM_ID
-            exit
+if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ]; then
+    if which tmux 2>&1 >/dev/null; then
+        if ! is_nvim_term; then 
+            if [ -z "$TOGGLETERM_ID" ]; then
+                tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+                exit
+            fi
+        elif [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
+                tmux new-session -t $TOGGLETERM_ID \; set-option destroy-unattached || tmux new-session -s $TOGGLETERM_ID
+                exit
         fi
-  fi
+    fi
 fi
 
 #NVM setup  
