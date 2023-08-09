@@ -127,6 +127,7 @@ return {
             --  Feel free to add/remove any LSPs that you want here. They will automatically be installedu
             --  Add any additional override configuration in the following tables. They will be passed to
             --  the `settings` field of the server config. You must look up that documentation yourself.
+            --  Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
             local servers = {
                 -- clangd = {},
                 -- gopls = {},
@@ -158,14 +159,14 @@ return {
                         }
                     }
                 },
-
+                -- Reference: https://github.com/LuaLS/lua-language-server/wiki/Settings
                 lua_ls = {
                     Lua = {
-                        workspace = { checkThirdParty = true },
+                        workspace = { checkThirdParty = true, library = { vim.env.VIMRUNTIME } },
                         telemetry = { enable = false },
                         diagnostics = {
-
-                            disable = {"undefined-field"},
+                            -- reference: https://github.com/LuaLS/lua-language-server/wiki/Diagnostics
+                            disable = {"missing-fields"},
                         }
                     },
                 },
