@@ -32,8 +32,6 @@ vim.opt.showmode = false
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
-vim.g.indent_blankline_char ='┆'
--- vim.g.indent_blankline_char_list = {'┆', '┊' }
 
 vim.opt.updatetime = 500
 

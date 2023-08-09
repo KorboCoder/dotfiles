@@ -202,6 +202,8 @@ return {
                     "IndentBlanklineIndent6",
                 },
             }
+            vim.g.indent_blankline_char ='┆'
+            -- vim.g.indent_blankline_char_list = {'┆', '┊' }
         end
     },
     -- change cursorlinenumber depending on mode
