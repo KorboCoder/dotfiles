@@ -66,16 +66,34 @@ return {
 
         -- Basic debugging keymaps, feel free to change to your liking!
         vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-        vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-        vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-        vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
+        vim.keymap.set('n', '<F11>', dap.step_into, { desc = 'Debug: Step Into' })
+        vim.keymap.set('n', '<F10>', dap.step_over, { desc = 'Debug: Step Over' })
+        vim.keymap.set('n', '<F9>', dap.step_out, { desc = 'Debug: Step Out' })
+        vim.keymap.set('n', '<leader>dl', function()
+            dap.set_breakpoint(nil, nil,vim.fn.input 'Log point message: ')
+        end, { desc = 'Debug: Set Log point' })
+        vim.keymap.set('n', '<leader>dr', dap.repl.toggle, { desc = 'Debug: REPL' })
         vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
         vim.keymap.set('n', '<leader>B', function()
             dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
         end, { desc = 'Debug: Set Breakpoint' })
 
+
         vim.keymap.set('n', '<leader>dr', dap.repl.open, { desc = 'Open Repl' })
         vim.keymap.set('n', "<leader>dw", function() require("dap.ui.widgets").hover() end, { desc = "Widgets" })
+
+        -- configure column signs
+        local sign = vim.fn.sign_define
+        sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "DapBreakpoint" })
+        sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "DapBreakpointCondition" })
+        sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "DapLogPoint" })
+        sign("DapStopped", { text = "󰜴", texthl = "DapStopped", linehl = "", numhl = "" })
+        vim.cmd[[ highlight DapBreakpoint ctermbg=0 guibg=darkred ]]
+        vim.cmd[[ highlight DapBreakpointCondition ctermbg=0 guibg=lightyellow ]]
+        vim.cmd[[ highlight DapLogPoint ctermbg=0 guibg=darkgreen ]]
+        -- vim.cmd[[ highlight DapStopped link="Cursor"]]
+        vim.api.nvim_set_hl(0, "DapStopped", { link = "Cursor" })
+        
         -- Reference for additional dap setup: https://github.com/aaronmcadam/dotfiles/blob/c883d941764fa0153991c6ee91cd8dcb27c174c3/nvim/.config/nvim/lua/azvim/plugins/configs/dap.lua#L23
         -- Dap UI setup
         -- For more information, see |:help nvim-dap-ui|

@@ -28,6 +28,13 @@ return {
                     which_key = true,
                     noice = true,
                     notify = true,
+                    dap = {
+                        enabled = true,
+                        enable_ui = true
+                    },
+                    fidget = true,
+                    mason = true,
+                    lsp_trouble = true,
 
                 }
             })
