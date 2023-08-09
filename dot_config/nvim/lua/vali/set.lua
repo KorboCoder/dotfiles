@@ -8,6 +8,7 @@ vim.opt.expandtab = true
 vim.g.editorconfig = true -- use .editorconfig file
 vim.opt.smartindent = true
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
+vim.opt.clipboard = "unnamedplus" -- synvc with system clipboard by defaut (no need to use + register)
 
 vim.opt.wrap = false
 
