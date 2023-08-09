@@ -61,6 +61,9 @@ return {
             lsp.preset('recommended')
             lsp.setup()
 
+            -- Set groovy as language for Jenkinsfile*
+            vim.api.nvim_command('au BufNewFile,BufRead Jenkinsfile* setf groovy')
+
             -- [[ Configure LSP ]]
             --  This function gets run when an LSP connects to a particular buffer.
             local on_attach = function(client, bufnr)

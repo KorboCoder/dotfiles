@@ -46,54 +46,10 @@ vim.opt.listchars:append "space:⋅"
 -- vim.opt.listchars:append "eol:↴"
 
 
--- Set groovy as language for Jenkinsfile*
-vim.api.nvim_command('au BufNewFile,BufRead Jenkinsfile* setf groovy')
 
 -- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup
 -- Disable netrw
 -- vim.g.loaded_netrwPlugin = 1
 -- vim.g.loaded_netrw = 1
 
--- Open Telescope on startup if the first argument is a directory
--- Reference: https://www.reddit.com/r/neovim/comments/zco47a/open_neovim_into_folder_with_telescope_open_in/
-local ts_group = vim.api.nvim_create_augroup("TelescopeOnEnter", { clear = true })
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
-    callback = function()
-        local first_arg = vim.v.argv[3]
-        if first_arg and vim.fn.isdirectory(first_arg) == 1 then
-            -- Vim creates a buffer for folder. Close it.
-            require("telescope.builtin").find_files({ search_dirs = { first_arg } })
-        end
-    end,
-    group = ts_group,
-});
 
--- local lspconfig = require('lspconfig')
--- lspconfig.tsserver.setup({
---     settings = {
---         typescript = {
---             inlayHints = {
---                 includeInlayParameterNameHints = 'all',
---                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
---                 includeInlayFunctionParameterTypeHints = true,
---                 includeInlayVariableTypeHints = true,
---                 includeInlayVariableTypeHintsWhenTypeMatchesName = false,
---                 includeInlayPropertyDeclarationTypeHints = true,
---                 includeInlayFunctionLikeReturnTypeHints = true,
---                 includeInlayEnumMemberValueHints = true,
---             }
---         },
---         javascript = {
---             inlayHints = {
---                 includeInlayParameterNameHints = 'all',
---                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
---                 includeInlayFunctionParameterTypeHints = true,
---                 includeInlayVariableTypeHints = true,
---                 includeInlayVariableTypeHintsWhenTypeMatchesName = false,
---                 includeInlayPropertyDeclarationTypeHints = true,
---                 includeInlayFunctionLikeReturnTypeHints = true,
---                 includeInlayEnumMemberValueHints = true,
---             }
---         }
---     }
--- })
