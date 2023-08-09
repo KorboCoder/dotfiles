@@ -293,10 +293,18 @@ return {
     },
     {
         'lvimuser/lsp-inlayhints.nvim',
-        config = true,
         keys = {
             { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
         },
+        config = function()
+
+            require('lsp-inlayhints').setup()
+            -- suppose to be the default highlight for LspInlayHint but background is not being set
+            -- decided to set the default manually here
+            local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
+            local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+            vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
+        end
     },
     {
         enabled = false,
