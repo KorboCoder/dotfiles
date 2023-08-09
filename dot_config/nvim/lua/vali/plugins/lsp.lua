@@ -166,7 +166,7 @@ return {
                         telemetry = { enable = false },
                         diagnostics = {
                             -- reference: https://github.com/LuaLS/lua-language-server/wiki/Diagnostics
-                            disable = {"missing-fields"},
+                            disable = { "missing-fields" },
                         }
                     },
                 },
