@@ -1,3 +1,5 @@
+vim.g.editorconfig = true -- use .editorconfig file
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.ruler = false
@@ -5,7 +7,6 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.g.editorconfig = true -- use .editorconfig file
 vim.opt.smartindent = true
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
 vim.opt.clipboard = "unnamedplus" -- synvc with system clipboard by defaut (no need to use + register)
@@ -37,14 +38,12 @@ vim.opt.updatetime = 500
 
 vim.opt.colorcolumn = "80,125"
 
-vim.o.completeopt = 'menu,menuone,preview'
+vim.opt.completeopt = 'menu,menuone,preview'
 
 -- indent setup
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 -- vim.opt.listchars:append "eol:↴"
-
-
 
 -- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup
 -- Disable netrw
