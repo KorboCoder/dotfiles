@@ -64,6 +64,21 @@ return {
             },
         }
 
+        -- unity configuration
+        dap.adapters.unity = {
+            type = 'executable',
+            command = '/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono',
+            args = {'/Users/vali/.vscode/extensions/unity.unity-debug-3.0.1/bin/UnityDebug.exe'}
+        }
+        dap.configurations.cs = {
+            {
+                type = 'unity',
+                request = 'attach',
+                name = 'Unity Editor',
+                path = vim.fn.getcwd() .. "/Library/EditorInstance.json"
+            }
+        }
+
         -- Basic debugging keymaps, feel free to change to your liking!
         vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
         vim.keymap.set('n', '<F11>', dap.step_into, { desc = 'Debug: Step Into' })

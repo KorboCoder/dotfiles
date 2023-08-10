@@ -29,6 +29,7 @@ return {
             { 'saadparwaiz1/cmp_luasnip' },                                          -- Optional
             { 'rafamadriz/friendly-snippets' },                                      -- Optional
             { 'folke/neodev.nvim', opts = {} },
+            { "Hoffs/omnisharp-extended-lsp.nvim" },
             -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             -- { 'ray-x/lsp_signature.nvim' },
             -- LSp status updates
@@ -170,6 +171,15 @@ return {
                         }
                     },
                 },
+                -- Reference: https://github.com/walcht/neovim-unity/blob/main/after/plugin/lsp_related/lspconfig.lua 
+                omnisharp_mono = {
+                    handlers = {
+                        ["textDocument/definition"] = require('omnisharp_extended').handler,
+                    },
+                    cmd = { "omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+                    -- rest of your settings
+
+                }
             }
 
             -- Setup neovim lua configuration
@@ -185,14 +195,27 @@ return {
             mason_lspconfig.setup {
                 ensure_installed = vim.tbl_keys(servers),
             }
+            local lspconfig = require('lspconfig')
 
             mason_lspconfig.setup_handlers {
                 function(server_name)
-                    require('lspconfig')[server_name].setup {
-                        capabilities = capabilities,
-                        on_attach = on_attach,
-                        settings = servers[server_name],
-                    }
+                    local lspconfig_name = server_name
+
+                    -- use omnisharp if ominisharp_mono is detected
+                    if server_name == 'omnisharp_mono' then 
+                        lspconfig_name = 'omnisharp'
+                    end
+                    if(lspconfig[lspconfig_name].setup ~= nil) then
+                        lspconfig[lspconfig_name].setup {
+                            capabilities = capabilities,
+                            on_attach = on_attach,
+                            settings = servers[server_name],
+                        }
+                    else
+                        -- check if we ran into an unsupported server or a random typo
+                        vim.notify("Server not found for " .. server_name, vim.log.levels.WARN);
+
+                    end
                 end,
             }
             local cmp = require 'cmp'
