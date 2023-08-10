@@ -83,5 +83,14 @@ return {
     {
         'ThePrimeagen/vim-be-good'
     },
+    -- project management
+    {
+        "ahmedkhalf/project.nvim",
+        config = function()
+            require("project_nvim").setup({
+                patterns = { "*.sln", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+            })
+        end
+    }
 
 }
