@@ -8,7 +8,7 @@ if [[ -n "${ZELLIJ}" ]]; then
   unset TMUX
 fi
 
-
+# check if we did a :term command in neovim
 is_nvim_term() {
     parent_process=$(ps -o comm= -p $PPID)
     if [[ $parent_process == *"nvim"* ]]; then
@@ -18,17 +18,16 @@ is_nvim_term() {
     fi
 }
 
-# User configuration
 # Always work in a tmux session if tmux is installed
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
 # https://gist.github.com/chakrit/5004006
 if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ]; then
     if which tmux 2>&1 >/dev/null; then
-        if ! is_nvim_term; then 
-            if [ -z "$TOGGLETERM_ID" ]; then
-                tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
-                exit
-            fi
+        # if we're not in :term and toggleterm, create a main session
+        if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
+            tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+            exit
+        # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
         elif [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
                 tmux new-session -t $TOGGLETERM_ID \; set-option destroy-unattached || tmux new-session -s $TOGGLETERM_ID
                 exit
