@@ -1742,6 +1742,8 @@
 		<dict>
 			<key>ASCII Anti Aliased</key>
 			<true/>
+			<key>ASCII Ligatures</key>
+			<false/>
 			<key>Ambiguous Double Width</key>
 			<false/>
 			<key>Ansi 0 Color</key>
@@ -1986,6 +1988,8 @@
 			</dict>
 			<key>Blend</key>
 			<real>0.050000000000000003</real>
+			<key>Blink Allowed</key>
+			<false/>
 			<key>Blinking Cursor</key>
 			<false/>
 			<key>Blur</key>
@@ -2346,6 +2350,17 @@
 					<string></string>
 					<key>Text</key>
 					<string>n</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
+				<key>0x74-0x40000-0x11</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>t</string>
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>
@@ -2820,6 +2835,8 @@
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
+			<true/>
+			<key>ASCII Ligatures</key>
 			<true/>
 			<key>Ambiguous Double Width</key>
 			<false/>

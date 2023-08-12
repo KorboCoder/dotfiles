@@ -176,7 +176,9 @@ return {
                     handlers = {
                         ["textDocument/definition"] = require('omnisharp_extended').handler,
                     },
-                    cmd = { "omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+                    enable_roslyn_analyzers = true,
+                    use_mono = true
                     -- rest of your settings
 
                 }
@@ -328,9 +330,9 @@ return {
             require('lsp-inlayhints').setup()
             -- suppose to be the default highlight for LspInlayHint but background is not being set
             -- decided to set the default manually here
-            local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
-            local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-            vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
+            -- local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
+            -- local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+            -- vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
         end
     },
     {

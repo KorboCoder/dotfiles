@@ -94,20 +94,24 @@ return {
         end, { desc = 'Debug: Set Breakpoint' })
 
 
+        
         vim.keymap.set('n', '<leader>dr', dap.repl.open, { desc = 'Open Repl' })
         vim.keymap.set('n', "<leader>dw", function() require("dap.ui.widgets").hover() end, { desc = "Widgets" })
 
         -- configure column signs
         local sign = vim.fn.sign_define
-        sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "DapBreakpoint" })
-        sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "DapBreakpointCondition" })
-        sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "DapLogPoint" })
-        sign("DapStopped", { text = "󰜴", texthl = "DapStopped", linehl = "", numhl = "" })
-        vim.cmd[[ highlight DapBreakpoint ctermbg=0 guibg=darkred ]]
-        vim.cmd[[ highlight DapBreakpointCondition ctermbg=0 guibg=lightyellow ]]
-        vim.cmd[[ highlight DapLogPoint ctermbg=0 guibg=darkgreen ]]
-        -- vim.cmd[[ highlight DapStopped link="Cursor"]]
-        vim.api.nvim_set_hl(0, "DapStopped", { link = "Cursor" })
+        sign("DapBreakpoint", { text = "█", texthl = "DapBreakpoint", linehl = "", numhl = "DapBreakpoint" })
+        sign("DapBreakpointCondition", { text = "█", texthl = "DapBreakpointCondition", linehl = "", numhl = "DapBreakpointCondition" })
+        sign("DapLogPoint", { text = "█", texthl = "DapLogPoint", linehl = "", numhl = "DapLogPoint" })
+        sign("DapStopped", { text = "⮕", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
+
+
+        local macchiato = require("catppuccin.palettes").get_palette("macchiato")
+        vim.api.nvim_set_hl(0, "DapBreakpoint", {  fg = macchiato.red})
+        vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = macchiato.peach})
+        vim.api.nvim_set_hl(0, "DapLogPoint", { fg = macchiato.green })
+        -- vim.api.nvim_set_hl(0, "DapStopped", { link = "Cursor" })
+        vim.api.nvim_set_hl(0, "DapStopped", { bg=macchiato.surface1 })
         
         -- Reference for additional dap setup: https://github.com/aaronmcadam/dotfiles/blob/c883d941764fa0153991c6ee91cd8dcb27c174c3/nvim/.config/nvim/lua/azvim/plugins/configs/dap.lua#L23
         -- Dap UI setup

@@ -42,7 +42,13 @@ vim.opt.completeopt = 'menu,menuone,preview'
 
 -- indent setup
 vim.opt.list = true
-vim.opt.listchars:append "space:⋅"
+vim.opt.listchars:append "space:·"
+vim.opt.listchars:append "multispace:···"
+vim.opt.listchars:append "precedes:«"
+vim.opt.listchars:append "extends:»"
+vim.opt.listchars:append "tab:··"
+-- vim.opt.listchars:append "tab:··»"
+vim.opt.listchars:append "nbsp:␣"
 -- vim.opt.listchars:append "eol:↴"
 
 -- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup

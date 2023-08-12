@@ -204,6 +204,29 @@ return {
             }
             vim.g.indent_blankline_char ='┆'
             -- vim.g.indent_blankline_char_list = {'┆', '┊' }
+
+            -- Used functions from tint.nvim to adjust indent lint colors
+            local tint_func= require("tint.transforms").tint(-100)
+            local sat_func = require("tint.transforms").saturate(0.4)
+            local hex_to_rgb = require("tint.colors").hex_to_rgb
+            local rgb_to_hex = require("tint.colors").rgb_to_hex
+            local custom_transform = function(hex)
+                local r,g,b = hex_to_rgb(hex)
+                local r1,g1,b1 = sat_func(tint_func(r, g, b))
+                local res = rgb_to_hex(r1,g1,b1)
+                return res
+            end
+            local macchiato = require("catppuccin.palettes").get_palette "macchiato"
+
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { blend = 0, fg=custom_transform(macchiato.red)})
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { blend = 0, fg=custom_transform(macchiato.teal)})
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { blend = 0, fg=custom_transform(macchiato.peach)})
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { blend = 0, fg=custom_transform(macchiato.blue)})
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
+
+            -- dunno where to put this, migrate this where it makes sense
+            vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
         end
     },
     -- change cursorlinenumber depending on mode
