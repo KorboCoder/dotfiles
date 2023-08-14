@@ -147,7 +147,7 @@ export CLICOLOR=1
 autoload -Uz compinit
 compinit
 
-test -f .work-zshrc && source .work-zshrc # 2> /dev/null
+test -f ~/.work-zshrc && source ~/.work-zshrc # 2> /dev/null
 # detailas ls
 alias ll="exa -lah"
 alias ls="exa"

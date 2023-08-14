@@ -43,7 +43,8 @@ vim.opt.completeopt = 'menu,menuone,preview'
 -- indent setup
 vim.opt.list = true
 vim.opt.listchars:append "space:·"
-vim.opt.listchars:append "multispace:···"
+-- vim.opt.listchars:append "multispace:···"
+-- vim.opt.listchars:append "trail:•"
 vim.opt.listchars:append "precedes:«"
 vim.opt.listchars:append "extends:»"
 vim.opt.listchars:append "tab:··"
