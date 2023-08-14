@@ -157,6 +157,8 @@ return {
             vim.keymap.set("n", "<leader>zl", function() require("trouble").open("loclist") end)
             vim.keymap.set("n", "gR", function() require("trouble").open("lsp_references") end)
         end
-    }
+    },
+    -- for handlebars support
+    { "mustache/vim-mustache-handlebars" }
 
 }
