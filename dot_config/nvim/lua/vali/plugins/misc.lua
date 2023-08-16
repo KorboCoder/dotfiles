@@ -30,11 +30,15 @@ return {
     },
     -- undo history management
     {
-        enabled = false,
+        enabled = true,
         "mbbill/undotree",
         keys = {
-            { "<leader>u", vim.cmd.UndoTreeToggle, desc = 'Undo Tree' }
-        }
+            { "<leader>u", vim.cmd.UndotreeToggle, desc = 'Undo Tree' }
+        },
+        init = function()
+            -- focus on undotree after we opened
+            vim.g.undotree_SetFocusWhenToggle = 1;
+        end
     },
     -- auto session restore
     {
