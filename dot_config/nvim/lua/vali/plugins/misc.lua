@@ -37,8 +37,7 @@ return {
         },
         init = function()
             -- focus on undotree after we opened
-            vim.g.undotree_SetFocusWhenToggle = 1;
-        end
+            vim.g.undotree_SetFocusWhenToggle = 1; end
     },
     -- auto session restore
     {
@@ -95,6 +94,7 @@ return {
                 patterns = { "*.sln", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "lazy-lock.json"},
             })
         end
-    }
+    },
+    {"ellisonleao/glow.nvim", config = true, cmd = "Glow"}
 
 }
