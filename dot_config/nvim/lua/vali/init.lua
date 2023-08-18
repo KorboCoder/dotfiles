@@ -12,6 +12,9 @@ require("vali.set")
 --
 require("vali.autocommands")
 
+-- setup commands
+require("vali.commands")
+
 -- setup key mappings
 require("vali.remap");
 

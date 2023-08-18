@@ -57,4 +57,9 @@ vim.opt.listchars:append "nbsp:␣"
 -- vim.g.loaded_netrwPlugin = 1
 -- vim.g.loaded_netrw = 1
 
-
+-- https://www.reddit.com/r/neovim/comments/15ue6vh/guys_i_need_a_nvim_plugin_to_highlight_the_words/
+vim.opt.diffopt = {
+  'internal', 'filler', 'vertical', 'linematch:60', 'closeoff'
+  -- the default uses 'closeoff' which will automatically
+  -- stop showing diffs when you only have one diff window remaining.
+}
