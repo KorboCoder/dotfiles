@@ -133,7 +133,10 @@ return {
                 -- clangd = {},
                 -- gopls = {},
                 -- pyright = {},
-                -- rust_analyzer = {},
+                rust_analyzer = {},
+                tailwindcss = {
+
+                },
                 tsserver = {
                     typescript = {
                         inlayHints = {
