@@ -1,1 +1,2 @@
 export PATH=/Users/vali/.local/bin:$PATH
+. "$HOME/.cargo/env"
