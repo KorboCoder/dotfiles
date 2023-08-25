@@ -139,6 +139,13 @@ return {
                     "encoding",
                 },
                 lualine_z = {
+                    {
+                        'vim.fn["codeium#GetStatusString"]()',
+                        fmt = function(str)
+                            return "suggestions " .. str:lower():match("^%s*(.-)%s*$")
+                        end
+
+                    },
                     { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
                     { "location", padding = { left = 0, right = 1 } },
                 }
