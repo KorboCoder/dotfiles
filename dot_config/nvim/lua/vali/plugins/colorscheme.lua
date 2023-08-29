@@ -80,5 +80,13 @@ return {
         config = function()
             require('vscode').setup();
         end
-    },
+    },{
+        "rebelot/kanagawa.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+        config = {
+            transparent = true
+        }
+    }
 }
