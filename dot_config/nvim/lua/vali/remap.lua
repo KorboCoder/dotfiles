@@ -141,14 +141,19 @@ wk.register({
     }
 }, leaderN)
 
--- lazygit
 
--- -- lazydocker
--- vim.keymap.set('n', '<leader>od', "<cmd>lua require 'vali.terminal'.cmd_toggle('lazydocker')<cr>",
---     { desc = "Lazydocker" })
+local terminal = require('vali.terminal')
+
+-- lazygit
+vim.keymap.set('n', '<leader>gg', function() terminal.cmd_toggle("lazygit") end,
+    { desc = "Lazygit" })
+
+-- lazydocker
+vim.keymap.set('n', '<leader>od', function() terminal.cmd_toggle("lazydocker") end,
+    { desc = "Lazydocker" })
 
 -- normal terminal
-vim.keymap.set({ 't', 'i', 'n' }, '<C-Bslash>', "<cmd>lua require 'vali.terminal'.cmd_toggle()<cr>",
+vim.keymap.set({ 't', 'i', 'n', 'x' }, '<C-Bslash>', terminal.cmd_toggle,
     { desc = "Floating Terminal" })
 
 -- Clear search with <esc>
