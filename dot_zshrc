@@ -251,6 +251,12 @@ compdef _cdk_yargs_completions cdk
 #add cargo
 if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
+    ~/.cargo/bin
+fi
+
+# check if ~/.cargo/bin exist
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 # Fig post block. Keep at the bottom of this file.

@@ -37,7 +37,8 @@ return {
         },
         init = function()
             -- focus on undotree after we opened
-            vim.g.undotree_SetFocusWhenToggle = 1; end
+            vim.g.undotree_SetFocusWhenToggle = 1;
+        end
     },
     -- auto session restore
     {
@@ -91,10 +92,19 @@ return {
         "ahmedkhalf/project.nvim",
         config = function()
             require("project_nvim").setup({
-                patterns = { "*.sln", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "lazy-lock.json"},
+                patterns = { "*.sln", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
+                    "lazy-lock.json" },
             })
         end
     },
-    {"ellisonleao/glow.nvim", config = true, cmd = "Glow"}
+    {
+        "ellisonleao/glow.nvim",
+        config = {
+            border = "single",
+            width_ratio = 0.8,
+            height_ratio = 0.8
+        },
+        cmd = "Glow"
+    }
 
 }
