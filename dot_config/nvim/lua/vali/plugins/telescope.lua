@@ -19,9 +19,9 @@ return {
         keys = {
             { "<leader>f<tab>", "<cmd>Telescope<cr>",         desc = "Telescope" },
             -- { "<leader>u",  "<cmd>Telescope undo<cr>",         desc = "Undo Tree" },
-            { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = 'Checkout Branch' },
-            { '<leader>gs', "<cmd>Telescope git_status<cr>",   desc = "Git Status" },
-            { '<leader>gc', "<cmd>Telescope git_commits<cr>",  desc = "Checkout Commit" },
+            { "<leader>gcb", "<cmd>Telescope git_branches<cr>", desc = 'Checkout Branch' },
+            -- { '<leader>gs', "<cmd>Telescope git_status<cr>",   desc = "Git Status" },
+            { '<leader>gcc', "<cmd>Telescope git_commits<cr>",  desc = "Checkout Commit" },
             { '<leader>fq',      "<cmd>Telescope resume<cr>",        desc = "Resume" },
             { '<C-p>',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
         },
