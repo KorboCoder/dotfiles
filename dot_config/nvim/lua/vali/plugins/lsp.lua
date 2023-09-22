@@ -137,32 +137,32 @@ return {
                 tailwindcss = {
 
                 },
-                tsserver = {
-                    typescript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        }
-                    },
-                    javascript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        }
-                    }
-                },
+                -- tsserver = {
+                --     typescript = {
+                --         inlayHints = {
+                --             includeInlayParameterNameHints = 'all',
+                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --             includeInlayFunctionParameterTypeHints = true,
+                --             includeInlayVariableTypeHints = true,
+                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                --             includeInlayPropertyDeclarationTypeHints = true,
+                --             includeInlayFunctionLikeReturnTypeHints = true,
+                --             includeInlayEnumMemberValueHints = true,
+                --         }
+                --     },
+                --     javascript = {
+                --         inlayHints = {
+                --             includeInlayParameterNameHints = 'all',
+                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --             includeInlayFunctionParameterTypeHints = true,
+                --             includeInlayVariableTypeHints = true,
+                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                --             includeInlayPropertyDeclarationTypeHints = true,
+                --             includeInlayFunctionLikeReturnTypeHints = true,
+                --             includeInlayEnumMemberValueHints = true,
+                --         }
+                --     }
+                -- },
                 -- Reference: https://github.com/LuaLS/lua-language-server/wiki/Settings
                 lua_ls = {
                     Lua = {
@@ -339,16 +339,21 @@ return {
         end
     },
     {
-        enabled = false,
+        -- enabled = false,
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
         opts = {
             settings = {
                 separate_diagnostic_server = true,
                 tsserver_file_preferences = {
-                    includeInlayParameterNameHints = "all",
-                    includeCompletionsForModuleExports = true,
-                    quotePreference = "auto",
+                    includeInlayParameterNameHints = 'all',
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
                 },
             },
         },
