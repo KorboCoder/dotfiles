@@ -87,6 +87,9 @@ return {
     {
         'ThePrimeagen/vim-be-good'
     },
+    {
+        'Weyaaron/nvim-training'
+    },
     -- project management
     {
         "ahmedkhalf/project.nvim",
