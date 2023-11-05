@@ -45,6 +45,9 @@ return {
                     },
                     text = {
                         spinner = "meter"
+                    },
+                    align = {
+                        bottom = false
                     }
                 }
             },

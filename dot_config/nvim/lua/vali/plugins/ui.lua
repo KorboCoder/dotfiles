@@ -308,8 +308,10 @@ return {
             {
                 "rcarriga/nvim-notify",
                 opts = {
+                    fps = 60,
                     background_colour = "#000000",
-                    stages = "static",
+                    stages = "fade_in_slide_out",
+                    top_down = false
                 },
                 keys = {
                     { "<leader>cn", function() require("notify").dismiss({ silent = true }) end, desc = "Clear Notifs" }
