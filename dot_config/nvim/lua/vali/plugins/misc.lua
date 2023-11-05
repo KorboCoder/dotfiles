@@ -105,6 +105,11 @@ return {
             height_ratio = 0.8
         },
         cmd = "Glow"
+    },
+    {
+        "iamcco/markdown-preview.nvim",
+        build = "cd app && npm install"
     }
+
 
 }
