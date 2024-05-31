@@ -74,7 +74,7 @@ return {
             -- [[ Configure LSP ]]
             --  This function gets run when an LSP connects to a particular buffer.
             local on_attach = function(client, bufnr)
-                require("lsp-inlayhints").on_attach(client, bufnr)
+                -- require("lsp-inlayhints").on_attach(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     require('nvim-navic').attach(client, bufnr)
                 end
@@ -141,6 +141,7 @@ return {
                 -- gopls = {},
                 -- pyright = {},
                 -- rust_analyzer = {},
+                -- cql = {},
                 astro = {},
                 tailwindcss = {
 
@@ -372,6 +373,18 @@ return {
         end
     },
     {
+        "MysticalDevil/inlay-hints.nvim",
+        event = "LspAttach",
+        dependencies = { "neovim/nvim-lspconfig" },
+        keys = {
+            { '<leader>L', "<cmd>InlayHintsToggle<cr>", desc = "Toggle Inlayhints" }
+        },
+        config = function()
+            require("inlay-hints").setup()
+        end
+    },
+    {
+        enabled = false,
         'lvimuser/lsp-inlayhints.nvim',
         keys = {
             { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
@@ -405,5 +418,20 @@ return {
                 },
             },
         },
+    },
+    {
+
+        "someone-stole-my-name/yaml-companion.nvim",
+        ft = { "yaml" },
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim"
+        },
+        config = function(_, opts)
+            local cfg = require("yaml-companion").setup(opts)
+            require("lspconfig")["yamlls"].setup(cfg)
+            require("telescope").load_extension("yaml_schema")
+        end
     }
 }

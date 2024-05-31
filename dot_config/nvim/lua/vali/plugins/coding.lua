@@ -23,8 +23,15 @@ return {
             },
         },
     },
+    {
+        "folke/ts-comments.nvim",
+        opts = {},
+        event = "VeryLazy",
+        enabled = vim.fn.has("nvim-0.10.0") == 1,
+    },
     -- general code refactoring
     {
+        enabled = false,
         "ThePrimeagen/refactoring.nvim",
         opts = {}
     },
@@ -150,12 +157,12 @@ return {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-            vim.keymap.set("n", "<leader>zx", function() require("trouble").open() end)
-            vim.keymap.set("n", "<leader>zw", function() require("trouble").open("workspace_diagnostics") end)
-            vim.keymap.set("n", "<leader>zd", function() require("trouble").open("document_diagnostics") end)
-            vim.keymap.set("n", "<leader>zq", function() require("trouble").open("quickfix") end)
-            vim.keymap.set("n", "<leader>zl", function() require("trouble").open("loclist") end)
-            vim.keymap.set("n", "gR", function() require("trouble").open("lsp_references") end)
+            vim.keymap.set("n", "<leader>zz", function() require("trouble").toggle() end, { desc="Toggle" })
+            vim.keymap.set("n", "<leader>zw", function() require("trouble").open("workspace_diagnostics") end, { desc="Workspace" })
+            vim.keymap.set("n", "<leader>zd", function() require("trouble").open("document_diagnostics") end, { desc="Document" })
+            vim.keymap.set("n", "<leader>zq", function() require("trouble").open("quickfix") end, { desc="Quickfix" })
+            vim.keymap.set("n", "<leader>zl", function() require("trouble").open("loclist") end, { desc="loclist" })
+            vim.keymap.set("n", "<leader>zr", function() require("trouble").open("lsp_references") end, { desc="lsp_references" })
         end
     },
     -- for handlebars support
@@ -163,6 +170,7 @@ return {
     -- ai code completion
     {
         'Exafunction/codeium.vim',
+        enabled = false,
         event = 'BufEnter',
         config = function()
             -- Change '<C-g>' here to any keycode you like.

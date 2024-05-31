@@ -43,6 +43,7 @@ return {
     -- auto session restore
     {
         'rmagatti/auto-session',
+        enabled =  false,
         config = function()
             require('auto-session').setup({
                 auto_session_use_git_branch = true,
@@ -61,7 +62,6 @@ return {
     -- session management by folke
     {
         "folke/persistence.nvim",
-        enabled = false,
         event   = "BufReadPre",
         opts    = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" } },
         -- stylua: ignore
@@ -108,11 +108,5 @@ return {
             height_ratio = 0.8
         },
         cmd = "Glow"
-    },
-    {
-        "iamcco/markdown-preview.nvim",
-        build = "cd app && npm install"
     }
-
-
 }

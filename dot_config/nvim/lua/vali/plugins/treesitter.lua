@@ -8,6 +8,7 @@ return {
         build = ':TSUpdate',
     },
     {
+        enabled=false,
         "nvim-treesitter/playground",
     },
 }

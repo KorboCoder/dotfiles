@@ -95,8 +95,8 @@ fi
 # ripgrep
 # lazygit
 # lazydocker
-# rip(rm-imrpvoed)
 # git checkout with fzf: https://medium.com/@mrWinston/smarter-git-checkout-using-fzf-to-supercharge-your-commandline-7507db600996
+# delta
 gcha() {
   git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
 }
@@ -257,6 +257,11 @@ fi
 # check if ~/.cargo/bin exist
 if [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
+#  check if bob neovim exists
+if [ -d "$HOME/.local/share/bob/nvim-bin" ]; then
+    export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 fi
 
 # Fig post block. Keep at the bottom of this file.

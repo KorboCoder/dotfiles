@@ -2,7 +2,10 @@ return {
     -- explore files and edit like a normal buffer
     {
         'stevearc/oil.nvim',
-        opts = {},
+        version = "2.7.0",
+        opts = {
+            delete_to_trash=true,
+        },
         -- Optional dependencies
         dependencies = { "nvim-tree/nvim-web-devicons" },
         --     config = function()
@@ -10,7 +13,8 @@ return {
         --     end
         init = function()
             -- go to explorer
-            vim.keymap.set("n", "-", require("oil").open)
+            vim.keymap.set("n", "-", require("oil").open, {desc="Open parent directory"})
+            vim.keymap.set("n", "<space>-", require("oil").toggle_float, {desc="Open parent directory in floating window"})
             -- Enable preview at start for oil
             -- vim.api.nvim_create_autocmd("User", {
             --     pattern = "OilEnter",
