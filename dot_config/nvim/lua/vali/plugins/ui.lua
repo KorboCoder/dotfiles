@@ -155,6 +155,7 @@ return {
     },
     {
         "SmiteshP/nvim-navic",
+        enabled = false,
         lazy = true,
         init = function()
             vim.g.navic_silence = true
@@ -172,6 +173,7 @@ return {
     },
     {
         "utilyre/barbecue.nvim",
+        enabled = false,
         name = "barbecue",
         version = "*",
         dependencies = {
