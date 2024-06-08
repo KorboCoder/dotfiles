@@ -28,6 +28,7 @@ return {
                     which_key = true,
                     noice = true,
                     notify = true,
+                    dropbar = {enabled = true},
                     dap = {
                         enabled = true,
                         enable_ui = true

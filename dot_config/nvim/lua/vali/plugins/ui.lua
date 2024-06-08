@@ -152,6 +152,15 @@ return {
             },
             extensions = { "lazy", "toggleterm", "nvim-dap-ui", "fugitive" },
         }
+    }, 
+    {
+        'Bekaboo/dropbar.nvim',
+        event = { "BufReadPost", "BufNewFile" },
+        -- enabled =  false,
+        -- optional, but required for fuzzy finder support
+        dependencies = {
+            'nvim-telescope/telescope-fzf-native.nvim'
+        }
     },
     {
         "SmiteshP/nvim-navic",

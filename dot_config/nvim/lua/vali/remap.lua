@@ -73,7 +73,7 @@ wk.register({
         f = {
             name = "+Search",
             f = {
-                function() builtin.find_files() end, "Files"
+                builtin.find_files, "Files"
             },
             b = {
                 "<cmd>Telescope buffers<cr>", "Buffers"
@@ -184,7 +184,6 @@ require('nvim-treesitter.configs').setup {
     textobjects = {
         select = {
             enable = true,
-            lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
             keymaps = {
                 -- You can use the capture groups defined in textobjects.scm
                 ['aa'] = '@parameter.outer',
@@ -193,7 +192,8 @@ require('nvim-treesitter.configs').setup {
                 ['if'] = '@function.inner',
                 ['ac'] = '@class.outer',
                 ['ic'] = '@class.inner',
-            },
+            }, -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
         },
         move = {
             enable = true,

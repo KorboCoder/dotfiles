@@ -76,8 +76,10 @@ return {
             local on_attach = function(client, bufnr)
                 -- require("lsp-inlayhints").on_attach(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
-                    local has_module, navic = pcall(require, 'module_name')
-                    if has_module then navic.attach(client, bufnr) end
+                    local has_module, navic = pcall(require, 'nvim-navic')
+                    if has_module then
+                        navic.attach(client, bufnr) ;
+                    end
                 end
                 -- NOTE: Remember that lua is a real programming language, and as such it is possible
                 -- to define small helper and utility functions so you don't have to repeat yourself
@@ -381,6 +383,7 @@ return {
     },
     {
         "MysticalDevil/inlay-hints.nvim",
+        enabled = false,
         event = "LspAttach",
         dependencies = { "neovim/nvim-lspconfig" },
         keys = {

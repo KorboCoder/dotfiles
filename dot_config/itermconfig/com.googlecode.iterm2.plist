@@ -3222,7 +3222,7 @@
 			<key>Has Hotkey</key>
 			<true/>
 			<key>Horizontal Spacing</key>
-			<integer>1</integer>
+			<real>1</real>
 			<key>HotKey Activated By Modifier</key>
 			<false/>
 			<key>HotKey Alternate Shortcuts</key>
@@ -3402,6 +3402,17 @@
 					<string></string>
 					<key>Text</key>
 					<string>]</string>
+					<key>Version</key>
+					<integer>1</integer>
+				</dict>
+				<key>0x63-0x80000-0x8</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Label</key>
+					<string></string>
+					<key>Text</key>
+					<string>c</string>
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>
@@ -3943,7 +3954,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<integer>1</integer>
+			<real>1</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>

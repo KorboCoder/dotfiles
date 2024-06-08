@@ -1,3 +1,5 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 if [[ -n "${ZELLIJ}" ]]; then
@@ -124,7 +126,7 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 # zsh autosuggestion
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 # Fix starship load wrapping issue
 export LC_ALL=en_US.UTF-8
@@ -260,10 +262,12 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 
 #  check if bob neovim exists
-if [ -d "$HOME/.local/share/bob/nvim-bin" ]; then
-    export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
-fi
+# if [ -d "$HOME/.local/share/bob/nvim-bin" ]; then
+#     export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+# fi
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

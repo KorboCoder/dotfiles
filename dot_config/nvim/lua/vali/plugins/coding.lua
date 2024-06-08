@@ -25,9 +25,30 @@ return {
     },
     {
         "folke/ts-comments.nvim",
+        enabled = false,
         opts = {},
         event = "VeryLazy",
         enabled = vim.fn.has("nvim-0.10.0") == 1,
+    },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            keywords = {
+                FIX = {
+                    icon = " ", -- icon used for the sign, and in search results
+                    color = "error", -- can be a hex color, or a named color (see below)
+                    alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+                    -- signs = false, -- configure signs for some keywords individually
+                },
+                TODO = { icon = " ", color = "info" },
+                HACK = { icon = " ", color = "warning", alt = { "QQQ" }},
+                WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+                PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+                TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+            },
+        }
     },
     -- general code refactoring
     {
@@ -163,7 +184,7 @@ return {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-            vim.keymap.set("n", "<leader>zz", function() require("trouble").toggle() end, { desc="Toggle" })
+            vim.keymap.set("n", "<leader>zz", function() require("trouble").toggle("document_diagnostics") end, { desc="Toggle" })
             vim.keymap.set("n", "<leader>zw", function() require("trouble").open("workspace_diagnostics") end, { desc="Workspace" })
             vim.keymap.set("n", "<leader>zd", function() require("trouble").open("document_diagnostics") end, { desc="Document" })
             vim.keymap.set("n", "<leader>zq", function() require("trouble").open("quickfix") end, { desc="Quickfix" })
