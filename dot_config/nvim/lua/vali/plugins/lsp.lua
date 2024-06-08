@@ -1,7 +1,7 @@
 return {
     {
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
+        branch = 'v3.x',
         dependencies = {
             -- LSP Support
             { 'neovim/nvim-lspconfig', branch = "master" }, -- Required
@@ -72,19 +72,9 @@ return {
             vim.api.nvim_command('au BufNewFile,BufRead Jenkinsfile* setf groovy')
 
             -- [[ Configure LSP ]]
-            --  This function gets run when an LSP connects to a particular buffer.
             local on_attach = function(client, bufnr)
-                -- require("lsp-inlayhints").on_attach(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    local has_module, navic = pcall(require, 'nvim-navic')
-                    if has_module then
-                        navic.attach(client, bufnr) ;
-                    end
-                end
-                -- NOTE: Remember that lua is a real programming language, and as such it is possible
-                -- to define small helper and utility functions so you don't have to repeat yourself
-                -- many times.
-                --
+
+
                 -- In this case, we create a function that lets us more easily define mappings specific
                 -- for LSP related items. It sets the mode, buffer and description for us each time.
                 local nmap = function(keys, func, desc)
@@ -107,27 +97,13 @@ return {
                 nmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
                 nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                 nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-                nmap('<F12>', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-                nmap('<S-F12>', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
                 nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
                 nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-                -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-                -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-                --
-                -- See `:help K` for why this keymap
                 nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
                 nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-                -- Lesser used LSP functionality
                 nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-                nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-                nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-                nmap('<leader>wl', function()
-                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                end, '[W]orkspace [L]ist Folders')
 
                 -- Create a command `:Format` local to the LSP buffer
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -145,6 +121,10 @@ return {
                 -- pyright = {},
                 -- rust_analyzer = {},
                 -- cql = {},
+                bashls = {
+                    -- include zsh
+                    filetypes = { 'sh', 'zsh', },
+                },
                 astro = {},
                 tailwindcss = {
 
@@ -279,11 +259,14 @@ return {
             local luasnip = require 'luasnip'
             local lspkind = require('lspkind')
             require('luasnip.loaders.from_vscode').lazy_load()
+
+            -- lua snipppet setup
             luasnip.config.setup {}
             luasnip.config.set_config({
                 updateevents = "TextChanged,TextChangedI",
                 enable_autosnippets = true
             })
+
             cmp.setup {
                 window = {
                     completion = cmp.config.window.bordered(),
@@ -349,8 +332,6 @@ return {
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    -- remove this because exiting from insert mode is annoying
-                    -- ['<Esc>'] = cmp.mapping.abort(),
                     ['<Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
@@ -373,8 +354,8 @@ return {
                 sources = {
                     { name = 'path' },
                     { name = 'nvim_lsp' },
-                    { name = 'buffer' },
-                    { name = 'luasnip' },
+                    { name = 'buffer', keyword_length = 2 },
+                    { name = 'luasnip', key_length = 3 },
                     -- { name = 'ray-x/lsp_signature.nvim' }
                     -- { name = 'nvim_lsp_signature_help' }
                 },

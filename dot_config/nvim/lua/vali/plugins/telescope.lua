@@ -23,7 +23,7 @@ return {
             -- { '<leader>gs', "<cmd>Telescope git_status<cr>",   desc = "Git Status" },
             { '<leader>gcc', "<cmd>Telescope git_commits<cr>",  desc = "Checkout Commit" },
             { '<leader>fq',      "<cmd>Telescope resume<cr>",        desc = "Resume" },
-            { '<C-p>',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
+            { '<leader>fg',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
         },
         config = function()
             local telescope = require('telescope')

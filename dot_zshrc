@@ -1,7 +1,6 @@
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+
 if [[ -n "${ZELLIJ}" ]]; then
 export TMUX=$ZELLIJ
 fi
@@ -9,6 +8,7 @@ fi
 if [[ -n "${ZELLIJ}" ]]; then
   unset TMUX
 fi
+
 
 # check if we did a :term command in neovim
 is_nvim_term() {
@@ -127,6 +127,13 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+
+# fzf-tab
+if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
+    autoload -U compinit; compinit
+    source $HOME/fzf-tab/fzf-tab.plugin.zsh
+fi
 
 # Fix starship load wrapping issue
 export LC_ALL=en_US.UTF-8
@@ -266,8 +273,6 @@ fi
 #     export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 # fi
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

@@ -183,14 +183,38 @@ return {
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            vim.keymap.set("n", "<leader>zz", function() require("trouble").toggle("document_diagnostics") end, { desc="Toggle" })
-            vim.keymap.set("n", "<leader>zw", function() require("trouble").open("workspace_diagnostics") end, { desc="Workspace" })
-            vim.keymap.set("n", "<leader>zd", function() require("trouble").open("document_diagnostics") end, { desc="Document" })
-            vim.keymap.set("n", "<leader>zq", function() require("trouble").open("quickfix") end, { desc="Quickfix" })
-            vim.keymap.set("n", "<leader>zl", function() require("trouble").open("loclist") end, { desc="loclist" })
-            vim.keymap.set("n", "<leader>zr", function() require("trouble").open("lsp_references") end, { desc="lsp_references" })
-        end
+        keys = {
+            {
+                "<leader>zz",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>zZ",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>zs",
+                "<cmd>Trouble symbols toggle focus=false<cr>",
+                desc = "Symbols (Trouble)",
+            },
+            {
+                "<leader>zl",
+                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                desc = "LSP Definitions / references / ... (Trouble)",
+            },
+            {
+                "<leader>zL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>zq",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+        },
     },
     -- for handlebars support
     { "mustache/vim-mustache-handlebars" },
@@ -206,6 +230,82 @@ return {
             vim.keymap.set('i', '<C-[>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
             vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
         end
+    },
+    -- better yanking and pasta-ing
+    {
+        "gbprod/yanky.nvim",
+        dependencies = {
+            { "kkharji/sqlite.lua" }
+        },
+        opts = {
+            ring = { storage = "sqlite" },
+            highlight = {
+                on_put = false,
+                on_yank = false,
+            },
+        },
+        keys = {
+            { "<leader>fp", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Open Yank History" },
+            { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
+            { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+            { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
+            { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
+            { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
+            { "<c-p>", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
+            { "<c-n>", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
+            { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+            { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+            { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+            { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+            { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
+            { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
+            { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
+            { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
+            { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
+            { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
+        },
+    },
+    -- run selected snippets
+    {
+        "michaelb/sniprun",
+        build = "sh install.sh",
+        -- do 'sh install.sh 1' if you want to force compile locally
+        -- (instead of fetching a binary from the github release). Requires Rust >= 1.65
+
+        config = function()
+            require("sniprun").setup({
+                display = {
+                    "Terminal",
+                    "VirtualText",
+
+
+                },
+            })
+        end,
+        keys = {
+            {  '<leader>cR', '<Plug>SnipRunOperator', mode = {'n'}, silent = true , desc= "SnipRunOperator"},
+            { '<leader>cr', '<Plug>SnipRun', mode = {'n', 'v'}, silent = true , desc= "SnipRun"},
+            { '<leader>cs', '<Plug>SnipClose', mode = {'n', 'v'}, silent = true , desc= "Clear Snips"}
+        }
+
+
+	},
+    -- work with regsiters easier
+    {
+        "tversteeg/registers.nvim",
+        cmd = "Registers",
+        opts = {
+            window = {
+                border = 'double',
+                transparency = 0
+            }
+        },
+        config = true,
+        keys = {
+            { "\"",    mode = { "n", "v" } },
+            { "<C-R>", mode = "i" }
+        },
+        name = "registers",
     }
 
 }

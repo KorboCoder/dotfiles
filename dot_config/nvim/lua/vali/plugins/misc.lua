@@ -108,5 +108,5 @@ return {
             height_ratio = 0.8
         },
         cmd = "Glow"
-    }
+    },
 }
