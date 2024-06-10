@@ -364,7 +364,6 @@ return {
     },
     {
         "MysticalDevil/inlay-hints.nvim",
-        enabled = false,
         event = "LspAttach",
         dependencies = { "neovim/nvim-lspconfig" },
         keys = {

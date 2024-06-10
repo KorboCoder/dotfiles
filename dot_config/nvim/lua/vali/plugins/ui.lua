@@ -351,4 +351,10 @@ return {
         version = '*',
         config = true
     },
+    {
+        "tris203/precognition.nvim",   
+        keys = {
+            { "<leader>p", function() require("precognition").peek() end, desc = "Precognition Peek" }
+        }
+    },
 }
