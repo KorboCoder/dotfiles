@@ -73,6 +73,10 @@ return {
 
             -- [[ Configure LSP ]]
             local on_attach = function(client, bufnr)
+                local ok, _ = pcall(require, "inlay-hints")
+                if ok then
+                    require("inlay-hints").on_attach(client, bufnr)
+                end
 
 
                 -- In this case, we create a function that lets us more easily define mappings specific
@@ -364,6 +368,7 @@ return {
     },
     {
         "MysticalDevil/inlay-hints.nvim",
+        enabled = false,
         event = "LspAttach",
         dependencies = { "neovim/nvim-lspconfig" },
         keys = {
@@ -371,6 +376,11 @@ return {
         },
         config = function()
             require("inlay-hints").setup()
+            -- suppose to be the default highlight for LspInlayHint but background is not being set
+            -- decided to set the default manually here
+            local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+            local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
+            vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
         end
     },
     {

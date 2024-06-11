@@ -73,3 +73,4 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
     end,
     group = augroup('telelscope_on_enter'),
 });
+
