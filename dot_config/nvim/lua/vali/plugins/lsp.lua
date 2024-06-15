@@ -485,6 +485,20 @@ return {
         end,
       })
     end,
-  },
+    },
+    {
+        'ckipp01/nvim-jenkinsfile-linter',
+        dependencies = {"nvim-lua/plenary.nvim" },
+
+        keys = {
+            {
+                "<leader>jj",
+                function()
+                    require("jenkinsfile_linter").validate()
+                end,
+                desc = "Validate Jenkinsfile",
+            },
+        }
+    }
 
 }

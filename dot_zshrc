@@ -187,6 +187,8 @@ alias fhistory="history | fzf"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
+alias standups="nvim standups.md"
+
 # set ctype locale to C
 export LC_CTYPE="C"
 
