@@ -36,7 +36,8 @@ vim.opt.signcolumn = "yes"
 
 vim.opt.updatetime = 500
 
-vim.opt.colorcolumn = "80,125"
+vim.opt.colorcolumn = "80,110"
+vim.opt.cursorcolumn = true
 
 vim.opt.completeopt = 'menu,menuone,preview'
 

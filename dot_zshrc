@@ -61,14 +61,14 @@ if which tmux 2>&1 >/dev/null; then
         # if we're not in :term and toggleterm, create a main session
         if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
             export TERM="tmux-256color"
-            tmux new-session -t main \; set-option destroy-unattached || tmux new-session -s main
+            tmux new-session -A -t main || tmux new-session -s main
             exit
             # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
         fi
     else
 
         if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
-            tmux new-session -t $TOGGLETERM_ID \; set-option destroy-unattached || tmux new-session -s $TOGGLETERM_ID
+            tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
             exit
         fi 
     fi

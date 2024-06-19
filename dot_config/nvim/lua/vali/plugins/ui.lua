@@ -244,7 +244,7 @@ return {
             vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
 
             -- dunno where to put this, migrate this where it makes sense
-            vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
+            -- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
         end
     },
     -- change cursorlinenumber depending on mode
@@ -356,5 +356,18 @@ return {
         keys = {
             { "<leader>p", function() require("precognition").peek() end, desc = "Precognition Peek" }
         }
+    },
+    -- make virt column thin
+    { "lukas-reineke/virt-column.nvim", 
+        config = function()
+            require('virt-column').setup({
+                enabled = true,
+                highlight = 'VirtColumn'
+            })
+            local cursor_hl = vim.api.nvim_get_hl(0, { name = "CursorLine" })
+            vim.api.nvim_set_hl(0, "VirtColumn", { fg = cursor_hl.bg })
+            vim.api.nvim_set_hl(0, "CursorColumn", cursor_hl)
+        end
+
     },
 }
