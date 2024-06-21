@@ -145,7 +145,7 @@ wk.register({
 local terminal = require('vali.terminal')
 
 -- lazygit
-vim.keymap.set('n', '<leader>gg', function() terminal.cmd_toggle("lazygit") end,
+vim.keymap.set({ 't', 'i', 'n', 'x' }, '<C-g>', function() terminal.cmd_toggle("lazygit") end,
     { desc = "Lazygit" })
 
 -- lazydocker
