@@ -195,6 +195,9 @@ return {
                 -- Reference: https://github.com/LuaLS/lua-language-server/wiki/Settings
                 lua_ls = {
                     Lua = {
+                        hint = {
+                            enable = true
+                        },
                         workspace = { checkThirdParty = true, library = { vim.env.VIMRUNTIME } },
                         telemetry = { enable = false },
                         diagnostics = {
@@ -410,9 +413,9 @@ return {
             require("inlay-hints").setup()
             -- suppose to be the default highlight for LspInlayHint but background is not being set
             -- decided to set the default manually here
-            local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-            local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
-            vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
+            -- local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+            -- local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
+            -- vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg})
         end
     },
     {

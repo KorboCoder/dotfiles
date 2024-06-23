@@ -6,7 +6,7 @@ return {
             { "<leader>gs", "<cmd>Git<CR>",         desc = "Git Status" },
             { "<leader>go", ":GBrowse<CR>",         desc = "Open in browser", mode = { "n", "v" } },
             { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
-            { "<leader>gb", "<cmd>Git blame<CR>", desc = "Git Blame" },
+            -- { "<leader>gb", "<cmd>Git blame<CR>", desc = "Git Blame" },
             -- { "<leader>gp", "<cmd>G push<CR>",      desc = "Git Push" },
             -- { "<leader>gr", "<cmd>Gread<CR>",       desc = "Git Read" },
             -- { "<leader>gw", "<cmd>Gwrite<CR>",      desc = "Git Write" },
@@ -28,7 +28,7 @@ return {
             -- linehl = true,
             current_line_blame_opts = {
                 virt_text_pos = 'right_align',
-                delay = 500,
+                delay = 100,
             },
             on_attach = function(buffer)
                 local gs = package.loaded.gitsigns
@@ -64,4 +64,89 @@ return {
     {
         "tommcdo/vim-fubitive"
     },
+    -- view blame
+    {
+        "FabijanZulj/blame.nvim",
+        keys  = {
+            { "<leader>gb", "<cmd>BlameToggle virtual<CR>", desc = "Git Blame" },
+        },
+        config = function()
+            local blame = require("blame")
+            blame.setup({
+                date_format = "%d/%m/%y",
+                -- max_summary_width = 60,
+                -- commit-date-author-message
+                format_fn = function(line_porcelain, config, idx)
+                    local hash = string.sub(line_porcelain.hash, 0, 7)
+                    local line_with_hl = {}
+                    local is_commited = hash ~= "0000000"
+                    if is_commited then
+                        local summary
+                        local committer_mail
+                        if #line_porcelain.summary > config.max_summary_width then
+                            summary = string.sub(
+                                line_porcelain.summary,
+                                0,
+                                config.max_summary_width - 1
+                            )
+
+                            summary = string.match(summary, "^%s*(.-)%s*$") -- trim
+                            summary = summary .. "…"
+                        else
+                            summary = line_porcelain.summary
+                        end
+                        if #line_porcelain.committer_mail > 10 then
+                            committer_mail = string.sub(
+                                line_porcelain.committer_mail,
+                                0,
+                                10 - 1
+                            )
+                            committer_mail = string.match(committer_mail, "^%s*(.-)%s*$") -- trim
+                            committer_mail = committer_mail .. "…"
+                        else
+                            committer_mail = line_porcelain.committer_mail
+                        end
+                        line_with_hl = {
+                            idx = idx,
+                            values = {
+                                {
+                                    textValue = hash,
+                                    hl = hash,
+                                },
+                                {
+                                    textValue = os.date(
+                                        config.date_format,
+                                        line_porcelain.committer_time
+                                    ),
+                                    hl = "Comment",
+                                },
+                                {
+                                    textValue = committer_mail,
+                                    hl = "Comment",
+                                },
+                                {
+                                    textValue = summary,
+                                    hl = hash,
+                                },
+                            },
+                            format = "%s  %s",
+                        }
+                    else
+                        line_with_hl = {
+                            idx = idx,
+                            values = {
+                                {
+                                    textValue = "Not commited",
+                                    hl = "Comment",
+                                },
+                            },
+                            format = "%s",
+                        }
+                    end
+                    return line_with_hl
+                end 
+            })
+
+        end
+    }
 }

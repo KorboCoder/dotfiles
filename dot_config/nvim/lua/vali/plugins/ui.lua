@@ -32,7 +32,19 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diff" },
+                lualine_b = { 
+                    {
+                        "branch", 
+                        fmt = function(branch_name, ctx)
+                            local max_length = 18 -- Set the max length for branch names
+                            if #branch_name > max_length then
+                                return string.sub(branch_name, 1, max_length) .. '…'
+                            end
+                            return branch_name
+                        end,
+                    },
+                    "diff" 
+                },
                 lualine_c = {
                     {
                         "diagnostics",
@@ -50,7 +62,8 @@ return {
                         padding = {
                             left = 1, right = 0 }
                     },
-                    { "filename", path = 1, symbols = { modified = "✏️", readonly = " 🔒", unnamed = "" } },
+                    { "filename", newfile_status = true, symbols = { modified = "✏️", readonly = " 🔒", unnamed = "🤷", newFile = "📄"} },
+                    { "grapple" }
                     -- stylua: ignore
                     -- {
                     --     function() return require("nvim-navic").get_location() end,
@@ -136,16 +149,16 @@ return {
                     end,
                     color = { gui = "bold" },
                 },
-                    "encoding",
                 },
                 lualine_z = {
-                    {
-                        'vim.fn["codeium#GetStatusString"]()',
-                        fmt = function(str)
-                            return "suggestions " .. str:lower():match("^%s*(.-)%s*$")
-                        end
-
-                    },
+                    "encoding",
+                    -- {
+                    --     'vim.fn["codeium#GetStatusString"]()',
+                    --     fmt = function(str)
+                    --         return "suggestions " .. str:lower():match("^%s*(.-)%s*$")
+                    --     end
+                    --
+                    -- },
                     { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
                     { "location", padding = { left = 0, right = 1 } },
                 }
@@ -159,6 +172,28 @@ return {
         -- enabled =  false,
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim'
+        },
+        opts = {
+            general = {
+                ---@type boolean|fun(buf: integer, win: integer, info: table?): boolean
+                enable = function(buf, win, _)
+                    return vim.fn.win_gettype(win) == ''
+                        and vim.wo[win].winbar == ''
+                        and vim.bo[buf].bt == ''
+                        and (
+                        vim.bo[buf].ft == 'markdown'
+                        or (
+                        buf
+                        and vim.api.nvim_buf_is_valid(buf)
+                        -- removed this to allow dropbar even if there's no treesitter active, this is so
+                        -- we can at least see filepath for ordinary files, or if for some reason treesitter fails
+                        -- and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
+                        and true
+                        or false
+                    )
+                    )
+                end,
+            }
         }
     },
     {
@@ -234,14 +269,18 @@ return {
                 local res = rgb_to_hex(r1,g1,b1)
                 return res
             end
-            local macchiato = require("catppuccin.palettes").get_palette "macchiato"
 
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { blend = 0, fg=custom_transform(macchiato.red)})
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { blend = 0, fg=custom_transform(macchiato.teal)})
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { blend = 0, fg=custom_transform(macchiato.peach)})
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { blend = 0, fg=custom_transform(macchiato.blue)})
-            vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
+            local ok, _ = pcall(require, "catppuccin.palettes")
+            if ok then
+                local macchiato = require("catppuccin.palettes").get_palette "macchiato"
+
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { blend = 0, fg=custom_transform(macchiato.red)})
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { blend = 0, fg=custom_transform(macchiato.teal)})
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { blend = 0, fg=custom_transform(macchiato.peach)})
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { blend = 0, fg=custom_transform(macchiato.blue)})
+                vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
+            end
 
             -- dunno where to put this, migrate this where it makes sense
             -- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
@@ -354,7 +393,7 @@ return {
     {
         "tris203/precognition.nvim",   
         keys = {
-            { "<leader>p", function() require("precognition").peek() end, desc = "Precognition Peek" }
+            { "<leader>P", function() require("precognition").peek() end, desc = "Precognition Peek" }
         }
     },
     -- make virt column thin

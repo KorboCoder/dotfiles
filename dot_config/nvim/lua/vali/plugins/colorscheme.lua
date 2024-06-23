@@ -29,10 +29,7 @@ return {
                     noice = true,
                     notify = true,
                     dropbar = {enabled = true},
-                    dap = {
-                        enabled = true,
-                        enable_ui = true
-                    },
+                    dap = true,
                     fidget = true,
                     mason = true,
                     lsp_trouble = true,
@@ -43,12 +40,14 @@ return {
                             hints = { "italic" },
                             warnings = { "italic" },
                             information = { "italic" },
+                            ok = { "italic" },
                         },
                         underlines = {
                             errors = { "underline" },
                             hints = { "underline" },
                             warnings = { "underline" },
                             information = { "underline" },
+                            ok = { "underline" },
                         },
                         inlay_hints = {
                             background = true,
@@ -58,10 +57,12 @@ return {
                 }
             })
             vim.cmd([[colorscheme catppuccin-macchiato]])
+            vim.cmd('hi LspInlayHint gui=italic')
         end
     },
     {
         "folke/tokyonight.nvim",
+        enabled = false;
         lazy = false,
         priority = 1000,
         opts = {},
@@ -75,6 +76,7 @@ return {
     },
     {
         "Mofiqul/vscode.nvim",
+        enabled = false;
         lazy = false,
         priority = 1000,
         opts = {},
@@ -83,6 +85,7 @@ return {
         end
     },{
         "rebelot/kanagawa.nvim",
+        enabled = false;
         lazy = false,
         priority = 1000,
         opts = {},

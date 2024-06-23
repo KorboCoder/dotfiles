@@ -270,6 +270,15 @@ if [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+if command -v goenv &> /dev/null; then
+    # golang
+    export GOENV_ROOT="$HOME/.goenv"
+    export PATH="$GOENV_ROOT/bin:$PATH"
+    eval "$(goenv init -)"
+    export PATH="$GOROOT/bin:$PATH"
+    export PATH="$PATH:$GOPATH/bin"
+    export GOBIN="$GOENV_ROOT/bin"
+fi
 #  check if bob neovim exists
 # if [ -d "$HOME/.local/share/bob/nvim-bin" ]; then
 #     export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"

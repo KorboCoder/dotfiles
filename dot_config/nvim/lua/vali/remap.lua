@@ -149,7 +149,7 @@ vim.keymap.set({ 't', 'i', 'n', 'x' }, '<C-g>', function() terminal.cmd_toggle("
     { desc = "Lazygit" })
 
 -- lazydocker
-vim.keymap.set('n', '<leader>od', function() terminal.cmd_toggle("lazydocker") end,
+vim.keymap.set({ 't', 'i', 'n', 'x' }, '<C-;>', function() terminal.cmd_toggle("lazydocker") end,
     { desc = "Lazydocker" })
 
 -- normal terminal

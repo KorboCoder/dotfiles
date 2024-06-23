@@ -110,13 +110,16 @@ return {
         sign("DapStopped", { text = "⮕", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
 
 
-        local macchiato = require("catppuccin.palettes").get_palette("macchiato")
-        vim.api.nvim_set_hl(0, "DapBreakpoint", {  fg = macchiato.red})
-        vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = macchiato.peach})
-        vim.api.nvim_set_hl(0, "DapLogPoint", { fg = macchiato.green })
-        -- vim.api.nvim_set_hl(0, "DapStopped", { link = "Cursor" })
-        vim.api.nvim_set_hl(0, "DapStopped", { bg=macchiato.surface1 })
-        
+        local ok, _ = pcall(require, "catppuccin.palettes")
+        if ok then
+            local macchiato = require("catppuccin.palettes").get_palette("macchiato")
+            vim.api.nvim_set_hl(0, "DapBreakpoint", {  fg = macchiato.red})
+            vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = macchiato.peach})
+            vim.api.nvim_set_hl(0, "DapLogPoint", { fg = macchiato.green })
+            -- vim.api.nvim_set_hl(0, "DapStopped", { link = "Cursor" })
+            vim.api.nvim_set_hl(0, "DapStopped", { bg=macchiato.surface1 })
+        end
+
         -- Reference for additional dap setup: https://github.com/aaronmcadam/dotfiles/blob/c883d941764fa0153991c6ee91cd8dcb27c174c3/nvim/.config/nvim/lua/azvim/plugins/configs/dap.lua#L23
         -- Dap UI setup
         -- For more information, see |:help nvim-dap-ui|
