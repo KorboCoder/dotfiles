@@ -62,10 +62,13 @@ return {
         event = "InsertEnter",
         config = function()
             require('nvim-autopairs').setup {}
+            require('nvim-autopairs').remove_rule('"') -- remove rule (
+            require('nvim-autopairs').remove_rule('\'') -- remove rule (
             -- If you want to automatically add `(` after selecting a function or method
             local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
             local cmp = require 'cmp'
             cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
         end,
     },
     -- nice diagnosis UI
