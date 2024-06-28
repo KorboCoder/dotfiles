@@ -54,19 +54,21 @@ return {
             "cbochs/grapple.nvim",
             -- "ThePrimeagen/harpoon"
         },
-        opts = {
-            -- labels = { 'j', 'k', 'h', 'l' },
-            window_options = {
-                relative = "cursor",
-                col = 10,
-                height = 10
-            }
-
-        },
         init = function()
+            vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
             vim.keymap.set("n", "<leader>o", "<cmd>Portal jumplist backward<cr>")
             vim.keymap.set("n", "<leader>i", "<cmd>Portal jumplist forward<cr>")
-            vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
+        end,
+        config = function()
+            require('portal').setup({
+                -- labels = { '1', '2', '3', '4' },
+                window_options = {
+                    relative = "cursor",
+                    col = 10,
+                    height = 10
+                }
+            })
+            vim.api.nvim_set_hl(0, "PortalLabel", { link = "CurSearch", default = true })
         end
     },
     {
