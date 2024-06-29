@@ -1,6 +1,7 @@
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 
+
 if [[ -n "${ZELLIJ}" ]]; then
 export TMUX=$ZELLIJ
 fi
@@ -99,6 +100,10 @@ fi
 # lazydocker
 # git checkout with fzf: https://medium.com/@mrWinston/smarter-git-checkout-using-fzf-to-supercharge-your-commandline-7507db600996
 # delta
+
+# source .nix.zshrc
+source "$HOME/.nix.zshrc"
+
 gcha() {
   git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
 }
@@ -158,7 +163,9 @@ export NVM_DIR="$HOME/.nvm"
 export JAVA_HOME=/opt/homebrew/opt/openjdk/
 
 # starship steup
-eval "$(starship init zsh)"
+if command -v starship &> /dev/null && false; then
+    eval "$(starship init zsh)"
+fi
 
 # colors
 export CLICOLOR=1
@@ -310,7 +317,7 @@ if command -v nvim &> /dev/null; then
 fi
 
 if command -v bat &> /dev/null; then
-    export VISUAL=bat
+    export VISUAL=nvim
 fi
 
 # Amazon Q post block. Keep at the bottom of this file.
