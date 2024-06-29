@@ -123,11 +123,18 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 
 
-# zsh autosuggestion
+# zsh autocomplete
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+zshautocomplete_path=$(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+if [ -d autocomplete_path ]; then # check if we have fzf-tab tab repo dir
+    source zshautocomplete_path
+fi
 
+# zsh autosuggestion
+zshautosuggestion_path=$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -d zshautosuggestion_path ]; then # check if we have fzf-tab tab repo dir
+    source zshautosuggestion_path
+fi
 
 # fzf-tab
 if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
@@ -159,9 +166,18 @@ autoload -Uz compinit
 compinit
 
 test -f ~/.work-zshrc && source ~/.work-zshrc # 2> /dev/null
-# detailas ls
-alias ll="exa -lah"
-alias ls="exa"
+
+if command -v exa &> /dev/null; then
+    # detailas ls
+    alias ll="exa -lah"
+    alias ls="exa"
+fi
+
+if command -v eza &> /dev/null; then
+    # detailas ls
+    alias ll="eza -lah"
+    alias ls="eza"
+fi
 
 # pretty ping
 alias pping="prettyping --nolegend"
