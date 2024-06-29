@@ -140,6 +140,8 @@ fi
 if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
     autoload -U compinit; compinit
     source $HOME/fzf-tab/fzf-tab.plugin.zsh
+    # eza style
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 fi
 
 # Fix starship load wrapping issue
@@ -301,11 +303,15 @@ if command -v goenv &> /dev/null; then
     export PATH="$PATH:$GOPATH/bin"
     export GOBIN="$GOENV_ROOT/bin"
 fi
-#  check if bob neovim exists
-# if [ -d "$HOME/.local/share/bob/nvim-bin" ]; then
-#     export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
-# fi
 
+# setup visaul and editor
+if command -v nvim &> /dev/null; then
+    export EDITOR=nvim
+fi
+
+if command -v bat &> /dev/null; then
+    export VISUAL=bat
+fi
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
