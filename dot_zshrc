@@ -202,6 +202,9 @@ alias pping="prettyping --nolegend"
 export XDG_CONFIG_HOME="$HOME/.config"
 alias gg="lazygit"
 
+#nvimdiff
+alias nvimdiff="nvim -d"
+
 # edit this .zshrc file
 alias zshconfig="nvim ~/.zshrc"
 

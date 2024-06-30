@@ -2,6 +2,7 @@ return {
     -- git integration
     {
         "tpope/vim-fugitive",
+        event = "VeryLazy",
         keys = {
             { "<leader>gs", "<cmd>Git<CR>",         desc = "Git Status" },
             { "<leader>go", ":GBrowse<CR>",         desc = "Open in browser", mode = { "n", "v" } },
@@ -11,6 +12,10 @@ return {
             -- { "<leader>gr", "<cmd>Gread<CR>",       desc = "Git Read" },
             -- { "<leader>gw", "<cmd>Gwrite<CR>",      desc = "Git Write" },
         },
+    },
+    {
+        "sindrets/diffview.nvim",
+        cmd = {"DiffviewOpen"}
     },
     -- show git changes in the sign column
     {

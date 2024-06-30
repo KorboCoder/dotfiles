@@ -19,12 +19,12 @@ return {
         keys = {
             { "<leader>f<tab>", "<cmd>Telescope<cr>",         desc = "Telescope" },
             -- { "<leader>u",  "<cmd>Telescope undo<cr>",         desc = "Undo Tree" },
-            { "<leader>gcb", "<cmd>Telescope git_branches<cr>", desc = 'Checkout Branch' },
+            { "<leader>gcb", "<cmd>Telescope git_branches<cr>", desc = 'Search Branches' },
             -- { '<leader>gs', "<cmd>Telescope git_status<cr>",   desc = "Git Status" },
-            { '<leader>gcc', "<cmd>Telescope git_commits<cr>",  desc = "Checkout Commit" },
+            { '<leader>gcc', "<cmd>Telescope git_commits<cr>",  desc = "Search Commits" },
             { '<leader>fq',      "<cmd>Telescope resume<cr>",        desc = "Resume" },
             { '<leader>fg',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
-            { '<leader>fG',      "<cmd>Telescope git_bcommits<cr>",        desc = "Git Files" },
+            -- { '<leader>fG',      "<cmd>Telescope git_bcommits<cr>",        desc = "Git Files" },
         },
         config = function()
             local telescope = require('telescope')
@@ -48,6 +48,9 @@ return {
                         side_by_side = true
                     }
                 }
+            })
+            require("which-key").register({
+                ["<leader>gc"] = { name = "+search" },
             })
             require("telescope").load_extension "file_browser"
             require("telescope").load_extension "undo"
