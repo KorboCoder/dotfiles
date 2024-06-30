@@ -55,6 +55,12 @@ in
 
     home.packages = [
         pkgs.bat
+        pkgs.bat-extras.batman
+        pkgs.bat-extras.batpipe
+        pkgs.bat-extras.batgrep
+        pkgs.bat-extras.batdiff
+        pkgs.bat-extras.batwatch
+        pkgs.bat-extras.prettybat
         pkgs.btop
         pkgs.cargo
         pkgs.chezmoi
@@ -92,12 +98,23 @@ in
         pkgs.zsh-autocomplete
         pkgs.zsh-autosuggestions
         pkgs.zsh-powerlevel10k
+        pkgs.zsh-completions
         pkgs.zsh-syntax-highlighting
+        pkgs.nix-zsh-completions
+        pkgs.difftastic
     ];
    home.file.".nix.zsh".text = ''
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh    
         source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+        eval "$(batpipe)"
+
+        fpath=(${pkgs.zsh-completions}/share/zsh-completions/src $fpath)
+        source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
+        fpath=(${pkgs.nix-zsh-completions}/share/zsh/plugins/nix $fpath)
+        fpath=($HOME/.docker/completions $fpath)
+        autoload -U compinit && compinit
     '';
 
 # Add stuff for your user as you see fit:

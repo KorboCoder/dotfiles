@@ -3,8 +3,7 @@ os:
 
 git:
   paging:
-    colorArg: always
-    pager: delta --dark --paging=never
+    externalDiffCommand: difft --color=always 
   commitPrefix:
     pattern: "^\\w+\\/(\\w+-\\w+).*"
     replace: '[$1] '
@@ -28,3 +27,10 @@ gui:
       - "#8aadf4" # Blue
     unstagedChangesColor:
       - red       # Red
+
+
+customCommands:
+  - key: 'C'
+    context: 'global'
+    command: "git commit"
+    subprocess: true
