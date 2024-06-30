@@ -1,0 +1,10 @@
+[[manager.prepend_keymap]]
+on   = [ "i" ]
+run = "plugin searchjump"
+desc = "searchjump mode"
+
+
+[[manager.prepend_keymap]]
+on   = [ "i" ]
+run = "plugin searchjump --args='autocd'"
+desc = "searchjump mode(auto cd select folder)"
