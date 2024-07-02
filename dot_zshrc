@@ -109,7 +109,9 @@ fi
 # delta
 
 # source .nix.zshrc
-source "$HOME/.nix.zsh"
+if [ -f "$HOME/.nix.zsh" ]; then
+    source "$HOME/.nix.zsh"
+fi
 
 gcha() {
   git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
@@ -137,13 +139,13 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 # zsh autocomplete
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-zshautocomplete_path=$(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+zshautocomplete_path=$HOMEBBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 if [ -d autocomplete_path ]; then # check if we have fzf-tab tab repo dir
     source zshautocomplete_path
 fi
 
 # zsh autosuggestion
-zshautosuggestion_path=$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+zshautosuggestion_path=$HOMEBBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 if [ -d zshautosuggestion_path ]; then # check if we have fzf-tab tab repo dir
     source zshautosuggestion_path
 fi
@@ -332,6 +334,12 @@ fi
 
 if command -v bat &> /dev/null; then
     export VISUAL=nvim
+fi
+
+# check if powerlevel is installed in homebrew
+powerlevel10k_path=$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
+if [ -f  $powerlevel10k_path ]; then
+    source $powerlevel10k_path
 fi
 
 # Amazon Q post block. Keep at the bottom of this file.
