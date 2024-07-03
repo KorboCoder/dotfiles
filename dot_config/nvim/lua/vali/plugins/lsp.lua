@@ -97,8 +97,8 @@ return {
                     vim.keymap.set('v', keys, func, { buffer = bufnr, desc = desc })
                 end
 
-                vmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
-                nmap('<M-F>', vim.lsp.buf.format, '[C]ode [F]ormat')
+                nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
+                vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                 nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -114,6 +114,7 @@ return {
                     vim.lsp.buf.format()
                 end, { desc = 'Format current buffer with LSP' })
             end
+
             -- Enable the following language servers
             --  Feel free to add/remove any LSPs that you want here. They will automatically be installedu
             --  Add any additional override configuration in the following tables. They will be passed to
@@ -326,7 +327,7 @@ return {
                     -- Accept ([y]es) the completion.
                     --  This will auto-import if your LSP supports it.
                     --  This will expand snippets if the LSP sent a snippet.
-                    ['<C-y>'] = cmp.mapping.confirm { select = true },
+                    ['<C-CR>'] = cmp.mapping.confirm { select = true },
 
 
                     -- to exit completion tab if i want to close
