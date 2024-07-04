@@ -228,7 +228,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort' \
 --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
 # --color=bg+:#363a4f,bg:#24273a \
 
-alias standups="nvim standups.md"
+alias standups="nvim ~/standups.md"
 
 # set ctype locale to C
 export LC_CTYPE="C"
@@ -336,6 +336,10 @@ if command -v bat &> /dev/null; then
     export VISUAL=nvim
 fi
 
+if [ -f "$HOMEBBREW_PREFIX/.cargo/env" ]; then
+    . $HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh
+fi
+
 # check if powerlevel is installed in homebrew
 powerlevel10k_path=$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 if [ -f  $powerlevel10k_path ]; then
@@ -347,3 +351,4 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
