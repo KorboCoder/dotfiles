@@ -375,10 +375,27 @@ return {
         opts = {
             window = {
                 width = 0.9
-            }
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
+            },
+            plugins = {
+                tmux = { enabled = true }
+            },
+            -- TODO: Update  this to auto commands
+            -- callback where you can add custom code when the Zen window opens
+            on_open = function(win)
+                -- show symbol-usage
+                local ok, buf = pcall(require, "symbol-usage.buf")
+                if not ok then return end;
+                local bufnr = vim.api.nvim_get_current_buf()
+                buf.clear_buffer(bufnr)
+            end,
+            -- callback where you can add custom code when the Zen window closes
+            on_close = function()
+                -- hide symbol-usage
+                local ok, buf = pcall(require, "symbol-usage.buf")
+                if not ok then return end;
+                local bufnr = vim.api.nvim_get_current_buf()
+                buf.attach_buffer(bufnr)
+            end,
         },
         keys = {
             { 'gz', ':ZenMode<CR>', desc = "Zen Mode" }
