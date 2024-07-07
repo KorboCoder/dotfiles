@@ -23,8 +23,5 @@ return {
                 },
             },
         },
-        init = function()
-            vim.o.cole = 1;
-        end
     }
 }
