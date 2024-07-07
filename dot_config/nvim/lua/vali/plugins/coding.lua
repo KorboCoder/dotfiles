@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     -- toggle comments
     {
@@ -239,6 +240,20 @@ return {
             { "<C-R>", mode = "i" }
         },
         name = "registers",
-    }
+    },
+    {
+        'Wansmer/treesj',
+        keys = { 
+            {
+                '<space>cm',
 
+                "<cmd>TSJToggle<cr>",
+                desc = 'Toggle Func Spread'
+            }
+        },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+        opts = {
+            use_default_keymaps = false
+        },
+    }
 }

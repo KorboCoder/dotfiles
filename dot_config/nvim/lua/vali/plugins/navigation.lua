@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     -- explore files and edit like a normal buffer
     {

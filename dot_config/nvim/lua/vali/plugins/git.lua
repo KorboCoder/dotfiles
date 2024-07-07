@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     -- git integration
     {

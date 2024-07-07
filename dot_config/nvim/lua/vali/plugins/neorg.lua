@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     -- NOTE: install treesitter wthn  `CC=gcc-14 nvim -c "TSInstall norg"`
     {
@@ -7,7 +8,11 @@ return {
         opts = {
             load = {
                 ["core.defaults"] = {},
-                ["core.concealer"] = {},
+                ["core.concealer"] = {
+                    config = {
+                        folds = false
+                    }
+                },
                 ["core.dirman"] = {
                     config = {
                         workspaces = {
@@ -17,6 +22,9 @@ return {
                     },
                 },
             },
-        }
+        },
+        init = function()
+            vim.o.cole = 1;
+        end
     }
 }

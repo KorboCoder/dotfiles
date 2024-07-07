@@ -187,6 +187,18 @@ compinit
 
 test -f ~/.work-zshrc && source ~/.work-zshrc # 2> /dev/null
 
+# setup kubectl
+if command -v kubectl &> /dev/null; then
+    # kubectl aliases
+    alias k="kubectl"
+    alias kctx="kubectl ctx"
+    alias kns="kubectl ns"
+    # Load the kubectl completion code for zsh[1] into the current shell
+    source <(kubectl completion zsh)
+    # Set the kubectl completion code for zsh[1] to autoload on startup
+    # kubectl completion zsh > "${fpath[1]}/_kubectl"
+fi
+
 if command -v exa &> /dev/null; then
     # detailas ls
     alias ll="exa -lah"

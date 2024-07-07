@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     {
         "olexsmir/gopher.nvim",

@@ -1,3 +1,4 @@
+--- @type LazyPlugin[] | LazyPlugin
 return {
     enabled = false,
     "epwalsh/obsidian.nvim",
