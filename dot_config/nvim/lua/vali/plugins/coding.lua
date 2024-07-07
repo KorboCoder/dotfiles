@@ -324,6 +324,7 @@ return {
             require('symbol-usage').setup({
                 text_format = text_format,
                 vt_position = 'end_of_line',
+                implementation = { enabled = true },
             })
         end
     }
