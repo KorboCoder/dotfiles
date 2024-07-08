@@ -427,4 +427,8 @@ return {
         end
 
     },
+    --colorizer
+    {
+        "norcalli/nvim-colorizer.lua",
+    }
 }

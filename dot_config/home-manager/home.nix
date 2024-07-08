@@ -54,55 +54,66 @@ in
 
 
     home.packages = [
+# terminal tools
         pkgs.bat
-        pkgs.bat-extras.batman
-        pkgs.bat-extras.batpipe
-        pkgs.bat-extras.batgrep
-        pkgs.bat-extras.batdiff
-        pkgs.bat-extras.batwatch
-        pkgs.bat-extras.prettybat
-        pkgs.btop
-        pkgs.cargo
-        pkgs.chezmoi
-        pkgs.ddrescue
-        pkgs.delta
-        pkgs.eza
-        pkgs.fd
-        pkgs.ffmpegthumbnailer
-        pkgs.fnm
-        pkgs.fzf
-        pkgs.gnused
-        pkgs.go
-        pkgs.jq
-        pkgs.lazydocker
-        pkgs.lazygit
-        pkgs.markdownlint-cli2
-        pkgs.mcfly
-        pkgs.neovim
-        pkgs.pandoc
-        pkgs.poppler
-        pkgs.ranger
-        pkgs.ripgrep
-        pkgs.skhd
-        pkgs.starship
-        pkgs.thefuck
-        pkgs.tldr
-        pkgs.tmux
-        pkgs.unar
-        pkgs.virtualenv
-        pkgs.watch
-        pkgs.xh
-        pkgs.yabai
-        pkgs.yazi
-        pkgs.zoxide
-        pkgs.zsh-autocomplete
-        pkgs.zsh-autosuggestions
-        pkgs.zsh-powerlevel10k
-        pkgs.zsh-completions
-        pkgs.zsh-syntax-highlighting
-        pkgs.nix-zsh-completions
-        pkgs.difftastic
-    ];
+            pkgs.bat-extras.batman
+            pkgs.bat-extras.batpipe
+            pkgs.bat-extras.batgrep
+            pkgs.bat-extras.batdiff
+            pkgs.bat-extras.batwatch
+            pkgs.bat-extras.prettybat
+            pkgs.gnused
+            pkgs.delta
+            pkgs.fzf
+            pkgs.eza
+            pkgs.fd
+            pkgs.ffmpegthumbnailer
+            pkgs.jq
+            pkgs.mcfly
+            pkgs.ripgrep
+            pkgs.thefuck
+            pkgs.tldr
+            pkgs.tmux
+            pkgs.unar
+            pkgs.virtualenv
+            pkgs.watch
+            pkgs.xh
+            pkgs.zoxide
+            pkgs.chezmoi
+            pkgs.difftastic
+            pkgs.neofetch
+
+# docs
+            pkgs.markdownlint-cli2
+            pkgs.pandoc
+            pkgs.poppler
+
+# tui
+            pkgs.btop
+            pkgs.lazydocker
+            pkgs.lazygit
+            pkgs.k9s
+            pkgs.neovim
+            pkgs.ranger
+            pkgs.yazi
+
+#languages
+            pkgs.fnm
+            pkgs.cargo
+            pkgs.go
+
+# window manager
+            pkgs.skhd
+            pkgs.yabai
+
+# shell
+            pkgs.zsh-autocomplete
+            pkgs.zsh-autosuggestions
+            pkgs.zsh-powerlevel10k
+            pkgs.zsh-completions
+            pkgs.zsh-syntax-highlighting
+            pkgs.nix-zsh-completions
+            ];
    home.file.".nix.zsh".text = ''
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh    
