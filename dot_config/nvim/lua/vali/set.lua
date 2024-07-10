@@ -40,24 +40,48 @@ vim.opt.colorcolumn = "80,110"
 vim.opt.cursorcolumn = true
 
 -- diagnostics setup
+local signs = {
+  Error = '󰅚',
+  Warn = '󰀪',
+  Info = '󰋽',
+  Hint = '󰌶',
+}
 vim.diagnostic.config({
-	signs = false,    
+	signs = false,
+	virtual_text = {
+		prefix = function(diagnostic)
+			if diagnostic.severity == vim.diagnostic.severity.ERROR then
+				return signs['Error']
+			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+				return signs['Warning']
+			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
+				return signs['Hint']
+			else
+				return signs['Info']
+			end
+		end,
+	},
 })
 
 vim.opt.completeopt = 'menu,menuone,preview'
 
+-- this is so we can see CRLF in files
 vim.opt.binary = true
+
 -- indent setup
 vim.opt.list = true
-vim.opt.listchars:append "space:·"
--- vim.opt.listchars:append "multispace:···"
--- vim.opt.listchars:append "trail:•"
-vim.opt.listchars:append "precedes:«"
-vim.opt.listchars:append "extends:»"
-vim.opt.listchars:append "tab:··"
--- vim.opt.listchars:append "tab:··»"
-vim.opt.listchars:append "nbsp:␣"
--- vim.opt.listchars:append "eol:↴"
+
+vim.opt.listchars:append {
+	space = "·",
+	-- multispace = "···",
+	-- trail = "•",
+	precedes = "«",
+	extends = "»",
+	tab = "··",
+	-- tab = "··»",
+	nbsp = "␣",
+	-- eol = "↴",
+}
 
 -- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup
 -- Disable netrw
