@@ -39,6 +39,11 @@ vim.opt.updatetime = 500
 vim.opt.colorcolumn = "80,110"
 vim.opt.cursorcolumn = true
 
+-- diagnostics setup
+vim.diagnostic.config({
+	signs = false,    
+})
+
 vim.opt.completeopt = 'menu,menuone,preview'
 
 vim.opt.binary = true

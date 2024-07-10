@@ -21,6 +21,7 @@ return {
     -- show git changes in the sign column
     {
         'lewis6991/gitsigns.nvim',
+		branch = 'main',
         opts = {
             signs = {
                 add = { text = '+' },
@@ -29,9 +30,19 @@ return {
                 topdelete = { text = '‾' },
                 changedelete = { text = '~' },
             },
-            signcolumn = true,
+			signs_staged = {
+				add          = { text = '┃' },
+				change       = { text = '┃' },
+				delete       = { text = '┃' },
+				topdelete    = { text = '‾' },
+				changedelete = { text = '~' },
+				untracked    = { text = '┆' },
+			},
+			signs_staged_enable = true,
+			signcolumn = true,
             numhl = true,
             -- linehl = true,
+			current_line_blame = false, 
             current_line_blame_opts = {
                 virt_text_pos = 'right_align',
                 delay = 100,

@@ -35,6 +35,7 @@ local create_terminal = function(name, toggletermId)
   }
   return tempterm
 end
+local additional_args = {}
 
 -- map terminal instances here for persistance
 local terminal_map = {

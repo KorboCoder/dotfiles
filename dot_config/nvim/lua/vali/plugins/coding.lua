@@ -35,6 +35,7 @@ return {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
+			sign_priority=5,
             keywords = {
                 FIX = {
                     icon = " ", -- icon used for the sign, and in search results
@@ -49,7 +50,7 @@ return {
                 PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
                 NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
                 TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-            },
+			},  
         }
     },
     -- general code refactoring
@@ -85,8 +86,9 @@ return {
             local initState = true
             vim.diagnostic.config({
                 virtual_text = initState,
-                virtual_lines = not initState
+                virtual_lines = not initState,
             })
+
             vim.keymap.set('n', "<leader>l", function()
                     initState = not initState
                     vim.diagnostic.config({
