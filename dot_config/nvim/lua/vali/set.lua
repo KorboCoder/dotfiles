@@ -41,6 +41,7 @@ vim.opt.cursorcolumn = true
 
 vim.opt.completeopt = 'menu,menuone,preview'
 
+vim.opt.binary = true
 -- indent setup
 vim.opt.list = true
 vim.opt.listchars:append "space:·"
