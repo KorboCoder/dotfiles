@@ -55,9 +55,9 @@ vim.diagnostic.config({
 			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
 				return signs['Warning']
 			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-				return signs['Hint']
-			else
 				return signs['Info']
+			else
+				return signs['Hint']
 			end
 		end,
 	},
