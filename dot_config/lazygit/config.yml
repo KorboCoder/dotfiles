@@ -1,6 +1,6 @@
 os:
   editPreset: 'nvim'
-
+notARepository: 'quit'
 git:
   paging:
     externalDiffCommand: difft --color=always 
@@ -8,6 +8,7 @@ git:
     pattern: "^\\w+\\/(\\w+-\\w+).*"
     replace: '[$1] '
 gui:
+  nerdFontsVersion: "3"
   theme:
     lightTheme: false 
     activeBorderColor:
