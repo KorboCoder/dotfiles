@@ -204,16 +204,16 @@ return {
                     },
                 },
                 -- Reference: https://github.com/walcht/neovim-unity/blob/main/after/plugin/lsp_related/lspconfig.lua 
-                omnisharp_mono = {
-                    handlers = {
-                        ["textDocument/definition"] = require('omnisharp_extended').handler,
-                    },
-                    cmd = { vim.fn.stdpath("data") .. "/mason/bin/omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
-                    enable_roslyn_analyzers = true,
-                    use_mono = true
-                    -- rest of your settings
-
-                }
+                -- omnisharp_mono = {
+                --     handlers = {
+                --         ["textDocument/definition"] = require('omnisharp_extended').handler,
+                --     },
+                --     cmd = { vim.fn.stdpath("data") .. "/mason/bin/omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+                --     enable_roslyn_analyzers = true,
+                --     use_mono = true
+                --     -- rest of your settings
+                --
+                -- }
             }
 
             -- Configure LSP through rust-tools.nvim plugin.

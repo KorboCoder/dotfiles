@@ -110,4 +110,7 @@ return {
         },
         cmd = "Glow"
     },
+	{
+		'beeender/ComradeNeovim'
+	}
 }

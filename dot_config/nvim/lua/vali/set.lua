@@ -39,28 +39,8 @@ vim.opt.updatetime = 500
 vim.opt.colorcolumn = "80,110"
 vim.opt.cursorcolumn = true
 
--- diagnostics setup
-local signs = {
-  Error = '󰅚',
-  Warn = '󰀪',
-  Info = '󰋽',
-  Hint = '󰌶',
-}
 vim.diagnostic.config({
 	signs = false,
-	virtual_text = {
-		prefix = function(diagnostic)
-			if diagnostic.severity == vim.diagnostic.severity.ERROR then
-				return signs['Error']
-			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-				return signs['Warning']
-			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-				return signs['Info']
-			else
-				return signs['Hint']
-			end
-		end,
-	},
 })
 
 vim.opt.completeopt = 'menu,menuone,preview'
