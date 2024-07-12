@@ -155,6 +155,10 @@ return {
                 -- pyright = {},
                 -- rust_analyzer = {},
                 -- cql = {},
+				glimmer = {},
+				['htmx-lsp'] = {
+					filetypes = {"html", "html.handlebars"}
+				},
                 bashls = {
                     -- include zsh
                     filetypes = { 'sh', 'zsh', },

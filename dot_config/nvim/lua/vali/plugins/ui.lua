@@ -434,11 +434,12 @@ return {
         version = '*',
         config = true
     },
-    {
-        "tris203/precognition.nvim",   
-        keys = {
-            { "<leader>P", function() require("precognition").peek() end, desc = "Precognition Peek" }
-        }
+	{
+		"tris203/precognition.nvim",
+		enabled=false,
+		keys = {
+			{ "<leader>P", function() require("precognition").peek() end, desc = "Precognition Peek" }
+		}
     },
     -- make virt column thin
     { "lukas-reineke/virt-column.nvim", 

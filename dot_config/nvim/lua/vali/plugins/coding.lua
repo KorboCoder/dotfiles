@@ -48,9 +48,9 @@ return {
                 HACK = { icon = " ", color = "warning", alt = { "QQQ" }},
                 WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
                 PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-                NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+                NOTE = { icon = " ", color = "hint", alt = { "INFO", "TEMP"} },
                 TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-			},  
+			}
         }
     },
     -- general code refactoring
@@ -213,8 +213,8 @@ return {
         keys = {
             { "<leader>fp", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Open Yank History" },
             { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
-            { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
-            { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
+            { "<leader>p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+            { "<leader>P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
             { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
             { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
             { "<c-p>", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },

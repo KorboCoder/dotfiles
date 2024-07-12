@@ -56,7 +56,7 @@ return {
             -- "ThePrimeagen/harpoon"
         },
         init = function()
-            vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
+            -- vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
             vim.keymap.set("n", "<leader>o", "<cmd>Portal jumplist backward<cr>")
             vim.keymap.set("n", "<leader>i", "<cmd>Portal jumplist forward<cr>")
         end,
@@ -130,7 +130,7 @@ return {
         cmd = "Grapple",
         keys = {
             { "<leader>m", "<cmd>Grapple toggle<cr>", desc = "Grapple toggle tag" },
-            { "<leader>p", "<cmd>Grapple toggle_tags<cr>", desc = "Grapple open tags window" },
+            { "<leader>M", "<cmd>Grapple toggle_tags<cr>", desc = "Grapple open tags window" },
 
             -- Select tags
             { "<leader>1", "<cmd>Grapple select index=1<cr>", desc = "Select first tag" },
