@@ -72,10 +72,6 @@ return {
 						return res
 					end
 					return {
-
-
-						LspInlayHint = { fg=custom_transform(colors.maroon) },
-						-- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
 						DiagnosticVirtualTextError = {  blend=0, fg=custom_transform(colors.red)},
 						DiagnosticVirtualTextWarn = {  blend=0, fg=custom_transform(colors.yellow)},
 						DiagnosticVirtualTextOk = {  blend=0, fg=custom_transform(colors.green)},
@@ -86,7 +82,9 @@ return {
 			})
 			vim.cmd([[colorscheme catppuccin-macchiato]])
 
-            vim.cmd('hi LspInlayHint gui=italic')
+            -- vim.cmd('hi LspInlayHint gui=italic')
+			local function h(name) return vim.api.nvim_get_hl(0, { name = name }) end
+			vim.api.nvim_set_hl(0, 'LspInlayHint', { fg=h('Comment').fg, bg=h('CursorLine').bg, italic = true})
         end
     },
     {

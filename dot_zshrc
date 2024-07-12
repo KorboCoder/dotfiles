@@ -383,6 +383,11 @@ if command -v bat &> /dev/null; then
     export VISUAL=nvim
 fi
 
+# setup atuin
+if command -v atuin &> /dev/null; then
+	eval "$(atuin init zsh)"
+fi
+
 if [ -f "$HOMEBBREW_PREFIX/.cargo/env" ]; then
     . $HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh
 fi
