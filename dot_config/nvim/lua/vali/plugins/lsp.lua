@@ -109,6 +109,18 @@ return {
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
                     vim.lsp.buf.format()
                 end, { desc = 'Format current buffer with LSP' })
+			-- The following autocommand is used to enable inlay hints in your
+			  -- code, if the language server you are using supports them
+			  --
+			  -- This may be unwanted, since they displace some of your code
+			  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+				vim.lsp.inlay_hint.enable(true) -- enable at start
+
+				nmap('<leader>L', function()
+				  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+				end, '[T]oggle Inlay [H]ints')
+			  end
+
             end
 
             -- Enable the following language servers
@@ -399,38 +411,6 @@ return {
                     -- { name = 'nvim_lsp_signature_help' }
                 },
             }
-        end
-    },
-    {
-        "MysticalDevil/inlay-hints.nvim",
-        event = "LspAttach",
-        dependencies = { "neovim/nvim-lspconfig" },
-        keys = {
-            { '<leader>L', "<cmd>InlayHintsToggle<cr>", desc = "Toggle Inlayhints" }
-        },
-        config = function()
-            require("inlay-hints").setup()
-            -- suppose to be the default highlight for LspInlayHint but background is not being set
-            -- decided to set the default manually here
-            -- local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-            -- local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
-            -- vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg})
-        end
-    },
-    {
-        enabled = false,
-        'lvimuser/lsp-inlayhints.nvim',
-        keys = {
-            { '<leader>L', "<cmd>lua require('lsp-inlayhints').toggle()<cr>", desc = "Toggle Inlayhints" }
-        },
-        config = function()
-
-            require('lsp-inlayhints').setup()
-            -- suppose to be the default highlight for LspInlayHint but background is not being set
-            -- decided to set the default manually here
-            -- local hint_bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg
-            -- local hint_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-            -- vim.api.nvim_set_hl(0, "LspInlayHint", { bg = hint_bg, fg = hint_fg })
         end
     },
     {

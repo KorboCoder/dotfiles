@@ -74,6 +74,7 @@ return {
 					return {
 
 
+						LspInlayHint = { fg=custom_transform(colors.maroon) },
 						-- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
 						DiagnosticVirtualTextError = {  blend=0, fg=custom_transform(colors.red)},
 						DiagnosticVirtualTextWarn = {  blend=0, fg=custom_transform(colors.yellow)},
@@ -84,6 +85,7 @@ return {
 				end
 			})
 			vim.cmd([[colorscheme catppuccin-macchiato]])
+
             vim.cmd('hi LspInlayHint gui=italic')
         end
     },
