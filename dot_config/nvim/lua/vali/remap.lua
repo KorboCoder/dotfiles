@@ -27,6 +27,8 @@ vim.keymap.set("n", "<C-M-h>", "<cmd>vertical resize -2<cr>", { desc = "Decrease
 vim.keymap.set("n", "<C-M-l>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 
+vim.keymap.set({"n","x", "i"}, "<C-q>", "<C-6>", { desc = "Toggle between files" })
+
 local leaderN = { prefix = "<leader>", mode = "n" }
 local leaderV = { prefix = "<leader>", mode = "v" }
 local leaderNV = { prefix = "<leader>", mode = { "n", "v" } }
