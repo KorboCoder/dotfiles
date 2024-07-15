@@ -31,11 +31,12 @@ vim.opt.spelllang = { 'en_us' }
 
 vim.opt.showmode = false
 
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 10
 vim.opt.signcolumn = "yes"
 
 vim.opt.updatetime = 500
 
+-- column indicator to see if text is pass limit
 vim.opt.colorcolumn = "80,110"
 vim.opt.cursorcolumn = true
 
@@ -51,6 +52,7 @@ vim.opt.binary = true
 -- indent setup
 vim.opt.list = true
 
+-- set whitespace and overflow chars
 vim.opt.listchars:append {
 	space = "·",
 	-- multispace = "···",
@@ -62,11 +64,6 @@ vim.opt.listchars:append {
 	nbsp = "␣",
 	-- eol = "↴",
 }
-
--- Reference: https://stackoverflow.com/questions/76028722/how-can-i-temporarily-disable-netrw-so-i-can-have-telescope-at-startup
--- Disable netrw
--- vim.g.loaded_netrwPlugin = 1
--- vim.g.loaded_netrw = 1
 
 -- https://www.reddit.com/r/neovim/comments/15ue6vh/guys_i_need_a_nvim_plugin_to_highlight_the_words/
 vim.opt.diffopt = {
