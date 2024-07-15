@@ -29,8 +29,14 @@ is_nvim_term() {
 }
 # setup term before loading tmux
 # for undercurls
-export TERM="xterm-256color"
-[[ -n $TMUX ]] && export TERM="tmux-256color"
+[[ $TERM != "wezterm" ]] && export TERM="xterm-256color"
+if [ "$TERM" != "wezterm" ] && [ -n "$TMUX" ]; then
+    export TERM="tmux-256color"
+fi
+
+# export TERM="xterm-256color"
+# [[ -n $TMUX ]] && export TERM="tmux-256color"
+
 # update_terminfo () {
 #     local x ncdir terms
 #     ncdir="/opt/homebrew/opt/ncurses"
@@ -66,11 +72,30 @@ export TERM="xterm-256color"
 # Always work in a tmux session if tmux is installed
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
 # https://gist.github.com/chakrit/5004006
+# NOTE:OLD
+# if which tmux 2>&1 >/dev/null; then
+#     if [ $TERM != "tmux-256color" ] && [ $TERM != "tmux" ]; then
+#         # if we're not in :term and toggleterm, create a main session
+#         if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
+#             export TERM="tmux-256color"
+#             tmux new-session -A -t main || tmux new-session -s main
+#             exit
+#             # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
+#         fi
+#     else
+#
+#         if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
+#             tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
+#             exit
+#         fi 
+#     fi
+# fi
+# echo "TEST: $TMUX"
 if which tmux 2>&1 >/dev/null; then
-    if [ $TERM != "tmux-256color" ] && [ $TERM != "tmux" ]; then
+    if [ -z $TMUX ]; then
         # if we're not in :term and toggleterm, create a main session
         if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
-            export TERM="tmux-256color"
+            # export TERM="tmux-256color"
             tmux new-session -A -t main || tmux new-session -s main
             exit
             # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id

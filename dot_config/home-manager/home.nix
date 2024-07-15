@@ -96,6 +96,7 @@ in
             pkgs.neovim
             pkgs.ranger
             pkgs.yazi
+			pkgs.atuin
 
 #languages
             pkgs.fnm
@@ -107,6 +108,7 @@ in
             pkgs.yabai
 
 # shell
+			pkgs.wezterm
             pkgs.zsh-autocomplete
             pkgs.zsh-autosuggestions
             pkgs.zsh-powerlevel10k
