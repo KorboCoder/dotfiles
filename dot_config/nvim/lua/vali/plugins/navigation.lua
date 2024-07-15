@@ -78,6 +78,11 @@ return {
         event = "VeryLazy",
         ---@type Flash.Config
         opts = {
+			modes = {
+				search = {
+					enabled = false
+				}
+			},
             label = {
                 uppercase = false,
                 style = "overlay",
