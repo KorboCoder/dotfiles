@@ -31,6 +31,7 @@ return {
     -- jump between files
     {
         "theprimeagen/harpoon",
+		enabled = false,
         keys = {
 
         },
