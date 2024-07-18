@@ -332,23 +332,9 @@ return {
     {
         "folke/which-key.nvim",
         opts = {
-            -- layout similar to helix editor
-            window = {
-                margin = { 1, 0, 1, 0.7 },
-                border = "double",
-                position = "bottom",
-            },
-            layout = {
-                height = { max = 200 },
-                width = { min = 10, max = 100 },
-                -- no idea what this does
-                align = "right"
-            },
+			preset = "helix",
+			win  = { border = "double" }
         },
-        init = function()
-            -- control how fast window appears
-            vim.o.timeoutlen = 200
-        end
     },
     -- better  ui for messages, cmdline and popupmenu
     {
