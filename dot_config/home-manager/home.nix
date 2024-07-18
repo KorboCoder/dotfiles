@@ -81,7 +81,7 @@ in
             pkgs.zoxide
             pkgs.chezmoi
             pkgs.difftastic
-            pkgs.neofetch
+            pkgs.fastfetch
 
 # docs
             pkgs.markdownlint-cli2
