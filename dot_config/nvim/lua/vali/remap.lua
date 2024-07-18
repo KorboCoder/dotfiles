@@ -34,114 +34,59 @@ local leaderV = { prefix = "<leader>", mode = "v" }
 local leaderNV = { prefix = "<leader>", mode = { "n", "v" } }
 
 -- clipboard operations
-wk.register(
-    {
-        x = {
-            "\"_x", 'delete char to void'
-        }
+-- wk.add({ "<leader>x", "\"_x", desc='delete char to void' })
 
-    },
-    leaderN
-)
-
-wk.register(
-    {
-        d = {
-            "\"_d", 'delete to void'
-        },
-        _ = {
-            "\"_", 'to void register'
-        },
-        ['+'] = {
-            "\"+", 'to system register'
-        }
-
-    },
-    leaderNV
-)
-
-wk.register(
-    {
-        p = {
-            "\"_dP", 'paste without changing register'
-        },
-    },
-    leaderV
-)
+-- wk.add({
+-- 	"<leader>",
+-- 	{"d","\"_d", desc='delete to void'},
+-- 	{"_","\"_", desc='to void register'},
+-- 	{'+', "\"+", desc='to system register'},
+-- 	mode={"n","v"}
+-- })
+--
+-- wk.add({
+-- 	"<leader>",
+-- 	{"p","\"_dP", desc='paste without changing register'},
+-- 	mode={"v"}
+-- })
 
 -- search operations
 local builtin = require('telescope.builtin')
-wk.register({
-        f = {
-            name = "+Search",
-            f = {
-                builtin.find_files, "Files"
-            },
-            b = {
-                "<cmd>Telescope buffers<cr>", "Buffers"
-            },
-            d = {
-                "<cmd>Telescope diagnostics<cr>", "Diagnostics"
-            },
-            t = {
-                builtin.current_buffer_fuzzy_find, 'Text'
-            },
-            T = {
-                "<cmd>Telescope live_grep<cr>", 'Global Text'
-            },
-            h = {
-                "<cmd>Telescope help_tags<cr>", 'Help'
-            },
-            m = {
-                "<cmd>Telescope man_pages<cr>", 'Man'
-            },
-            r = {
-                "<cmd>Telescope registers<cr>", "Registers"
-            },
-            k = {
-                "<cmd>Telescope keymaps<cr>", "Keymaps"
-            },
-            c = {
-                "<cmd>Telescope commands<cr>", "Commands"
-            },
-            C = {
-                "<cmd>Telescope command_history<cr>", "Command History"
-            },
-            n = {
-                "<cmd>Noice telescope<cr>", "Notif History"
-            },
-            s = {
-                "<cmd>Telescope lsp_document_symbols<cr>", "Document Sybols"
-            },
-            S = {
-                "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"
-            }
-        }
-    },
-    leaderN
-)
-wk.register({
-    t = {
-        name = "Test",
-        -- l = { "<cmd>lua require('jester').run_last()<cr>", "Last" },
-        -- L = { "<cmd>lua require('jester').debug_last()<cr>", "Debug Last" },
-        -- n = { "<cmd>lua require('jester').run()<cr>", "Nearest" },
-        -- N = { "<cmd>lua require('jester').debug()<cr>", "Debug Nearest" },
-        -- f = { "<cmd>lua require('jester').file()<cr>", "File" },
-        t = { "<cmd>lua require('neotest').run.run({suite = true})<cr>", "All" },
-        l = { "<cmd>lua require('neotest').run.run_last()<cr>", "Last" },
-        L = { "<cmd>lua require('neotest').run.run_last({strategy = \"dap\"})<cr>", "Debug Last" },
-        n = { "<cmd>lua require('neotest').run.run()<cr>", "Nearest" },
-        N = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug Nearest" },
-        f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "File" },
-        w = { "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", "Watch" },
-        d = { "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", "Debug" },
-        s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Summary" },
-        o = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", "Output Panel" },
-        O = { "<cmd>lua require('neotest').output.open({ enter = true, auto_close = true})<cr>", "Output Window" },
 
-    }
-}, leaderN)
+wk.add({
+	{"<leader>f", group = "Search"},
+	{"<leader>ff", builtin.find_files, desc="Files"},
+	{"<leader>fb", "<cmd>Telescope buffers<cr>", desc="Buffers"},
+	{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
+	{"<leader>ft", builtin.current_buffer_fuzzy_find, desc='Text'},
+	{ "<leader>fT", "<cmd>Telescope live_grep<cr>", desc='Global Text' },
+	{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc='Help' },
+	{ "<leader>fm", "<cmd>Telescope man_pages<cr>", desc='Man' },
+	{ "<leader>fr", "<cmd>Telescope registers<cr>", desc="Registers" },
+	{ "<leader>fk", "<cmd>Telescope keymaps<cr>", desc="Keymaps" },
+	{ "<leader>fc", "<cmd>Telescope commands<cr>", desc="Commands" },
+	{ "<leader>fC", "<cmd>Telescope command_history<cr>", desc="Command History" },
+	{ "<leader>fn", "<cmd>Noice telescope<cr>", desc="Notif History" },
+	{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc="Document Sybols" },
+	{ "<leader>fS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc="Workspace Symbols" },
+
+}
+)
+
+wk.add({
+	{"<leader>t", group="Test"},
+	{"<leader>tt", "<cmd>lua require('neotest').run.run({suite = true})<cr>", desc="All" },
+	{"<leader>tl", "<cmd>lua require('neotest').run.run_last()<cr>", desc="Last" },
+	{"<leader>tL", "<cmd>lua require('neotest').run.run_last({strategy = \"dap\"})<cr>", desc="Debug Last" },
+	{"<leader>tn", "<cmd>lua require('neotest').run.run()<cr>", desc="Nearest" },
+	{"<leader>tN", "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", desc="Debug Nearest" },
+	{"<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc="File" },
+	{"<leader>tw", "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", desc="Watch" },
+	{"<leader>td", "<cmd>lua require('neotest').run.run({strategy = \"dap\"})<cr>", desc="Debug" },
+	{"<leader>ts", "<cmd>lua require('neotest').summary.toggle()<cr>", desc="Summary" },
+	{"<leader>to", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc="Output Panel" },
+	{"<leader>tO", "<cmd>lua require('neotest').output.open({ enter = true, auto_close = true})<cr>", desc="Output Window" },
+})
 
 
 local terminal = require('vali.terminal')

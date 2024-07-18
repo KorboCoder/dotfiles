@@ -50,9 +50,7 @@ return {
                     }
                 }
             })
-            require("which-key").register({
-                ["<leader>gc"] = { name = "+search" },
-            })
+			require("which-key").add({ "<leader>gc", group = "Search" })
             require("telescope").load_extension "file_browser"
             require("telescope").load_extension "undo"
         end
