@@ -19,7 +19,7 @@ yabai -m config focus_follows_mouse off
 #window settings
 yabai -m config window_opacity on
 # yabai -m config normal_window_opacity 0.7
-yabai -m config window_topmost on # floating windows always top
+# yabai -m config window_topmost on # floating windows always top
 
 yabai -m config mouse_modifier alt
 # left click + drag, move window
@@ -36,3 +36,4 @@ yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^Shottr$" manage=off
+yabai -m rule --add app="^(wezterm-gui|WezTerm)$" manage=off sub-layer="above" grid="1:1:0:0:1:1" display="1"

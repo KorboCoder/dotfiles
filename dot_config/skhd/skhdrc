@@ -45,7 +45,7 @@ shift + alt - k : yabai -m window --swap north
 shift + alt - h : yabai -m window --swap west || (yabai -m window --display west; yabai -m display --focus west;)
 shift + alt - l : yabai -m window --swap east || (yabai -m window --display east; yabai -m display --focus east;)
 
-# move window and split
+# move window and splir
 ctrl + alt - j : yabai -m window --warp south
 ctrl + alt - k : yabai -m window --warp north
 ctrl + alt - h : yabai -m window --warp west
@@ -83,6 +83,7 @@ cmd - h:
 # open application
 cmd - return: osascript -e 'tell application "Arc" to make new window'
 # 0x2A is code for \ backslash
-cmd + shift - 0x2A: osascript -e 'tell application "iTerm2" to create window with default profile'
+# cmd + shift - 0x2A: osascript -e 'tell application "iTerm2" to create window with default profile'
+cmd - 0x2A: ~/.config/skhd/quake.sh
 
 

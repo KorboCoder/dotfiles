@@ -20,19 +20,19 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 config.term = 'wezterm'
 config.set_environment_variables = {
-  TERMINFO_DIRS = '/home/user/.nix-profile/share/terminfo',
-  WSLENV = 'TERMINFO_DIRS',
+	TERMINFO_DIRS = '/home/user/.nix-profile/share/terminfo',
+	WSLENV = 'TERMINFO_DIRS',
 }
 
 config.force_reverse_video_cursor = true
-config.font_size = 15
+config.font_size = 18
 local scheme = wezterm.color.get_builtin_schemes()["Catppuccin Macchiato"]
 -- For example, changing the color scheme:
 config.color_scheme = 'Catppuccin Macchiato'
 config.background = {
 	{
 		source = {
-			Color=scheme.background
+			Color = scheme.background
 		},
 		width = "100%",
 		height = "100%",
@@ -49,9 +49,29 @@ config.background = {
 }
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
-config.enable_tab_bar =  false
+config.enable_tab_bar = false
 config.font = wezterm.font "Mononoki Nerd Font Mono"
 
+-- keys
+config.keys = {
+	{
+		key = 'f',
+		mods = 'CTRL|SUPER',
+		action = wezterm.action.ToggleFullScreen,
+	},
+	-- Make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
+	{
+		key = "LeftArrow",
+		mods = "OPT",
+		action = wezterm.action { SendString = "\x1bb" },
+	},
+	-- Make Option-Right equivalent to Alt-f; forward-word
+	{
+		key = "RightArrow",
+		mods = "OPT",
+		action = wezterm.action { SendString = "\x1bf" },
+	},
+}
 
 -- and finally, return the configuration to wezterm
 return config
