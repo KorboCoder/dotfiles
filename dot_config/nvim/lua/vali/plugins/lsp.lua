@@ -58,7 +58,28 @@ return {
             { 'simrat39/rust-tools.nvim' },
 
         },
-        config = function()
+		init = function()
+			-- Workaround for truncating long TypeScript inlay hints.
+			-- TODO: Remove this if https://github.com/neovim/neovim/issues/27240 gets addressed.
+			local methods = vim.lsp.protocol.Methods
+			local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
+			vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
+				local client = vim.lsp.get_client_by_id(ctx.client_id)
+				if client and client.name == 'typescript-tools' then
+					result = vim.iter(result):map(function(hint)
+						local label = hint.label ---@type string
+						if label:len() >= 30 then
+							label = label:sub(1, 29) .. '…'
+						end
+						hint.label = label
+						return hint
+					end)
+				end
+
+				inlay_hint_handler(err, result, ctx, config)
+			end
+		end,
+		config = function()
             local lsp = require('lsp-zero')
 
             lsp.preset('recommended')
@@ -115,6 +136,7 @@ return {
 			  -- This may be unwanted, since they displace some of your code
 			  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 				vim.lsp.inlay_hint.enable(true) -- enable at start
+
 
 				nmap('<leader>L', function()
 				  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -179,32 +201,48 @@ return {
                 tailwindcss = {
 
                 },
-                tsserver = {
-                    typescript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        }
-                    },
-                    javascript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        }
-                    }
-                },
+				vtsls = {
+					javascript = {
+						inlayHints = {
+							functionLikeReturnTypes = { enabled = true },
+							parameterNames = { enabled = 'all' },
+							variableTypes = { enabled = true },
+						},
+					},
+					typescript = {
+						inlayHints = {
+							functionLikeReturnTypes = { enabled = true },
+							parameterNames = { enabled = 'all' },
+							variableTypes = { enabled = true },
+						},
+					},
+				},
+                -- tsserver = {
+                --     typescript = {
+                --         inlayHints = {
+                --             includeInlayParameterNameHints = 'all',
+                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --             includeInlayFunctionParameterTypeHints = true,
+                --             includeInlayVariableTypeHints = true,
+                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                --             includeInlayPropertyDeclarationTypeHints = true,
+                --             includeInlayFunctionLikeReturnTypeHints = true,
+                --             includeInlayEnumMemberValueHints = true,
+                --         }
+                --     },
+                --     javascript = {
+                --         inlayHints = {
+                --             includeInlayParameterNameHints = 'all',
+                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --             includeInlayFunctionParameterTypeHints = true,
+                --             includeInlayVariableTypeHints = true,
+                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                --             includeInlayPropertyDeclarationTypeHints = true,
+                --             includeInlayFunctionLikeReturnTypeHints = true,
+                --             includeInlayEnumMemberValueHints = true,
+                --         }
+                --     }
+                -- },
                 -- Reference: https://github.com/LuaLS/lua-language-server/wiki/Settings
                 lua_ls = {
                     Lua = {
@@ -414,24 +452,14 @@ return {
         end
     },
     {
-        -- enabled = false,
+        enabled = false,
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        opts = {
-            settings = {
-                separate_diagnostic_server = false,
-                tsserver_file_preferences = {
-                    includeInlayParameterNameHints = 'all',
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-				javascript = {
-					inlayHints = {
+        config = function () 
+			require("typescript-tools").setup {
+				settings = {
+					separate_diagnostic_server = false,
+					tsserver_file_preferences = {
 						includeInlayParameterNameHints = 'all',
 						includeInlayParameterNameHintsWhenArgumentMatchesName = false,
 						includeInlayFunctionParameterTypeHints = true,
@@ -440,10 +468,22 @@ return {
 						includeInlayPropertyDeclarationTypeHints = true,
 						includeInlayFunctionLikeReturnTypeHints = true,
 						includeInlayEnumMemberValueHints = true,
+					},
+					javascript = {
+						inlayHints = {
+							includeInlayParameterNameHints = 'all',
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayVariableTypeHints = true,
+							includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayEnumMemberValueHints = true,
+						}
 					}
-				}
-            },
-        },
+				},
+			}
+		end
     },
     {
 

@@ -122,6 +122,7 @@ in
         source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
         eval "$(batpipe)"
+		eval "$(fnm env --use-on-cd)"
 
         fpath=(${pkgs.zsh-completions}/share/zsh-completions/src $fpath)
         source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
