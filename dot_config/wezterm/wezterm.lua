@@ -25,6 +25,7 @@ config.set_environment_variables = {
 }
 
 config.force_reverse_video_cursor = true
+config.cursor_thickness = 1.8
 config.font_size = 17
 
 local scheme = wezterm.color.get_builtin_schemes()["Catppuccin Macchiato"]
