@@ -63,7 +63,7 @@ return {
                         padding = {
                             left = 1, right = 0 }
                     },
-                    { "filename", newfile_status = true, symbols = { modified = "✏️", readonly = " 🔒", unnamed = "🤷", newFile = "📄"} },
+                    { "filename", newfile_status = true, symbols = { modified = "📝", readonly = " 🔒", unnamed = "🤷", newFile = "📄"} },
                     { "grapple" }
                     -- stylua: ignore
                     -- {
@@ -220,7 +220,21 @@ return {
                     )
                     )
                 end,
-            }
+            },
+			sources = {
+				path = {
+					modified = function(sym)
+						return sym:merge({
+							name = sym.name .. '📝',
+							-- icon = ' ',
+							name_hl = '@comment.warning.gitcommit',
+							icon_hl = '@comment.warning.gitcommit',
+							-- ...
+						})
+					end
+				}
+			}
+
         }
     },
     {
