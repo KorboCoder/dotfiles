@@ -10,8 +10,7 @@ function getWeztermWindow(){
 
 function updateWindowProps(){
 
-  yabai -m window "$1" --display 1 --focus
-  yabai -m window "$1" --grid 1:1:0:0:1:1
+  yabai -m window "$1" --grid 1:1:0:0:1:1 --display 1 --focus
   if [ "$is_floating" = "false" ]; then
 	yabai -m window "$1" --toggle float
   fi
@@ -26,10 +25,10 @@ id=$(echo "$window" | jq '.id')
 if [ "$window" = "null" ]; then
   open -a "WezTerm"
   window=$(getWeztermWindow)
-  updateWindowProps $id
+  updateWindowProps "$id"
 elif [ "$is_visible" = "false" ]; then
   # if not visible, move the window to the current space and focus it
-  updateWindowProps $id
+  updateWindowProps "$id"
 else
   # if visible, hide the window
   osascript -e "tell application \"System Events\" to set visible of first process ¬" \
