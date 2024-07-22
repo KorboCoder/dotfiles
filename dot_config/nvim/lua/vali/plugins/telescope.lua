@@ -25,6 +25,8 @@ return {
             { '<leader>gcc', "<cmd>Telescope git_commits<cr>",  desc = "Search Commits" },
             { '<leader>fq',      "<cmd>Telescope resume<cr>",        desc = "Resume" },
             { '<leader>fg',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
+            { '<C-w>V',      ":vsplit<cr><cmd>Telescope git_files<cr>",        desc = "Split Vertical and Search" },
+            { '<C-w>S',      ":split<cr><cmd>Telescope git_files<cr>",        desc = "Split Horizontal and Search" },
             -- { '<leader>fG',      "<cmd>Telescope git_bcommits<cr>",        desc = "Git Files" },
         },
         config = function()
