@@ -34,6 +34,13 @@ if [ "$TERM" != "wezterm" ] && [ -n "$TMUX" ]; then
     export TERM="tmux-256color"
 fi
 
+# TODO: below code is terminfo installation, figure out how to automate detection and installation
+#
+# tempfile=$(mktemp) \
+# && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
+# && tic -x -o ~/.terminfo $tempfile \
+# && rm $tempfile
+
 # export TERM="xterm-256color"
 # [[ -n $TMUX ]] && export TERM="tmux-256color"
 
