@@ -108,8 +108,7 @@ return {
         sign("DapBreakpoint", { text = "█", texthl = "DapBreakpoint", linehl = "", numhl = "DapBreakpoint" })
         sign("DapBreakpointCondition", { text = "█", texthl = "DapBreakpointCondition", linehl = "", numhl = "DapBreakpointCondition" })
         sign("DapLogPoint", { text = "█", texthl = "DapLogPoint", linehl = "", numhl = "DapLogPoint" })
-        sign("DapStopped", { text = "⮕", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
-
+        sign("DapStopped", { text = "⇛", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
 
         local ok, _ = pcall(require, "catppuccin.palettes")
         if ok then

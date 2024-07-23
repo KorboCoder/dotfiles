@@ -52,7 +52,10 @@ config.background = {
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.enable_tab_bar = false
-config.font = wezterm.font "Mononoki Nerd Font Mono"
+config.font = wezterm.font_with_fallback {
+	"Mononoki Nerd Font Mono",
+	"Noto Color Emoji",
+}
 
 -- keys
 config.keys = {
@@ -72,7 +75,7 @@ config.keys = {
 		key = "RightArrow",
 		mods = "OPT",
 		action = wezterm.action { SendString = "\x1bf" },
-	},
+	}
 }
 
 -- and finally, return the configuration to wezterm
