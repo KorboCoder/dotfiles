@@ -36,4 +36,4 @@ yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^Shottr$" manage=off
-yabai -m rule --add app="^(wezterm-gui|WezTerm)$" manage=off sub-layer="above" grid="1:1:0:0:1:1" display="1"
+yabai -m rule --add app="^(wezterm-gui|WezTerm)$" manage=off grid="1:1:0:0:1:1" display="^1"
