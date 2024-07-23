@@ -51,9 +51,11 @@ hs.hotkey.bind({ "cmd" }, "\\", function()
 
 			-- yabai calls so we can move the wezterm window to whatever space on the main screen, follow
 			-- this issue for any update on cleaner way to do this natively: https://github.com/Hammerspoon/hammerspoon/issues/3636
-			local windowid = hs.execute("/opt/homebrew/bin/yabai -m query --windows | /opt/homebrew/bin/jq 'map(select(.app == \"WezTerm\" or .app == \"wezterm-gui\")) | sort_by(.id) | last' | /opt/homebrew/bin/jq '.id'")
-			windowid = string.gsub(windowid, "\n", "")
-			hs.execute( "/opt/homebrew/bin/yabai -m window ".. windowid .." --grid 1:1:0:0:1:1 --display 1 --focus")
+			-- local windowid = hs.execute("$HOME/.nix-profile/bin/yabai -m query --windows | $HOME/.nix-profile/bin/jq 'map(select(.app == \"WezTerm\" or .app == \"wezterm-gui\")) | sort_by(.id) | last' | jq '.id'")
+			-- log.i(windowid)
+			-- windowid = string.gsub(windowid, "\n", "")
+			-- hs.execute( "$HOME/.nix-profile/bin/yabai -m window ".. windowid .." --grid 1:1:0:0:1:1 --display 1 --focus")
+			hs.execute("./focus-wezterm.sh")
 		end
 	end
 end)
