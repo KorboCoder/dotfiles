@@ -39,7 +39,7 @@
   "mason.nvim": { "branch": "main", "commit": "c43eeb5614a09dc17c03a7fb49de2e05de203924" },
   "modicator.nvim": { "branch": "main", "commit": "d1d327fd4bdfc3af4cfdf83b85c2eaefa71de7a8" },
   "neogen": { "branch": "main", "commit": "0daffcec249bf42275e322361fe55b89a05ff278" },
-  "neorg": { "branch": "main", "commit": "8635908dd793a88031735ec2eaedf97292bc3ea9" },
+  "neorg": { "branch": "main", "commit": "81ee90cb2d72ac43bfadb7dd276646f34c8f85be" },
   "neotest": { "branch": "master", "commit": "f30bab1faef13d47f3905e065215c96a42d075ad" },
   "neotest-jest": { "branch": "main", "commit": "c2118446d770fedb360a91b1d91a7025db86d4f1" },
   "noice.nvim": { "branch": "main", "commit": "03c6a75661e68012e30b0ed81f050358b1e2233c" },
