@@ -1,12 +1,14 @@
 vim.g.editorconfig = true -- use .editorconfig file
 
+-- this is so we can see CRLF in files
+vim.opt.binary = true
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.ruler = false
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
 vim.opt.clipboard = "unnamedplus" -- synvc with system clipboard by defaut (no need to use + register)
@@ -49,6 +51,8 @@ vim.opt.completeopt = 'menu,menuone,preview'
 -- this is so we can see CRLF in files
 vim.opt.binary = true
 
+vim.o.expandtab = true
+
 -- indent setup
 vim.opt.list = true
 
@@ -71,3 +75,4 @@ vim.opt.diffopt = {
   -- the default uses 'closeoff' which will automatically
   -- stop showing diffs when you only have one diff window remaining.
 }
+

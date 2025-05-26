@@ -6,7 +6,7 @@
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
 
---- @type LazyPlugin[] | LazyPlugin
+--- @type LazyPluginSpec[] | LazyPluginSpec
 return {
     -- NOTE: Yes, you can install new plugins here!
     'mfussenegger/nvim-dap',

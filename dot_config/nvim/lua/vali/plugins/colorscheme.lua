@@ -1,4 +1,4 @@
---- @type LazyPlugin[] | LazyPlugincolor
+--- @type LazyPluginSpec[] | LazyPluginSpec
 return {
 
     {

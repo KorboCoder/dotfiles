@@ -1,4 +1,4 @@
---- @type LazyPlugin[] | LazyPlugin
+--- @type LazyPluginSpec[] | LazyPluginSpec
 return {
     -- for nice vim.ui.select and vim.ui.input
     {

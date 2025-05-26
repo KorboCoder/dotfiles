@@ -1,4 +1,4 @@
---- @type LazyPlugin[] | LazyPlugin
+--- @type LazyPluginSpec[] | LazyPluginSpec
 return {
     {
         "nvim-pack/nvim-spectre",

@@ -1,4 +1,4 @@
---- @type LazyPlugin[] | LazyPlugin
+--- @type LazyPluginSpec[] | LazyPluginSpec
 return {
     {
         'VonHeikemen/lsp-zero.nvim',
@@ -18,7 +18,7 @@ return {
                     }
                 }
             },
-            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+            { 'williamboman/mason-lspconfig.nvim', tag = 'v1.32.0'}, -- Optional
 
             -- Autocompletion
             { 'hrsh7th/cmp-nvim-lsp' },                                              -- Required

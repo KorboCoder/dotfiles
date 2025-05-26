@@ -406,6 +406,11 @@ if command -v goenv &> /dev/null; then
     export GOBIN="$GOENV_ROOT/bin"
 fi
 
+#llvm
+ # export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+ # export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+ # export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
 # setup visaul and editor
 if command -v nvim &> /dev/null; then
     export EDITOR=nvim
