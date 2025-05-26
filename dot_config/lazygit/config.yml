@@ -3,14 +3,14 @@ os:
 notARepository: 'quit'
 git:
   paging:
-    externalDiffCommand: difft --color=always 
+    externalDiffCommand: difft --color=always
   commitPrefix:
-    pattern: "^\\w+\\/(\\w+-\\w+).*"
-    replace: '[$1] '
+    - pattern: "^\\w+\\/(\\w+-\\w+).*"
+      replace: '[$1] '
 gui:
   nerdFontsVersion: "3"
   theme:
-    lightTheme: false 
+    lightTheme: false
     activeBorderColor:
       - "#a6da95" # Green
       - bold
@@ -27,11 +27,9 @@ gui:
     cherryPickedCommitFgColor:
       - "#8aadf4" # Blue
     unstagedChangesColor:
-      - red       # Red
-
-
+      - red # Red
 customCommands:
   - key: 'C'
     context: 'global'
     command: "git commit"
-    subprocess: true
+    output: terminal

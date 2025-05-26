@@ -3,7 +3,7 @@ return {
     -- explore files and edit like a normal buffer
     {
         'stevearc/oil.nvim',
-        version = "2.7.0",
+        version = "2.15.0",
         opts = {
             delete_to_trash=true,
         },
