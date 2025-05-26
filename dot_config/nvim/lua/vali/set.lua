@@ -1,8 +1,5 @@
 vim.g.editorconfig = true -- use .editorconfig file
 
--- this is so we can see CRLF in files
-vim.opt.binary = true
-
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
