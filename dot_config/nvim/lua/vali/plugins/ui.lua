@@ -434,12 +434,12 @@ return {
         version = '*',
         config = true
     },
-	{
-		"tris203/precognition.nvim",
-		enabled=false,
-		keys = {
-			{ "<leader>P", function() require("precognition").peek() end, desc = "Precognition Peek" }
-		}
+    {
+        "tris203/precognition.nvim",
+        enabled=false,
+        keys = {
+            { "<leader>P", function() require("precognition").peek() end, desc = "Precognition Peek" }
+        }
     },
     -- make virt column thin
     { "lukas-reineke/virt-column.nvim", 
@@ -457,5 +457,18 @@ return {
     --colorizer
     {
         "norcalli/nvim-colorizer.lua",
+    },
+    {
+        "sphamba/smear-cursor.nvim",
+        opts = {                                -- Default  Range
+            stiffness = 0.8,                      -- 0.6      [0, 1]
+            trailing_stiffness = 0.5,             -- 0.4      [0, 1]
+            stiffness_insert_mode = 0.6,          -- 0.4      [0, 1]
+            trailing_stiffness_insert_mode = 0.6, -- 0.4      [0, 1]
+            distance_stop_animating = 0.5,        -- 0.1      > 0
+            legacy_computing_symbols_support = true,
+
+            transparent_bg_fallback_color = "#303030",
+        },
     }
 }

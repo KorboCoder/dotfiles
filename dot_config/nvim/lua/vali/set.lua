@@ -2,8 +2,6 @@ vim.g.editorconfig = true -- use .editorconfig file
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
 vim.opt.smartindent = true
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
 vim.opt.clipboard = "unnamedplus" -- synvc with system clipboard by defaut (no need to use + register)
@@ -43,7 +41,10 @@ vim.diagnostic.config({
 
 vim.opt.completeopt = 'menu,menuone,preview'
 
-vim.o.expandtab = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 
 -- indent setup
 vim.opt.list = true
