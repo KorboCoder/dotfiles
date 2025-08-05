@@ -6,7 +6,7 @@ return {
             'nvim-treesitter/nvim-treesitter-textobjects',
         },
         branch = 'master',
-        version = 'v0.9.*',
+        version = 'v0.10.*',
         build = ':TSUpdate',
 		configs =function ()
 			local configs = require("nvim-treesitter.configs")

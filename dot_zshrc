@@ -165,7 +165,6 @@ gch() {
 HISTSIZE=10000
 HISTFILESIZE=20000
 eval "$(mcfly init zsh)"
-eval $(thefuck --alias pota)
 # fix jupyter PATH issue with monterey
 export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
@@ -190,6 +189,9 @@ if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
     source $HOME/fzf-tab/fzf-tab.plugin.zsh
     # eza style
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+
+    # tmux popup
+    zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 fi
 
 # Fix starship load wrapping issue
@@ -441,3 +443,5 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+[[ -s "/Users/vali/.gvm/scripts/gvm" ]] && source "/Users/vali/.gvm/scripts/gvm"
