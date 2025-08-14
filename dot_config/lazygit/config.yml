@@ -2,8 +2,8 @@ os:
   editPreset: 'nvim'
 notARepository: 'quit'
 git:
-  paging:
-    externalDiffCommand: difft --color=always
+  # paging:
+  #   externalDiffCommand: difft --color=always
   commitPrefix:
     - pattern: "^\\w+\\/(\\w+-\\w+).*"
       replace: '[$1] '

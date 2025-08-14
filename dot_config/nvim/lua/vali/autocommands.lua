@@ -74,3 +74,26 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
     group = augroup('telelscope_on_enter'),
 });
 
+-- Go visibility hints setup and toggle
+pcall(function()
+  local hints = require("vali.go_visibility_hints")
+  hints.setup({
+    -- symbols = { exported = "↑", unexported = "•" },
+    -- colors = {
+    --   exported = { fg = "#7ee787" },
+    --   unexported = { fg = "#9ea7b3" },
+    -- },
+  })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "go",
+    callback = function(args)
+      -- Enable by default and map a toggle
+      hints.enable(args.buf)
+      vim.keymap.set("n", "<leader>v", function()
+        hints.toggle(args.buf)
+      end, { buffer = args.buf, desc = "Toggle Go visibility hints" })
+    end,
+  })
+end)
+

@@ -90,10 +90,10 @@ return {
 
             -- [[ Configure LSP ]]
             local on_attach = function(client, bufnr)
-                local ok, _ = pcall(require, "inlay-hints")
-                if ok then
-                    require("inlay-hints").on_attach(client, bufnr)
-                end
+                -- local ok, _ = pcall(require, "inlay-hints")
+                -- if ok then
+                --     require("inlay-hints").on_attach(client, bufnr)
+                -- end
 
 
                 -- In this case, we create a function that lets us more easily define mappings specific
@@ -153,38 +153,42 @@ return {
             local servers = {
                 -- clangd = {},
                 gopls = {
-                    gofumpt = true,
-                    codelenses = {
-                        gc_details = false,
-                        generate = true,
-                        regenerate_cgo = true,
-                        run_govulncheck = true,
-                        test = true,
-                        tidy = true,
-                        upgrade_dependency = true,
-                        vendor = true,
+                    gopls = {
+                        -- keep your existing options under the gopls table
+                        gofumpt = true,
+                        codelenses = {
+                            gc_details = false,
+                            generate = true,
+                            regenerate_cgo = true,
+                            run_govulncheck = true,
+                            test = true,
+                            tidy = true,
+                            upgrade_dependency = true,
+                            vendor = true,
+                        },
+                        -- legacy hints table (still honored by many versions)
+                        hints = {
+                            assignVariableTypes = true,
+                            compositeLiteralFields = true,
+                            compositeLiteralTypes = true,
+                            constantValues = true,
+                            functionTypeParameters = true,
+                            parameterNames = true,
+                            rangeVariableTypes = true,
+                        },
+                        analyses = {
+                            fieldalignment = true,
+                            nilness = true,
+                            unusedparams = true,
+                            unusedwrite = true,
+                            useany = true,
+                        },
+                        usePlaceholders = true,
+                        completeUnimported = true,
+                        staticcheck = true,
+                        directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+                        semanticTokens = true,
                     },
-                    hints = {
-                        assignVariableTypes = true,
-                        compositeLiteralFields = true,
-                        compositeLiteralTypes = true,
-                        constantValues = true,
-                        functionTypeParameters = true,
-                        parameterNames = true,
-                        rangeVariableTypes = true,
-                    },
-                    analyses = {
-                        fieldalignment = true,
-                        nilness = true,
-                        unusedparams = true,
-                        unusedwrite = true,
-                        useany = true,
-                    },
-                    usePlaceholders = true,
-                    completeUnimported = true,
-                    staticcheck = true,
-                    directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-                    semanticTokens = true,
                 },
                 -- pyright = {},
                 -- rust_analyzer = {},

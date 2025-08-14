@@ -6,17 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
-
-if [[ -n "${ZELLIJ}" ]]; then
-export TMUX=$ZELLIJ
-fi
-
-if [[ -n "${ZELLIJ}" ]]; then
-  unset TMUX
-fi
-
+# [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 
 # check if we did a :term command in neovim
 is_nvim_term() {
@@ -29,8 +19,7 @@ is_nvim_term() {
 }
 # setup term before loading tmux
 # for undercurls
-[[ $TERM != "wezterm" ]] && export TERM="xterm-256color"
-if [ "$TERM" != "wezterm" ] && [ -n "$TMUX" ]; then
+if [ -n "$TMUX" ]; then
     export TERM="tmux-256color"
 fi
 
@@ -98,21 +87,23 @@ fi
 #     fi
 # fi
 # echo "TEST: $TMUX"
-if which tmux 2>&1 >/dev/null; then
-    if [ -z $TMUX ]; then
-        # if we're not in :term and toggleterm, create a main session
-        if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
-            # export TERM="tmux-256color"
-            tmux new-session -A -t main || tmux new-session -s main
-            exit
-            # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
-        fi
-    else
+if [[ $- == *i* ]]; then
+    if which tmux 2>&1 >/dev/null; then
+        if [ -z $TMUX ]; then
+            # if we're not in :term and toggleterm, create a main session
+            if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
+                export TERM="tmux-256color"
+                tmux new-session -A -t main || tmux new-session -s main
+                exit
+                # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
+            fi
+        else
 
-        if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
-            tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
-            exit
-        fi 
+            if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
+                tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
+                exit
+            fi 
+        fi
     fi
 fi
 #NVM setup  
@@ -172,13 +163,13 @@ export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 # zsh autocomplete
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-zshautocomplete_path=$HOMEBBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+zshautocomplete_path=$HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 if [ -d autocomplete_path ]; then # check if we have fzf-tab tab repo dir
     source zshautocomplete_path
 fi
 
 # zsh autosuggestion
-zshautosuggestion_path=$HOMEBBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+zshautosuggestion_path=$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 if [ -d zshautosuggestion_path ]; then # check if we have fzf-tab tab repo dir
     source zshautosuggestion_path
 fi
@@ -427,7 +418,7 @@ if command -v atuin &> /dev/null; then
 	eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
-if [ -f "$HOMEBBREW_PREFIX/.cargo/env" ]; then
+if [ -f "$HOMEBREW_PREFIX/.cargo/env" ]; then
     . $HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh
 fi
 
@@ -438,7 +429,7 @@ if [ -f  $powerlevel10k_path ]; then
 fi
 
 # Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+# [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

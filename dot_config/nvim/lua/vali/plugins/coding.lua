@@ -359,5 +359,13 @@ return {
                 implementation = { enabled = true },
             })
         end
+    },
+    { 
+        'bennypowers/splitjoin.nvim',
+        lazy = true,
+        keys = {
+            { 'gj', function() require'splitjoin'.join() end, desc = 'Join the object under cursor' },
+            { 'gs', function() require'splitjoin'.split() end, desc = 'Split the object under cursor' },
+        },
     }
 }
