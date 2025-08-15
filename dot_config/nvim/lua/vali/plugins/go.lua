@@ -44,9 +44,11 @@ return {
             -- floaterm = {   -- position
             --     posititon = 'right', -- one of {`top`, `bottom`, `left`, `right`, `center`, `auto`}
             -- },
-            -- dap_debug = true,
+            dap_debug = false,
             -- dap_debug_ui = { enabled = false },
             dap_debug_gui = false,
+            dap_debug_keymap = false,
+
         },
         event = {"CmdlineEnter"},
         ft = {"go", 'gomod'},

@@ -101,7 +101,9 @@ return {
 
         
         vim.keymap.set('n', '<leader>dr', dap.repl.open, { desc = 'Open Repl' })
-        vim.keymap.set('n', "<leader>dw", function() require("dap.ui.widgets").hover() end, { desc = "Widgets" })
+
+        -- two calls here is on purpose, first one opens the hover window, second focuses us on the window
+        vim.keymap.set('n', "<leader>dw", function() require("dapui").eval() require("dapui").eval() end, { desc = "Hover" })
 
         -- configure column signs
         local sign = vim.fn.sign_define

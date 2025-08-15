@@ -379,27 +379,27 @@ return {
                     --  This will auto-import if your LSP supports it.
                     --  This will expand snippets if the LSP sent a snippet.
                     ['<C-y>'] = cmp.mapping.confirm { select = true },
-                    ['<C-CR>'] = cmp.mapping.confirm { select = true },
-
+                    ['<Right>'] = cmp.mapping.confirm { select = true },
 
                     -- to exit completion tab if i want to close
-                    ['<C-Space>'] = cmp.mapping.complete {},
+                    -- ['<C-Space>'] = cmp.mapping.complete {},
                     -- Toggle copmletion menu. Ref: https://github.com/hrsh7th/nvim-cmp/issues/429#issuecomment-954121524
-                    -- ['<C-Space>'] = cmp.mapping({
-                    --     i = function()
-                    --         if cmp.visible() then
-                    --             cmp.abort()
-                    --         else
-                    --             cmp.complete()
-                    --         end
-                    --     end,
-                    --     c = function()
-                    --         if cmp.visible() then
-                    --             cmp.close()
-                    --         else
-                    --             cmp.complete()
-                    --         end
-                    --     end }),
+                    ['<C-Space>'] = cmp.mapping({
+                        i = function()
+                            if cmp.visible() then
+                                cmp.abort()
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                        c = function()
+                            if cmp.visible() then
+                                cmp.close()
+                            else
+                                cmp.complete()
+                            end
+                        end }),
+
                     -- ['<CR>'] = cmp.mapping.confirm {
                     --     -- behavior = cmp.ConfirmBehavior.Replace,
                     --     select = false,
@@ -445,6 +445,7 @@ return {
                     end, { 'i', 's' }),
                 },
                 sources = {
+                    { name = "copilot"},
                     { name = 'path' },
                     { name = 'nvim_lsp' },
                     { name = 'buffer', keyword_length = 2 },
@@ -582,16 +583,16 @@ return {
         },
     },
     { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-    { -- optional completion source for require statements and module annotations
-        "hrsh7th/nvim-cmp",
-        opts = function(_, opts)
-            opts.sources = opts.sources or {}
-            table.insert(opts.sources, {
-                name = "lazydev",
-                group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-            })
-        end,
-    },
+    -- { -- optional completion source for require statements and module annotations
+    --     "hrsh7th/nvim-cmp",
+    --     opts = function(_, opts)
+    --         opts.sources = opts.sources or {}
+    --         table.insert(opts.sources, {
+    --             name = "lazydev",
+    --             group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+    --         })
+    --     end,
+    -- },
     {
         'cameron-wags/rainbow_csv.nvim',
         ft = {

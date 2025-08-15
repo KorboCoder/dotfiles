@@ -8,7 +8,8 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
             {"nvim-neotest/neotest-jest",commit = "c211844" },
-            "antoinemadec/FixCursorHold.nvim"
+            "antoinemadec/FixCursorHold.nvim",
+            { "fredrikaverpil/neotest-golang", version = "1.14.*" }, -- Installation
         },
         config = function()
             require('neotest').setup({
@@ -21,6 +22,7 @@ return {
                             return vim.fn.getcwd()
                         end,
                     }),
+                    require("neotest-golang")({}), -- Registration
                 },
                 consumers = {
                     -- notify when tests start and end

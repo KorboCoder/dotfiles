@@ -142,9 +142,9 @@ return {
 							local unique_client_names = table.concat(buf_client_names, ", ")
 							local language_servers = string.format("[%s]", unique_client_names)
 
-							-- if copilot_active then
-							--     language_servers = language_servers .. "%#SLCopilot#" .. " " .. lvim.icons.git.Octoface .. "%*"
-							-- end
+							if copilot_active then
+							    language_servers = language_servers .. "%#SLCopilot#" .. " " .. lvim.icons.git.Octoface .. "%*"
+							end
 
 							return language_servers
 						end,
@@ -300,13 +300,14 @@ return {
             -- vim.g.indent_blankline_char_list = {'┆', '┊' }
 
             -- Used functions from tint.nvim to adjust indent lint colors
-            local tint_func= require("tint.transforms").tint(-100)
-            local sat_func = require("tint.transforms").saturate(0.4)
+            local tint_func= require("tint.transforms").tint(-75)
+            local sat_func = require("tint.transforms").saturate(0.8)
             local hex_to_rgb = require("tint.colors").hex_to_rgb
             local rgb_to_hex = require("tint.colors").rgb_to_hex
             local custom_transform = function(hex)
                 local r,g,b = hex_to_rgb(hex)
-                local r1,g1,b1 = sat_func(tint_func(r, g, b))
+                local r0, g0, b0 = tint_func(r, g, b)
+                local r1,g1,b1 = sat_func(r0, g0, b0)
                 local res = rgb_to_hex(r1,g1,b1)
                 return res
             end
@@ -323,9 +324,14 @@ return {
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
             end
 
+
             -- dunno where to put this, migrate this where it makes sense
             -- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
         end
+    },
+    {
+        "HiPhish/rainbow-delimiters.nvim",
+        event = "VeryLazy",
     },
     -- change cursorlinenumber depending on mode
     {

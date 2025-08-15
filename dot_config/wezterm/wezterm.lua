@@ -82,7 +82,18 @@ config.keys = {
 		key = "RightArrow",
 		mods = "OPT",
 		action = wezterm.action { SendString = "\x1bf" },
-	}
+	},
+    {
+        key = "l",
+        mods = "OPT",
+        action = wezterm.action.SendKey { key = "l", mods = "OPT" },
+    },
+    {
+        key = "s",
+        mods = "CTRL",
+        action = wezterm.action.SendKey { key = "s", mods = "CTRL" },
+    },
+
 }
 
 -- and finally, return the configuration to wezterm

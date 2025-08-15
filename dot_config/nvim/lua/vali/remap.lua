@@ -15,10 +15,10 @@ vim.keymap.set("v", "<s-tab>", "<gv", { noremap = true })
 vim.keymap.set("v", "<tab>", ">gv", { noremap = true })
 
 -- Move to window using the <ctrl> hjkl keys
-vim.keymap.set("n", "<c-h>", "<C-w>h", { desc = "Go to left window", noremap = true})
-vim.keymap.set("n", "<c-j>", "<C-w>j", { desc = "Go to lower window", noremap = true})
-vim.keymap.set("n", "<c-k>", "<C-w>k", { desc = "Go to upper window", noremap = true})
-vim.keymap.set("n", "<c-l>", "<C-w>l", { desc = "Go to right window", noremap = true})
+-- vim.keymap.set("n", "<c-h>", "<C-w>h", { desc = "Go to left window", noremap = true})
+-- vim.keymap.set("n", "<c-j>", "<C-w>j", { desc = "Go to lower window", noremap = true})
+-- vim.keymap.set("n", "<c-k>", "<C-w>k", { desc = "Go to upper window", noremap = true})
+-- vim.keymap.set("n", "<c-l>", "<C-w>l", { desc = "Go to right window", noremap = true})
 
 -- Resize window using <ctrl> arrow keys
 vim.keymap.set("n", "<C-M-k>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -73,6 +73,7 @@ wk.add({
 }
 )
 
+-- Testing
 wk.add({
 	{"<leader>t", group="Test"},
 	{"<leader>tt", "<cmd>lua require('neotest').run.run({suite = true})<cr>", desc="All" },
@@ -106,6 +107,7 @@ vim.keymap.set({ 't', 'i', 'n', 'x' }, '<C-Bslash>', terminal.cmd_toggle,
 -- Clear search with <esc>
 vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
+
 
 -- Reference for following: https://github.com/nvim-lua/kickstart.nvim
 -- treesitter
