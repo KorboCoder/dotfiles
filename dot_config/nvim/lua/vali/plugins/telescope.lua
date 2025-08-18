@@ -15,7 +15,8 @@ return {
                 end,
             },
             "debugloop/telescope-undo.nvim",
-            "nvim-telescope/telescope-file-browser.nvim"
+            "nvim-telescope/telescope-file-browser.nvim",
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
         },
         keys = {
             { "<leader>f<tab>", "<cmd>Telescope<cr>",         desc = "Telescope" },
@@ -49,12 +50,14 @@ return {
                     undo = {
                         use_delta = true,
                         side_by_side = true
-                    }
+                    },
+                    fzf = {}
                 }
             })
 			require("which-key").add({ "<leader>gc", group = "Search" })
             require("telescope").load_extension "file_browser"
             require("telescope").load_extension "undo"
+            require('telescope').load_extension('fzf')
         end
     },
 }

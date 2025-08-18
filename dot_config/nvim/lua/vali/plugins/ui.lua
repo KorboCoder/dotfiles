@@ -276,61 +276,98 @@ return {
     {
         -- Add indentation guides even on blank lines
         'lukas-reineke/indent-blankline.nvim',
-        version = '2.*',
+        main = "ibl",
+        version = '3.*',
         -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help indent_blankline.txt`
-        opts = {
-            show_trailing_blankline_indent = false,
-        },
+        -- See `:help ibl`
         config = function()
-            require("indent_blankline").setup {
-                space_char_blankline = " ",
-                show_current_context = false,
-                show_current_context_start = false,
-                char_highlight_list = {
-                    "IndentBlanklineIndent1",
-                    "IndentBlanklineIndent2",
-                    "IndentBlanklineIndent3",
-                    "IndentBlanklineIndent4",
-                    "IndentBlanklineIndent5",
-                    "IndentBlanklineIndent6",
+            local highlight = {
+                "IndentBlanklineIndent1",
+                "IndentBlanklineIndent2",
+                "IndentBlanklineIndent3",
+                "IndentBlanklineIndent4",
+                "IndentBlanklineIndent5",
+                "IndentBlanklineIndent6",
+                "IndentBlanklineIndent7",
+            }
+            local scope_highlight = {
+                "RainbowDelimiterYellow",
+                "RainbowDelimiterRed",
+                "RainbowDelimiterBlue",
+                "RainbowDelimiterOrange",
+                "RainbowDelimiterGreen",
+                "RainbowDelimiterViolet",
+                "RainbowDelimiterCyan",
+            }
+
+            local hooks = require "ibl.hooks"
+            -- create the highlight groups in the highlight setup hook, so they are reset
+            -- every time the colorscheme changes
+            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+                -- Used functions from tint.nvim to adjust indent line colors
+                local tint_func= require("tint.transforms").tint(-75)
+                local sat_func = require("tint.transforms").saturate(0.8)
+                local hex_to_rgb = require("tint.colors").hex_to_rgb
+                local rgb_to_hex = require("tint.colors").rgb_to_hex
+                local custom_transform = function(hex)
+                    local r,g,b = hex_to_rgb(hex)
+                    local r0, g0, b0 = tint_func(r, g, b)
+                    local r1,g1,b1 = sat_func(r0, g0, b0)
+                    local res = rgb_to_hex(r1,g1,b1)
+                    return res
+                end
+
+                local ok, _ = pcall(require, "catppuccin.palettes")
+                if ok then
+                    local macchiato = require("catppuccin.palettes").get_palette "macchiato"
+
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { blend = 0, fg=custom_transform(macchiato.red)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { blend = 0, fg=custom_transform(macchiato.teal)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { blend = 0, fg=custom_transform(macchiato.peach)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { blend = 0, fg=custom_transform(macchiato.blue)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
+                    vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { blend = 0, fg=custom_transform(macchiato.mauve)})
+
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = macchiato.yellow })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterRed", { fg = macchiato.red })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterBlue", { fg = macchiato.blue })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterOrange", { fg = macchiato.peach })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterGreen", { fg = macchiato.teal })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterViolet", { fg = macchiato.pink })
+                    vim.api.nvim_set_hl(0, "RainbowDelimiterCyan", { fg = macchiato.mauve })
+                end
+
+            end)
+
+            require("ibl").setup {
+                indent = {
+                    char = '┆',
+                    tab_char = '┆',
+                    highlight = highlight,
+                },
+                scope = {
+                    char = '│',
+                    show_start = true,
+                    show_end = true,
+                    highlight = highlight,
                 },
             }
-            vim.g.indent_blankline_char ='┆'
-            -- vim.g.indent_blankline_char_list = {'┆', '┊' }
 
-            -- Used functions from tint.nvim to adjust indent lint colors
-            local tint_func= require("tint.transforms").tint(-75)
-            local sat_func = require("tint.transforms").saturate(0.8)
-            local hex_to_rgb = require("tint.colors").hex_to_rgb
-            local rgb_to_hex = require("tint.colors").rgb_to_hex
-            local custom_transform = function(hex)
-                local r,g,b = hex_to_rgb(hex)
-                local r0, g0, b0 = tint_func(r, g, b)
-                local r1,g1,b1 = sat_func(r0, g0, b0)
-                local res = rgb_to_hex(r1,g1,b1)
-                return res
-            end
+            -- Set up rainbow-delimiters to use the same colors as indent-blankline
+            vim.g.rainbow_delimiters = { highlight = highlight }
 
-            local ok, _ = pcall(require, "catppuccin.palettes")
-            if ok then
-                local macchiato = require("catppuccin.palettes").get_palette "macchiato"
-
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { blend = 0, fg=custom_transform(macchiato.yellow)})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { blend = 0, fg=custom_transform(macchiato.red)})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { blend = 0, fg=custom_transform(macchiato.teal)})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { blend = 0, fg=custom_transform(macchiato.peach)})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { blend = 0, fg=custom_transform(macchiato.blue)})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { blend = 0, fg=custom_transform(macchiato.pink)})
-            end
-
+            -- Register hook for scope highlighting integration with rainbow-delimiters
+            hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
             -- dunno where to put this, migrate this where it makes sense
             -- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
         end
     },
     {
+
         "HiPhish/rainbow-delimiters.nvim",
+        dependencies = { 'lukas-reineke/indent-blankline.nvim' },
         event = "VeryLazy",
     },
     -- change cursorlinenumber depending on mode
