@@ -56,6 +56,7 @@ local builtin = require('telescope.builtin')
 wk.add({
 	{"<leader>f", group = "Search"},
 	{"<leader>ff", builtin.find_files, desc="Files"},
+	{"<leader>fF", function() builtin.find_files({ hidden = true }) end, desc="Files (Hidden)"},
 	{"<leader>fb", "<cmd>Telescope buffers<cr>", desc="Buffers"},
 	{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
 	{"<leader>ft", builtin.current_buffer_fuzzy_find, desc='Text'},
@@ -87,6 +88,71 @@ wk.add({
 	{"<leader>ts", "<cmd>lua require('neotest').summary.toggle()<cr>", desc="Summary" },
 	{"<leader>to", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc="Output Panel" },
 	{"<leader>tO", "<cmd>lua require('neotest').output.open({ enter = true, auto_close = true})<cr>", desc="Output Window" },
+})
+
+
+-- Updated filter function to handle lua functions
+local function filter_selection(cmd_or_func)
+  -- Copy the visual selection
+  vim.cmd('normal! "xy')
+  local selected_text = vim.fn.getreg('x')
+  
+  local result
+  if type(cmd_or_func) == "function" then
+    -- Handle lua function
+    result = cmd_or_func(selected_text)
+  else
+    -- Handle shell commands
+    result = vim.fn.system(cmd_or_func, selected_text)
+    -- Remove trailing newline
+    result = result:gsub('\n$', '')
+  end
+  
+  -- Replace the selection with the result
+  vim.fn.setreg('x', result)
+  vim.cmd('normal! gv"xp')
+  
+  -- Reselect the pasted text
+  vim.cmd('normal! `[v`]')
+end
+
+
+local function url_encode(str)
+  -- Convert each character that's not in the unreserved set to percent-encoded
+  return str:gsub("[^A-Za-z0-9_.~%-]", function(c)
+    return string.format("%%%02X", string.byte(c))
+  end)
+end
+
+local function url_decode(str)
+  -- Handle newlines: %0A or %0a at end of string becomes %0A, %0A anywhere becomes actual newline
+  str = str:gsub("%%0[Aa]\n$", "%%0A")
+  str = str:gsub("%%0[Aa]", "\n")
+  -- Convert + to space (application/x-www-form-urlencoded)
+  str = str:gsub("+", " ")
+  -- Decode percent-encoded characters
+  return str:gsub("%%(%x%x)", function(hex)
+    return string.char(tonumber(hex, 16))
+  end)
+end
+
+wk.add({
+    -- JSON transformations
+    { "[j", function() filter_selection('jq -c .') end, desc = "JSON Minify", mode = "v" },
+    { "]j", function() filter_selection('jq .') end, desc = "JSON Beautify", mode = "v" },
+
+
+    -- Base64 transformations
+    { "[b", function() filter_selection('base64 -d') end, desc = "Base64 Decode", mode = "v" },
+    { "]b", function() filter_selection('base64') end, desc = "Base64 Encode", mode = "v" },
+
+    -- C-string escaping transformations  
+    { "[c", function() filter_selection("sed 's/\\\\n/\\n/g; s/\\\\t/\\t/g; s/\\\\\"/\"/g; s/\\\\\\\\/\\\\/g'") end, desc = "C Unescape", mode = "v" },
+    { "]c", function() filter_selection("sed 's/\\\\/\\\\\\\\/g; s/\"/\\\\\"/g; s/\\n/\\\\n/g; s/\\t/\\\\t/g'") end, desc = "C Escape", mode = "v" },
+
+    -- URL transformations
+    { "[u", function() filter_selection(url_decode) end, desc = "URL Decode", mode = "v" },
+    { "]u", function() filter_selection(url_encode) end, desc = "URL Encode", mode = "v" },
 })
 
 

@@ -149,35 +149,48 @@ return {
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {},
+        cmd = "Trouble",
         keys = {
             {
                 "<leader>zz",
-                "<cmd>Trouble diagnostics toggle<cr>",
+                function() require("trouble").toggle("diagnostics") end,
                 desc = "Diagnostics (Trouble)",
+            },
+
+            {
+                "<leader>zo",
+                function() require("trouble").next() end,
+                desc = "Previous",
+            },
+            {
+                "<leader>zi",
+                function() require("trouble").prev() end,
+                desc = "Next",
             },
             {
                 "<leader>zZ",
-                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                function() require("trouble").toggle("diagnostics", { filter = { buf = 0 } }) end,
                 desc = "Buffer Diagnostics (Trouble)",
             },
             {
                 "<leader>zs",
-                "<cmd>Trouble symbols toggle focus=false<cr>",
+                function() require("trouble").toggle("symbols", { focus = false }) end,
                 desc = "Symbols (Trouble)",
             },
             {
                 "<leader>zl",
-                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                function() require("trouble").toggle("lsp", { focus = false, win = { position = "right" } }) end,
                 desc = "LSP Definitions / references / ... (Trouble)",
             },
             {
                 "<leader>zL",
-                "<cmd>Trouble loclist toggle<cr>",
+                function() require("trouble").toggle("loclist") end,
                 desc = "Location List (Trouble)",
             },
             {
                 "<leader>zq",
-                "<cmd>Trouble qflist toggle<cr>",
+                function() require("trouble").toggle("qflist") end,
                 desc = "Quickfix List (Trouble)",
             },
         },
