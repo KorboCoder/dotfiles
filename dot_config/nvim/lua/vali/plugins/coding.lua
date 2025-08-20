@@ -298,7 +298,8 @@ return {
         },
         dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
         opts = {
-            use_default_keymaps = false
+            use_default_keymaps = false,
+            max_join_length = 1000,
         },
     },
     {
@@ -373,12 +374,86 @@ return {
             })
         end
     },
-    { 
-        'bennypowers/splitjoin.nvim',
-        lazy = true,
+{
+        'dnlhc/glance.nvim',
+        cmd = 'Glance',
         keys = {
-            { 'gj', function() require'splitjoin'.join() end, desc = 'Join the object under cursor' },
-            { 'gs', function() require'splitjoin'.split() end, desc = 'Split the object under cursor' },
+            { 'gD', '<cmd>Glance definitions<cr>', desc = 'Glance Definitions' },
+            { 'gR', '<cmd>Glance references<cr>', desc = 'Glance References' },
+            { 'gM', '<cmd>Glance implementations<cr>', desc = 'Glance Implementations' },
+            { 'gY', '<cmd>Glance type_definitions<cr>', desc = 'Glance Type Definitions' },
         },
-    }
+        opts ={
+            border = {
+                enable = true, -- Show window borders. Only horizontal borders allowed
+                top_char = '═',
+                bottom_char = '═',
+            },
+        }
+
+    },
+    {
+        "rachartier/tiny-code-action.nvim",
+        dependencies = {
+            {"nvim-lua/plenary.nvim"},
+            {"nvim-telescope/telescope.nvim"},
+        },
+        event = "LspAttach",
+        opts = {
+            backend = "vim",
+            picker = {
+                "buffer",
+                opts = {
+                    hotkeys = true,
+                    hotkeys_mode = function(titles, used_hotkeys)
+                        local t = {}
+                        for i = 1, #titles do t[i] = tostring(i) end
+                        return t
+                    end,
+                    auto_preview = true,
+                    winborder ="double"
+                }
+            }
+        },
+        init = function()
+            vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+                require("tiny-code-action").code_action()
+            end, { noremap = true, silent = true, desc = "Code Actions" })
+        end
+
+
+    },
+
+    { -- This plugin
+        "Zeioth/compiler.nvim",
+        cmd = {"CompilerOpen", "CompilerToggleResults", "CompilerRedo"},
+        dependencies = { "stevearc/overseer.nvim", "nvim-telescope/telescope.nvim" },
+        opts = {},
+        init = function()
+            -- Open compiler
+            vim.api.nvim_set_keymap('n', '<F6>', "<cmd>CompilerOpen<cr>", { noremap = true, silent = true })
+
+            -- Redo last selected option
+            vim.api.nvim_set_keymap('n', '<leader><F6>',
+                "<cmd>CompilerStop<cr>" -- (Optional, to dispose all tasks before redo)
+                .. "<cmd>CompilerRedo<cr>",
+                { noremap = true, silent = true })
+
+            -- Toggle compiler results
+            vim.api.nvim_set_keymap('n', '<leader><F7>', "<cmd>CompilerToggleResults<cr>", { noremap = true, silent = true })
+        end,
+    },
+    { -- The task runner we use
+        "stevearc/overseer.nvim",
+        commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        opts = {
+            task_list = {
+                direction = "bottom",
+                min_height = 25,
+                max_height = 25,
+                default_detail = 1
+            },
+        },
+    },
 }

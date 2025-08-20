@@ -513,5 +513,48 @@ return {
 
             transparent_bg_fallback_color = "#303030",
         },
-    }
+    },
+    {
+        "rachartier/tiny-glimmer.nvim",
+        event = "VeryLazy",
+        priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
+        opts = {
+            overwrite ={
+                yank = {
+                    enabled = false,
+                    default_animation = "fade",
+                },
+                undo = {
+                    enabled = true,
+                    default_animation = {
+                        settings = {
+
+                            max_duration = 200,
+                            min_duration = 200,
+                        },
+                    }
+                },
+                redo = {
+                    enabled = true,
+                    default_animation = {
+                        settings = {
+
+                            max_duration = 200,
+                            min_duration = 200,
+                        },
+                    }
+                }
+            },
+            animations = {
+                fade = {
+                    max_duration = 200,
+                    min_duration = 200,
+                },
+                reverse_fade = {
+                    max_duration = 200,
+                    min_duration = 200,
+                },
+            }
+        }
+    },
 }
