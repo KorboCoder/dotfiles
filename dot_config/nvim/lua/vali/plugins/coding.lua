@@ -74,61 +74,82 @@ return {
 
         end,
     },
-    -- nice diagnosis UI
     {
-        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        branch = "main",
+        "rachartier/tiny-inline-diagnostic.nvim",
+        event = "VeryLazy",
+        priority = 1000,
         config = function()
-            local lsp_lines = require('lsp_lines')
-            lsp_lines.setup()
+            require('tiny-inline-diagnostic').setup({
+                preset = "powerline",
+                options = {
+                    multilines = {
+                        -- Enable multiline diagnostic messages
+                        enabled = true,
 
-			-- diagnostics setup
-			local signs = {
-				Error = '󰅚',
-				Warn = '󰀪',
-				Info = '󰋽',
-				Hint = '󰌶',
-			}
-			local origVirtualText = {
-				prefix = function(diagnostic)
-					if diagnostic.severity == vim.diagnostic.severity.ERROR then
-						return signs['Error']
-					elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-						return signs['Warning']
-					elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-						return signs['Info']
-					else
-						return signs['Hint']
-					end
-				end,
-			}
-
-            -- keybind setup so we can toggle between virtual_text and virtual_lines
-            local initState = true
-            vim.diagnostic.config({
-                virtual_text = origVirtualText,
-                virtual_lines = not initState,
+                        -- Always show messages on all lines for multiline diagnostics
+                        always_show = true,
+                    },
+                }
             })
-
-			vim.keymap.set('n', "<leader>l",
-				function()
-					initState = not initState
-					if(initState) then
-						vim.diagnostic.config({
-							virtual_text = origVirtualText,
-							virtual_lines = not initState
-						})
-					else
-						vim.diagnostic.config({
-							virtual_text = false,
-							virtual_lines = not initState
-						})
-					end
-
-				end,
-				{ desc = "Toggle lsp_lines" })
-		end
+            vim.diagnostic.config({ virtual_text = false }) -- Disable default virtual text
+        end
     },
+    -- nice diagnosis UI
+  --   {
+  --       enabled = false,
+  --       "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  --       branch = "main",
+  --       config = function()
+  --           local lsp_lines = require('lsp_lines')
+  --           lsp_lines.setup()
+		--
+		-- 	-- diagnostics setup
+		-- 	local signs = {
+		-- 		Error = '󰅚',
+		-- 		Warn = '󰀪',
+		-- 		Info = '󰋽',
+		-- 		Hint = '󰌶',
+		-- 	}
+		-- 	local origVirtualText = {
+		-- 		prefix = function(diagnostic)
+		-- 			if diagnostic.severity == vim.diagnostic.severity.ERROR then
+		-- 				return signs['Error']
+		-- 			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+		-- 				return signs['Warning']
+		-- 			elseif diagnostic.severity == vim.diagnostic.severity.INFO then
+		-- 				return signs['Info']
+		-- 			else
+		-- 				return signs['Hint']
+		-- 			end
+		-- 		end,
+		-- 	}
+		--
+  --           -- keybind setup so we can toggle between virtual_text and virtual_lines
+  --           local initState = true
+  --           vim.diagnostic.config({
+  --               virtual_text = origVirtualText,
+  --               virtual_lines = not initState,
+  --           })
+		--
+		-- 	vim.keymap.set('n', "<leader>l",
+		-- 		function()
+		-- 			initState = not initState
+		-- 			if(initState) then
+		-- 				vim.diagnostic.config({
+		-- 					virtual_text = origVirtualText,
+		-- 					virtual_lines = not initState
+		-- 				})
+		-- 			else
+		-- 				vim.diagnostic.config({
+		-- 					virtual_text = false,
+		-- 					virtual_lines = not initState
+		-- 				})
+		-- 			end
+		--
+		-- 		end,
+		-- 		{ desc = "Toggle lsp_lines" })
+		-- end
+  --   },
     -- edit pairs easier
     {
         "kylechui/nvim-surround",

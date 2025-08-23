@@ -373,6 +373,7 @@ return {
     -- change cursorlinenumber depending on mode
     {
         'mawkler/modicator.nvim',
+        dependencies = { 'catppuccin/nvim' },
         init = function()
             -- These are required for Modicator to work
             vim.o.cursorline = true
@@ -417,6 +418,7 @@ return {
                 inc_rename = false,           -- enables an input dialog for inc-rename.nvim
                 lsp_doc_border = true,        -- disable lsp doc border since we have another plugi handling it
             },
+
         },
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -485,6 +487,7 @@ return {
         }
     },
     -- make virt column thin
+
     { "lukas-reineke/virt-column.nvim", 
         config = function()
             require('virt-column').setup({

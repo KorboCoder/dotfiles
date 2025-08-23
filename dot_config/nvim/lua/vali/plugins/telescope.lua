@@ -41,7 +41,7 @@ return {
                     },
                 },
                 file_ignore_patterns = {
-                    "node_modules", "dist", ".git", "yarn.lock"
+                    "node_modules", "dist", ".git", "yarn.lock", "vendor"
                 },
                 extensions = {
                     file_browser = {

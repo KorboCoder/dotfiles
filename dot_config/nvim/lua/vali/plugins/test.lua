@@ -68,11 +68,37 @@ return {
                 output = {
                     open_on_run = true
                 },
-                status = {
-                    virtual_text = true
-                }
+                -- status = {
+                --     virtual_text = true
+                -- }
 
             })
         end
+    },
+    {
+        "andythigpen/nvim-coverage",
+        version = "*",
+        dependencies= {
+            "catppuccin/nvim",
+
+        },
+        config = function()
+            local macchiato = require("catppuccin.palettes").get_palette "macchiato"
+
+            require("coverage").setup({
+                auto_reload = true,
+                highlights = {
+                    -- customize highlight groups created by the plugin
+                    covered = { fg = macchiato.green},   -- supports style, fg, bg, sp (see :h highlight-gui)
+                    uncovered = { fg = macchiato.red },
+                },
+            })
+        end,
+        keys = {
+            { "<leader>tcc", "<cmd>CoverageToggle<cr>", desc = "Toggle Coverage" },
+            { "<leader>tcs", "<cmd>CoverageSummary<cr>", desc = "Coverage Summary" },
+            { "<leader>tcl", "<cmd>CoverageLoad<cr>", desc = "Load Coverage" },
+            { "<leader>tcC", "<cmd>CoveragClear<cr>", desc = "Clear Coverage" },
+        },
     },
 }

@@ -38,13 +38,13 @@ return {
                     lsp_trouble = true,
                     native_lsp = {
                         enabled = true,
-                        virtual_text = {
-                            errors = { "italic" },
-                            hints = { "italic" },
-                            warnings = { "italic" },
-                            information = { "italic" },
-                            ok = { "italic" },
-                        },
+                        -- virtual_text = {
+                        --     errors = { "italic" },
+                        --     hints = { "italic" },
+                        --     warnings = { "italic" },
+                        --     information = { "italic" },
+                        --     ok = { "italic" },
+                        -- },
                         underlines = {
                             errors = { "underline" },
                             hints = { "underline" },

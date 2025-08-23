@@ -95,5 +95,18 @@ pcall(function()
       end, { buffer = args.buf, desc = "Toggle Go visibility hints" })
     end,
   })
+
 end)
 
+-- macro recording mode indicator 
+vim.api.nvim_create_autocmd("RecordingEnter", {
+  callback = function()
+    vim.notify("🔴 Recording macro @" .. vim.fn.reg_recording())
+  end,
+})
+
+vim.api.nvim_create_autocmd("RecordingLeave", {
+  callback = function()
+    vim.notify("🟢 Stopped recording")
+  end,
+})

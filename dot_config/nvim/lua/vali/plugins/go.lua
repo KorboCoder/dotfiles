@@ -48,6 +48,9 @@ return {
             -- dap_debug_ui = { enabled = false },
             dap_debug_gui = false,
             dap_debug_keymap = false,
+            diagnostic = {
+                virtual_text = false
+            }
 
         },
         event = {"CmdlineEnter"},
