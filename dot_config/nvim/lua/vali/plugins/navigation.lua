@@ -60,6 +60,10 @@ return {
             -- vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
             vim.keymap.set("n", "<C-M-o>", "<cmd>Portal jumplist backward<cr>")
             vim.keymap.set("n", "<C-M-i>", "<cmd>Portal jumplist forward<cr>")
+            vim.keymap.set("n", "[[q", "<cmd>Portal quickfix backward<cr>")
+            vim.keymap.set("n", "]]q", "<cmd>Portal quickfix forward<cr>")
+            vim.keymap.set("n", "[[c", "<cmd>Portal changelist backward<cr>")
+            vim.keymap.set("n", "]]c", "<cmd>Portal changelist forward<cr>")
         end,
         config = function()
             require('portal').setup({

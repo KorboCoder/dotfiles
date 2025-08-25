@@ -35,6 +35,9 @@ vim.opt.updatetime = 500
 vim.opt.colorcolumn = "80,110"
 vim.opt.cursorcolumn = true
 
+-- window borders
+vim.o.winborder = "rounded"
+
 vim.diagnostic.config({
 	signs = false,
 })

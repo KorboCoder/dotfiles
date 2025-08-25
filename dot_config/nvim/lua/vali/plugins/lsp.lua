@@ -1,108 +1,109 @@
 --- @type LazyPluginSpec[] | LazyPluginSpec
 return {
+
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        dependencies = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig', branch = "master" }, -- Required
-            {                            -- Optional
-                'williamboman/mason.nvim',
-                build = function()
-                    pcall(vim.cmd, 'MasonUpdate')
-                end,
-                opts = {
-                    ui = {
-                        border = "rounded",
-
-                    }
-                }
-            },
-            { 'williamboman/mason-lspconfig.nvim', tag = 'v1.32.0'}, -- Optional
-
-            -- Autocompletion
-            { 'hrsh7th/cmp-nvim-lsp' },                                              -- Required
-            { 'L3MON4D3/LuaSnip',                 build = "make install_jsregexp" }, -- Required
-            { 'hrsh7th/cmp-buffer' },                                                -- Required
-            { 'hrsh7th/cmp-path' },                                                  -- Required
-            { 'hrsh7th/cmp-nvim-lua' },                                              -- Required
-            { 'saadparwaiz1/cmp_luasnip' },                                          -- Optional
-            { 'rafamadriz/friendly-snippets' },                                      -- Optional
-            { "Hoffs/omnisharp-extended-lsp.nvim" },
-            -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-            -- { 'ray-x/lsp_signature.nvim' },
-            -- LSp status updates
-            {
-                enabled = true,
-                'j-hui/fidget.nvim',
-                tag = 'legacy',
-                event = "LspAttach",
-                opts = {
-                    window = {
-                        blend = 0,
-                        border = "single"
-                    },
-                    text = {
-                        spinner = "meter"
-                    },
-                    align = {
-                        bottom = false
-                    }
-                }
-            },
-
-            --  vscode like symbols
-            { 'onsails/lspkind.nvim' },
-            
-            -- rust tools
-            { 'simrat39/rust-tools.nvim' },
+        'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        dependencies = { 
+            'rafamadriz/friendly-snippets', 
+            'onsails/lspkind.nvim',
+            'simrat39/rust-tools.nvim',
+            "Hoffs/omnisharp-extended-lsp.nvim",
 
         },
-		init = function()
-			-- Workaround for truncating long TypeScript inlay hints.
-			-- TODO: Remove this if https://github.com/neovim/neovim/issues/27240 gets addressed.
-			local methods = vim.lsp.protocol.Methods
-			local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
-			vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
-				local client = vim.lsp.get_client_by_id(ctx.client_id)
-				if client and client.name == 'typescript-tools' then
-					result = vim.iter(result):map(function(hint)
-						local label = hint.label ---@type string
-						if label:len() >= 30 then
-							label = label:sub(1, 29) .. '…'
-						end
-						hint.label = label
-						return hint
-					end)
-				end
 
-				inlay_hint_handler(err, result, ctx, config)
-			end
-		end,
-		config = function()
-            local lsp = require('lsp-zero')
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+        -- build = 'cargo build --release',
+        -- If you use nix, you can build from source using latest nightly rust with:
+        -- build = 'nix run .#build-plugin',
 
-            lsp.preset('recommended')
-            lsp.setup()
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+            -- 'super-tab' for mappings similar to vscode (tab to accept)
+            -- 'enter' for enter to accept
+            -- 'none' for no mappings
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-n/C-p or Up/Down: Select next/previous item
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help (if signature.enabled = true)
+            --
+            -- See :h blink-cmp-config-keymap for defining your own keymap
+            keymap = { preset = 'default' },
 
-            -- Set groovy as language for Jenkinsfile*
+            appearance = {
+                -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+                -- Adjusts spacing to ensure icons are aligned
+                nerd_font_variant = 'mono'
+            },
+
+            -- (Default) Only show the documentation popup when manually triggered
+            completion = { 
+
+                menu = {
+                    draw = {
+                        components = {
+                            kind_icon = {
+                                text = function(ctx)
+                                    local icon = require("lspkind").symbolic(ctx.kind, {mode = "symbol"})
+                                    return icon .. ctx.icon_gap
+                                end
+                            }
+                        }
+                    }
+                },
+                documentation = { auto_show = true } },
+
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+
+            -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+            --
+            -- See the fuzzy documentation for more information
+            fuzzy = { implementation = "prefer_rust_with_warning" }
+        },
+        opts_extend = { "sources.default" }
+    },
+    {
+        "mason-org/mason-lspconfig.nvim",
+        config = function()
+            -- Workaround for truncating long TypeScript inlay hints from your old config
+            local methods = vim.lsp.protocol.Methods
+            local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
+            vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
+                local client = vim.lsp.get_client_by_id(ctx.client_id)
+                if client and client.name == 'typescript-tools' then
+                    result = vim.iter(result):map(function(hint)
+                        local label = hint.label ---@type string
+                        if label:len() >= 30 then
+                            label = label:sub(1, 29) .. '…'
+                        end
+                        hint.label = label
+                        return hint
+                    end)
+                end
+                inlay_hint_handler(err, result, ctx, config)
+            end
+
+            -- Set groovy as language for Jenkinsfile* from your old config
             vim.api.nvim_command('au BufNewFile,BufRead Jenkinsfile* setf groovy')
 
-            -- [[ Configure LSP ]]
+            -- LSP on_attach function from your old config
             local on_attach = function(client, bufnr)
-                -- local ok, _ = pcall(require, "inlay-hints")
-                -- if ok then
-                --     require("inlay-hints").on_attach(client, bufnr)
-                -- end
-
-
-                -- In this case, we create a function that lets us more easily define mappings specific
-                -- for LSP related items. It sets the mode, buffer and description for us each time.
                 local nmap = function(keys, func, desc)
                     if desc then
                         desc = 'LSP: ' .. desc
                     end
-
                     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
                 end
 
@@ -110,14 +111,14 @@ return {
                     if desc then
                         desc = 'LSP: ' .. desc
                     end
-
                     vim.keymap.set('v', keys, func, { buffer = bufnr, desc = desc })
                 end
 
+                -- Your keybindings from old config
                 nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-                -- nmap('<leader>ca', require("tiny-code-action").code_action, '[C]ode [A]ction')
+                nmap('<leader>cq', vim.diagnostic.setqflist, 'Set Quickfix List')
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
                 nmap('gm', vim.lsp.buf.implementation, '[G]oto I[m]plementation')
@@ -126,35 +127,27 @@ return {
                 nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
                 nmap('gy', vim.lsp.buf.declaration, '[G]oto T[y]pe Declaration')
 
-                -- Create a command `:Format` local to the LSP buffer
+                -- Create Format command
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
                     vim.lsp.buf.format()
                 end, { desc = 'Format current buffer with LSP' })
-			-- The following autocommand is used to enable inlay hints in your
-			  -- code, if the language server you are using supports them
-			  --
-			  -- This may be unwanted, since they displace some of your code
-			  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-				vim.lsp.inlay_hint.enable(true) -- enable at start
 
-
-				nmap('<leader>L', function()
-				  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-				end, '[T]oggle Inlay [H]ints')
-			  end
-
+                -- Inlay hints setup
+                if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+                    vim.lsp.inlay_hint.enable(true)
+                    nmap('<leader>L', function()
+                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                    end, '[T]oggle Inlay [H]ints')
+                end
             end
 
-            -- Enable the following language servers
-            --  Feel free to add/remove any LSPs that you want here. They will automatically be installedu
-            --  Add any additional override configuration in the following tables. They will be passed to
-            --  the `settings` field of the server config. You must look up that documentation yourself.
-            --  Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
+            -- Get capabilities from blink.cmp
+            local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+            -- Language servers configuration from your old config
             local servers = {
-                -- clangd = {},
                 gopls = {
                     gopls = {
-                        -- keep your existing options under the gopls table
                         gofumpt = true,
                         codelenses = {
                             gc_details = false,
@@ -166,7 +159,6 @@ return {
                             upgrade_dependency = true,
                             vendor = true,
                         },
-                        -- legacy hints table (still honored by many versions)
                         hints = {
                             assignVariableTypes = true,
                             compositeLiteralFields = true,
@@ -190,64 +182,31 @@ return {
                         semanticTokens = true,
                     },
                 },
-                -- pyright = {},
-                -- rust_analyzer = {},
-                -- cql = {},
-				glimmer = {},
-				['htmx-lsp'] = {
-					filetypes = {"html", "html.handlebars"}
-				},
+                glimmer = {},
+                ['htmx-lsp'] = {
+                    filetypes = {"html", "html.handlebars"}
+                },
                 bashls = {
-                    -- include zsh
                     filetypes = { 'sh', 'zsh', },
                 },
                 astro = {},
-                tailwindcss = {
-
+                tailwindcss = {},
+                vtsls = {
+                    javascript = {
+                        inlayHints = {
+                            functionLikeReturnTypes = { enabled = true },
+                            parameterNames = { enabled = 'all' },
+                            variableTypes = { enabled = true },
+                        },
+                    },
+                    typescript = {
+                        inlayHints = {
+                            functionLikeReturnTypes = { enabled = true },
+                            parameterNames = { enabled = 'all' },
+                            variableTypes = { enabled = true },
+                        },
+                    },
                 },
-				vtsls = {
-					javascript = {
-						inlayHints = {
-							functionLikeReturnTypes = { enabled = true },
-							parameterNames = { enabled = 'all' },
-							variableTypes = { enabled = true },
-						},
-					},
-					typescript = {
-						inlayHints = {
-							functionLikeReturnTypes = { enabled = true },
-							parameterNames = { enabled = 'all' },
-							variableTypes = { enabled = true },
-						},
-					},
-				},
-                -- tsserver = {
-                --     typescript = {
-                --         inlayHints = {
-                --             includeInlayParameterNameHints = 'all',
-                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                --             includeInlayFunctionParameterTypeHints = true,
-                --             includeInlayVariableTypeHints = true,
-                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                --             includeInlayPropertyDeclarationTypeHints = true,
-                --             includeInlayFunctionLikeReturnTypeHints = true,
-                --             includeInlayEnumMemberValueHints = true,
-                --         }
-                --     },
-                --     javascript = {
-                --         inlayHints = {
-                --             includeInlayParameterNameHints = 'all',
-                --             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                --             includeInlayFunctionParameterTypeHints = true,
-                --             includeInlayVariableTypeHints = true,
-                --             includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                --             includeInlayPropertyDeclarationTypeHints = true,
-                --             includeInlayFunctionLikeReturnTypeHints = true,
-                --             includeInlayEnumMemberValueHints = true,
-                --         }
-                --     }
-                -- },
-                -- Reference: https://github.com/LuaLS/lua-language-server/wiki/Settings
                 lua_ls = {
                     Lua = {
                         hint = {
@@ -256,28 +215,14 @@ return {
                         workspace = { checkThirdParty = true, library = { vim.env.VIMRUNTIME } },
                         telemetry = { enable = false },
                         diagnostics = {
-                            -- reference: https://github.com/LuaLS/lua-language-server/wiki/Diagnostics
                             disable = { "missing-fields" },
                         }
                     },
                 },
-                -- Reference: https://github.com/walcht/neovim-unity/blob/main/after/plugin/lsp_related/lspconfig.lua 
-                -- omnisharp_mono = {
-                --     handlers = {
-                --         ["textDocument/definition"] = require('omnisharp_extended').handler,
-                --     },
-                --     cmd = { vim.fn.stdpath("data") .. "/mason/bin/omnisharp-mono", '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
-                --     enable_roslyn_analyzers = true,
-                --     use_mono = true
-                --     -- rest of your settings
-                --
-                -- }
             }
 
-            -- Configure LSP through rust-tools.nvim plugin.
-            -- rust-tools will configure and enable certain LSP features for us.
-            -- See https://github.com/simrat39/rust-tools.nvim#configuration
-            local opts = {
+            -- Rust tools setup from your old config
+            local rust_opts = {
                 tools = {
                     runnables = {
                         use_telescope = true,
@@ -289,206 +234,73 @@ return {
                         other_hints_prefix = "",
                     },
                 },
-
-                -- all the opts to send to nvim-lspconfig
-                -- these override the defaults set by rust-tools.nvim
-                -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
                 server = {
-                    -- on_attach is a callback called when the language server attachs to the buffer
                     on_attach = on_attach,
+                    capabilities = capabilities,
                     settings = {
-                        -- to enable rust-analyzer settings visit:
-                        -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
                         ["rust-analyzer"] = {
-                            -- enable clippy on save
                             checkOnSave = {
                                 command = "clippy",
                             },
                             cargo = {
-                                allfeatures=true
+                                allfeatures = true
                             }
                         },
                     },
                 },
             }
+            require("rust-tools").setup(rust_opts)
 
-            require("rust-tools").setup(opts)
-
-            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-            -- Ensure the servers above are installed
-            local mason_lspconfig = require 'mason-lspconfig'
-
+            -- Mason LSP setup
+            local mason_lspconfig = require('mason-lspconfig')
             mason_lspconfig.setup {
                 ensure_installed = vim.tbl_keys(servers),
+                automatic_installation = true,
             }
-            local lspconfig = require('lspconfig')
 
+            local lspconfig = require('lspconfig')
             mason_lspconfig.setup_handlers {
                 function(server_name)
                     local lspconfig_name = server_name
 
-                    -- use omnisharp if ominisharp_mono is detected
+                    -- use omnisharp if omnisharp_mono is detected
                     if server_name == 'omnisharp_mono' then 
                         lspconfig_name = 'omnisharp'
                     end
-                    if(lspconfig[lspconfig_name].setup ~= nil) then
-                        lspconfig[lspconfig_name].setup {
+
+                    if lspconfig[lspconfig_name] and lspconfig[lspconfig_name].setup then
+                        local server_config = {
                             capabilities = capabilities,
                             on_attach = on_attach,
                             settings = servers[server_name],
                         }
-                    else
-                        -- check if we ran into an unsupported server or a random typo
-                        vim.notify("Server not found for " .. server_name, vim.log.levels.WARN);
 
+                        -- Add special handlers for omnisharp
+                        if server_name == 'omnisharp_mono' then
+                            server_config.handlers = {
+                                ["textDocument/definition"] = require('omnisharp_extended').handler,
+                            }
+                        end
+
+                        lspconfig[lspconfig_name].setup(server_config)
+                    else
+                        vim.notify("Server not found for " .. server_name, vim.log.levels.WARN)
                     end
                 end,
             }
-            local cmp = require 'cmp'
-            local luasnip = require 'luasnip'
-            local lspkind = require('lspkind')
-            require('luasnip.loaders.from_vscode').lazy_load()
+        end,
+        dependencies = {
+            { "mason-org/mason.nvim", 
+                opts = {
 
-            -- lua snipppet setup
-            luasnip.config.setup {}
-            luasnip.config.set_config({
-                updateevents = "TextChanged,TextChangedI",
-                enable_autosnippets = true
-            })
-
-            cmp.setup {
-                window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                },
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
-                },
-                formatting = { format = lspkind.cmp_format({ mode = 'symbol_text' }) },
-                mapping = cmp.mapping.preset.insert {
-                    ['<C-n>'] = cmp.mapping.select_next_item(),
-                    ['<C-p>'] = cmp.mapping.select_prev_item(),
-                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-                    -- Accept ([y]es) the completion.
-                    --  This will auto-import if your LSP supports it.
-                    --  This will expand snippets if the LSP sent a snippet.
-                    ['<C-y>'] = cmp.mapping.confirm { select = true },
-                    ['<Right>'] = cmp.mapping.confirm { select = true },
-
-                    -- to exit completion tab if i want to close
-                    -- ['<C-Space>'] = cmp.mapping.complete {},
-                    -- Toggle copmletion menu. Ref: https://github.com/hrsh7th/nvim-cmp/issues/429#issuecomment-954121524
-                    ['<C-Space>'] = cmp.mapping({
-                        i = function()
-                            if cmp.visible() then
-                                cmp.abort()
-                            else
-                                cmp.complete()
-                            end
-                        end,
-                        c = function()
-                            if cmp.visible() then
-                                cmp.close()
-                            else
-                                cmp.complete()
-                            end
-                        end }),
-
-                    -- ['<CR>'] = cmp.mapping.confirm {
-                    --     -- behavior = cmp.ConfirmBehavior.Replace,
-                    --     select = false,
-                    -- },
-                    -- ['<C-k>'] = cmp.mapping(function(fallback)
-                    --     if luasnip.expand_or_jump() then
-                    --         luasnip.expand_or_jump()
-                    --     else
-                    --         fallback()
-                    --     end
-                    -- end, { 'i', 's' }),
-                    ['<C-j>'] = cmp.mapping(function(fallback)
-                        if luasnip.expand_or_locally_jumpable() then
-                            luasnip.expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { 'i', 's' }),
-                    ['<C-k>'] = cmp.mapping(function(fallback)
-                        if luasnip.locally_jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { 'i', 's' }),
-                    ['<Tab>'] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.expand_or_locally_jumpable() then
-                            luasnip.expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { 'i', 's' }),
-                    ['<S-Tab>'] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.locally_jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { 'i', 's' }),
-                },
-                sources = {
-                    { name = "copilot"},
-                    { name = 'path' },
-                    { name = 'nvim_lsp' },
-                    { name = 'buffer', keyword_length = 2 },
-                    { name = 'luasnip', key_length = 3 },
-                    -- { name = 'ray-x/lsp_signature.nvim' }
-                    -- { name = 'nvim_lsp_signature_help' }
-                },
-            }
-        end
-    },
-    {
-        enabled = false,
-        "pmizio/typescript-tools.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        config = function () 
-			require("typescript-tools").setup {
-				settings = {
-					separate_diagnostic_server = false,
-					tsserver_file_preferences = {
-						includeInlayParameterNameHints = 'all',
-						includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-						includeInlayFunctionParameterTypeHints = true,
-						includeInlayVariableTypeHints = true,
-						includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-						includeInlayPropertyDeclarationTypeHints = true,
-						includeInlayFunctionLikeReturnTypeHints = true,
-						includeInlayEnumMemberValueHints = true,
-					},
-					javascript = {
-						inlayHints = {
-							includeInlayParameterNameHints = 'all',
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayVariableTypeHints = true,
-							includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayEnumMemberValueHints = true,
-						}
-					}
-				},
-			}
-		end
+                    ui = {
+                        border = "rounded",
+                    }
+                } 
+            },
+            "neovim/nvim-lspconfig",
+            "saghen/blink.cmp"
+        },
     },
     {
 
@@ -506,57 +318,76 @@ return {
         end
     },
     { -- Linting
-    'mfussenegger/nvim-lint',
-    event = { 'BufReadPre', 'BufNewFile' },
-    config = function()
-      local lint = require 'lint'
-      lint.linters_by_ft = {
-        markdown = { 'markdownlint-cli2' },
-      }
+        'mfussenegger/nvim-lint',
+        event = { 'BufReadPre', 'BufNewFile' },
+        config = function()
+            local lint = require 'lint'
+            lint.linters_by_ft = {
+                markdown = { 'markdownlint-cli2' },
+            }
 
-      -- To allow other plugins to add linters to require('lint').linters_by_ft,
-      -- instead set linters_by_ft like this:
-      -- lint.linters_by_ft = lint.linters_by_ft or {}
-      -- lint.linters_by_ft['markdown'] = { 'markdownlint' }
-      --
-      -- However, note that this will enable a set of default linters,
-      -- which will cause errors unless these tools are available:
-      -- {
-      --   clojure = { "clj-kondo" },
-      --   dockerfile = { "hadolint" },
-      --   inko = { "inko" },
-      --   janet = { "janet" },
-      --   json = { "jsonlint" },
-      --   markdown = { "vale" },
-      --   rst = { "vale" },
-      --   ruby = { "ruby" },
-      --   terraform = { "tflint" },
-      --   text = { "vale" }
-      -- }
-      --
-      -- You can disable the default linters by setting their filetypes to nil:
-      -- lint.linters_by_ft['clojure'] = nil
-      -- lint.linters_by_ft['dockerfile'] = nil
-      -- lint.linters_by_ft['inko'] = nil
-      -- lint.linters_by_ft['janet'] = nil
-      -- lint.linters_by_ft['json'] = nil
-      -- lint.linters_by_ft['markdown'] = nil
-      -- lint.linters_by_ft['rst'] = nil
-      -- lint.linters_by_ft['ruby'] = nil
-      -- lint.linters_by_ft['terraform'] = nil
-      -- lint.linters_by_ft['text'] = nil
+            -- To allow other plugins to add linters to require('lint').linters_by_ft,
+            -- instead set linters_by_ft like this:
+            -- lint.linters_by_ft = lint.linters_by_ft or {}
+            -- lint.linters_by_ft['markdown'] = { 'markdownlint' }
+            --
+            -- However, note that this will enable a set of default linters,
+            -- which will cause errors unless these tools are available:
+            -- {
+            --   clojure = { "clj-kondo" },
+            --   dockerfile = { "hadolint" },
+            --   inko = { "inko" },
+            --   janet = { "janet" },
+            --   json = { "jsonlint" },
+            --   markdown = { "vale" },
+            --   rst = { "vale" },
+            --   ruby = { "ruby" },
+            --   terraform = { "tflint" },
+            --   text = { "vale" }
+            -- }
+            --
+            -- You can disable the default linters by setting their filetypes to nil:
+            -- lint.linters_by_ft['clojure'] = nil
+            -- lint.linters_by_ft['dockerfile'] = nil
+            -- lint.linters_by_ft['inko'] = nil
+            -- lint.linters_by_ft['janet'] = nil
+            -- lint.linters_by_ft['json'] = nil
+            -- lint.linters_by_ft['markdown'] = nil
+            -- lint.linters_by_ft['rst'] = nil
+            -- lint.linters_by_ft['ruby'] = nil
+            -- lint.linters_by_ft['terraform'] = nil
+            -- lint.linters_by_ft['text'] = nil
 
-      -- Create autocommand which carries out the actual linting
-      -- on the specified events.
-      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
-        group = lint_augroup,
-        callback = function()
-          require('lint').try_lint()
+            -- Create autocommand which carries out the actual linting
+            -- on the specified events.
+            local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+            vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+                group = lint_augroup,
+                callback = function()
+                    require('lint').try_lint()
+                end,
+            })
         end,
-      })
-    end,
     },
+    -- LSP status updates from your old config
+    {
+        'j-hui/fidget.nvim',
+        tag = 'legacy',
+        event = "LspAttach",
+        opts = {
+            window = {
+                blend = 0,
+                border = "single"
+            },
+            text = {
+                spinner = "meter"
+            },
+            align = {
+                bottom = false
+            }
+        }
+    },
+
     {
         'ckipp01/nvim-jenkinsfile-linter',
         dependencies = {"nvim-lua/plenary.nvim" },
