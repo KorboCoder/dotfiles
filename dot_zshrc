@@ -154,6 +154,7 @@ gch() {
 # gcloud setup
 # source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 # source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+#
 
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -162,29 +163,63 @@ eval "$(mcfly init zsh)"
 export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 
+# completion setup
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
+
+# Docker completions
+fpath=($HOME/.docker/completions $fpath)
 
 # zsh autocomplete
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-zshautocomplete_path=$HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-if [ -d autocomplete_path ]; then # check if we have fzf-tab tab repo dir
-    source zshautocomplete_path
-fi
+# zshautocomplete_path=$HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# if [ -f "$zshautocomplete_path" ]; then # check if we have autocomplete plugin
+#     source "$zshautocomplete_path"
+# fi
 
 # zsh autosuggestion
 zshautosuggestion_path=$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-if [ -d zshautosuggestion_path ]; then # check if we have fzf-tab tab repo dir
-    source zshautosuggestion_path
+if [ -f "$zshautosuggestion_path" ]; then # check if we have autosuggestions
+    source "$zshautosuggestion_path"
 fi
+
+# zsh syntax-highlighting
+zshsyntax_highlighting_path=$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f "$zshsyntax_highlighting_path" ]; then # check if we have the syntax highlighting file
+    source "$zshsyntax_highlighting_path"
+fi
+
+# compdef init
+autoload -U compinit && compinit -u
 
 # fzf-tab
 if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
-    autoload -U compinit; compinit
     source $HOME/fzf-tab/fzf-tab.plugin.zsh
-    # eza style
-    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
-    # tmux popup
+    # Enable fzf-tab completion immediately
+    zstyle ':fzf-tab:*' switch-group ',' '.'
+    
+    # Auto-trigger fzf when there are multiple completions
+    zstyle ':fzf-tab:*' fzf-min-height 15
+    
+    # Show preview for files and directories
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+    zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza -1 --color=always $realpath'
+    zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath'
+    
+    # tmux popup (if you want to keep this)
     zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+    
+    # Continuous completion - this makes it appear more readily
+    zstyle ':fzf-tab:*' continuous-trigger 'tab'
+    
+    # Set fzf flags for better experience
+    zstyle ':fzf-tab:*' fzf-flags '--height=50%' '--layout=reverse' '--border'
+    
+    # Make tab completion more aggressive
+    zstyle ':completion:*' menu select
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 
 # Fix starship load wrapping issue
@@ -208,9 +243,6 @@ fi
 # colors
 export CLICOLOR=1
 
-# compdef init
-autoload -Uz compinit
-compinit
 
 test -f ~/.work-zshrc && source ~/.work-zshrc # 2> /dev/null
 
@@ -277,6 +309,8 @@ export LC_CTYPE="C"
 function jsonbat (){
   cat $1 |  json_pp | bat -l json; 
 }
+
+eval "$(batpipe)"
 
 # function f12 {
 #     print -n "\e[[24"

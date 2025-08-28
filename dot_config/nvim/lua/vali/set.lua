@@ -4,6 +4,7 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.smartindent = true
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
+vim.opt.textwidth = 110 -- trigger nextline
 vim.opt.clipboard = "unnamedplus" -- synvc with system clipboard by defaut (no need to use + register)
 
 vim.opt.wrap = false

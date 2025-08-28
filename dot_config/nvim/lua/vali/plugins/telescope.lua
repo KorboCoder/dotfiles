@@ -34,6 +34,7 @@ return {
             local telescope = require('telescope')
             telescope.setup({
                 defaults = {
+                    border = false,
                     layout_strategy = "flex",
                     sorting_strategy = "ascending",
                     layout_config = {

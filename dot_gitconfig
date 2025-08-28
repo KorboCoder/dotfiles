@@ -1,15 +1,17 @@
-[diff]
-        tool = difftastic
-        external = difft
+[core]
+    pager = delta
+	excludesFiles = ~/.gitignore_global
+	excludesfile = /Users/vali/.gitignore_global
 
-[difftool]
-        prompt = false
+[interactive]
+    diffFilter = delta --color-only
 
-[difftool "difftastic"]
-        cmd = difft "$LOCAL" "$REMOTE"
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
 
-[pager]
-        difftool = true
+[merge]
+    conflictStyle = zdiff3
 
 [alias]
         dft = difftool
@@ -25,4 +27,16 @@
   cmd = nvim -n -c "DiffviewOpen" "$MERGE"
 [include]
     path = ~/.gitconfig.local
+
+[include]
+	path = ~/delta/catppuccin.gitconfig
+
+[delta]
+	features = catppuccin-macchiato
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 

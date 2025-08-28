@@ -5,10 +5,21 @@ return {
         'saghen/blink.cmp',
         -- optional: provides snippets for the snippet source
         dependencies = { 
-            'rafamadriz/friendly-snippets', 
+            'rafamadriz/friendly-snippets',
             'onsails/lspkind.nvim',
             'simrat39/rust-tools.nvim',
             "Hoffs/omnisharp-extended-lsp.nvim",
+            {
+                'L3MON4D3/LuaSnip',
+                version = 'v2.*',
+                run = "make install_jsregexp",
+                dependencies = {
+                    "rafamadriz/friendly-snippets",
+                },
+                config = function()
+                    require("luasnip.loaders.from_vscode").lazy_load()
+                end
+            },
 
         },
 
@@ -22,6 +33,25 @@ return {
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
         opts = {
+            snippets = { preset = 'luasnip' },
+            cmdline = {
+                enabled = true,
+                ---@diagnostic disable-next-line: assign-type-mismatch
+                sources = function()
+                    local type = vim.fn.getcmdtype()
+                    if type == "/" or type == "?" then
+                        return { "buffer" }
+                    end
+                    if type == ":" or type == "@" then
+                        return { "cmdline", "buffer" }
+                    end
+                    return {}
+                end,
+                completion = {
+                    menu = { auto_show = true },
+                    ghost_text = { enabled = false },
+                },
+            },
             -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
             -- 'super-tab' for mappings similar to vscode (tab to accept)
             -- 'enter' for enter to accept
@@ -34,7 +64,9 @@ return {
             -- C-k: Toggle signature help (if signature.enabled = true)
             --
             -- See :h blink-cmp-config-keymap for defining your own keymap
-            keymap = { preset = 'default' },
+            keymap = { 
+                preset = 'default',  -- Override Tab and Shift+Tab for source cycling when menu is visible
+            },
 
             appearance = {
                 -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -117,7 +149,7 @@ return {
                 -- Your keybindings from old config
                 nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-                nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+                nmap('<leader>rn', ':IncRename ', '[R]e[n]ame')
                 nmap('<leader>cq', vim.diagnostic.setqflist, 'Set Quickfix List')
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -150,7 +182,7 @@ return {
                     gopls = {
                         gofumpt = true,
                         codelenses = {
-                            gc_details = false,
+                            gc_details = true,
                             generate = true,
                             regenerate_cgo = true,
                             run_govulncheck = true,
@@ -292,7 +324,10 @@ return {
         dependencies = {
             { "mason-org/mason.nvim", 
                 opts = {
-
+                    registries = {
+                        "github:mason-org/mason-registry",
+                        "github:Crashdummyy/mason-registry",
+                    },
                     ui = {
                         border = "rounded",
                     }
@@ -300,6 +335,14 @@ return {
             },
             "neovim/nvim-lspconfig",
             "saghen/blink.cmp"
+        },
+    },
+    {
+        "seblyng/roslyn.nvim",
+        ---@module 'roslyn.config'
+        ---@type RoslynNvimConfig
+        opts = {
+            -- your configuration comes here; leave empty for default settings
         },
     },
     {
