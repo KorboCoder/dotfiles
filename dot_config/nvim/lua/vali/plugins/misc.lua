@@ -31,7 +31,7 @@ return {
     },
     -- undo history management
     {
-        enabled = true,
+        enabled = false,
         "mbbill/undotree",
         keys = {
             { "<leader>u", vim.cmd.UndotreeToggle, desc = 'Undo Tree' }
@@ -39,25 +39,6 @@ return {
         init = function()
             -- focus on undotree after we opened
             vim.g.undotree_SetFocusWhenToggle = 1;
-        end
-    },
-    -- auto session restore
-    {
-        'rmagatti/auto-session',
-        enabled =  false,
-        config = function()
-            require('auto-session').setup({
-                auto_session_use_git_branch = true,
-                auto_save_enabled = true,
-                auto_restore_enabled = true,
-                auto_session_suppress_dirs = { "~/" }
-            })
-            vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-            vim.keymap.set("n", "<leader>qr", "<cmd>SessionRestore<cr>", { desc = "Restore Session" })
-            vim.keymap.set("n", "<leader>qs", function() require("auto-session.session-lens").search_session() end,
-                { desc = "Search Sessions" })
-            vim.keymap.set("n", "<leader>qd", "<cmd>Autosession delete<cr>", { desc = "Delete Sessions" })
         end
     },
     -- session management by folke
@@ -85,15 +66,10 @@ return {
             vim.g.vimtex_view_method = 'skim'
         end
     },
-    {
-        'ThePrimeagen/vim-be-good'
-    },
-    {
-        'Weyaaron/nvim-training'
-    },
     -- project management
     {
         "ahmedkhalf/project.nvim",
+        enabled = false,
         config = function()
             require("project_nvim").setup({
                 patterns = { "*.sln", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
@@ -110,7 +86,4 @@ return {
         },
         cmd = "Glow"
     },
-	{
-		'beeender/ComradeNeovim'
-	}
 }

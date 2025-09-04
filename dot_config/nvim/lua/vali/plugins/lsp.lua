@@ -65,7 +65,11 @@ return {
             --
             -- See :h blink-cmp-config-keymap for defining your own keymap
             keymap = { 
-                preset = 'default',  -- Override Tab and Shift+Tab for source cycling when menu is visible
+                preset = 'enter',  -- Override Tab and Shift+Tab for source cycling when menu is visible
+                ['<Tab>'] = { 'snippet_forward', 'select_next','fallback' },
+                ['<S-Tab>'] = { 'snippet_backward', 'select_prev','fallback' },
+                ['<C-space>'] = { 'show', 'hide' },
+
             },
 
             appearance = {
@@ -75,7 +79,12 @@ return {
             },
 
             -- (Default) Only show the documentation popup when manually triggered
-            completion = { 
+            completion = {
+                list = {
+                    selection ={
+                        preselect = false
+                    }
+                },
 
                 menu = {
                     draw = {
@@ -151,13 +160,13 @@ return {
                 vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 nmap('<leader>rn', ':IncRename ', '[R]e[n]ame')
                 nmap('<leader>cq', vim.diagnostic.setqflist, 'Set Quickfix List')
-                nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-                nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-                nmap('gm', vim.lsp.buf.implementation, '[G]oto I[m]plementation')
-                nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+                -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+                -- nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+                -- nmap('gm', vim.lsp.buf.implementation, '[G]oto I[m]plementation')
+                -- nmap('gD', vim.lsp.buf.type_definition, 'Type [D]efinition')
                 nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
                 nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-                nmap('gy', vim.lsp.buf.declaration, '[G]oto T[y]pe Declaration')
+                -- nmap('gy', vim.lsp.buf.declaration, '[G]oto T[y]pe Declaration')
 
                 -- Create Format command
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)

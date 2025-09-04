@@ -41,11 +41,23 @@
 # # which is explained in the docs for that config option.
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
+#
+# For feference, config file in project repo: https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig
 theme = "catppuccin-macchiato"
-keybind = global:ctrl+grave_accent=toggle_quick_terminal
-# quick-terminal-position = center
+background-image="~/.config/assets/power_wallpaper5.png"
+background-image-opacity=0.05
+background-image-position = center-right
+background-image-fit = cover
+keybind = global:cmd+\=toggle_quick_terminal
+quick-terminal-position = center
 quick-terminal-size = 100%,100%
 quick-terminal-keyboard-interactivity = exclusive
 quick-terminal-animation-duration = 0
+
+# mouse, main, macos-menu-bar
+quick-terminal-screen = macos-menu-bar
+quick-terminal-autohide = false
 font-family = "Mononoki Nerd Font Mono"
-font-size = 17
+font-size = 19
+cursor-invert-fg-bg = true
+command = "/bin/zsh -l -c '$HOME/.config/ghostty/startup.sh'"

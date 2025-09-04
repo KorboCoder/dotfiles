@@ -49,7 +49,7 @@ return {
             dap_debug_gui = false,
             dap_debug_keymap = false,
             diagnostic = {
-                virtual_text = false
+                virtual_text = true
             }
 
         },

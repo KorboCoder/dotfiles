@@ -6,12 +6,14 @@ return {
         opts = {},
     },
     -- fade background of unselected window
+    -- TODO: This has been archived, consider replacing with: https://github.com/TaDaa/vimade
     {
-        enabled = true,
         "levouh/tint.nvim",
         opts = {
-            tint = -20,
-            saturation = 0.5
+            -- tint = -20,
+            -- saturation = 0.5
+            saturation = 1.0,
+            tint = 0,
         }
     },
     -- tmux like border for active window
@@ -347,6 +349,7 @@ return {
                     highlight = highlight,
                 },
                 scope = {
+                    enabled = false,
                     char = '│',
                     show_start = true,
                     show_end = true,
@@ -358,14 +361,13 @@ return {
             vim.g.rainbow_delimiters = { highlight = highlight }
 
             -- Register hook for scope highlighting integration with rainbow-delimiters
-            hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+            -- hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
             -- dunno where to put this, migrate this where it makes sense
             -- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#303347"})
         end
     },
     {
-
         "HiPhish/rainbow-delimiters.nvim",
         dependencies = { 'lukas-reineke/indent-blankline.nvim' },
         event = "VeryLazy",
@@ -429,18 +431,18 @@ return {
             -- OPTIONAL:
             --   `nvim-notify` is only needed, if you want to use the notification view.
             --   If not available, we use `mini` as the fallback
-            {
-                "rcarriga/nvim-notify",
-                opts = {
-                    fps = 60,
-                    background_colour = "#000000",
-                    stages = "fade_in_slide_out",
-                    top_down = false
-                },
-                keys = {
-                    { "<leader>cn", function() require("notify").dismiss({ silent = true }) end, desc = "Clear Notifs" }
-                }
-            },
+            -- {
+            --     "rcarriga/nvim-notify",
+            --     opts = {
+            --         fps = 60,
+            --         background_colour = "#000000",
+            --         stages = "fade_in_slide_out",
+            --         top_down = false
+            --     },
+            --     keys = {
+            --         { "<leader>cn", function() require("notify").dismiss({ silent = true }) end, desc = "Clear Notifs" }
+            --     }
+            -- },
             {
                 "smjonas/inc-rename.nvim",
                 opts = {},
@@ -453,9 +455,18 @@ return {
         opts = {
             window = {
                 width = 0.9
+
             },
             plugins = {
-                tmux = { enabled = true }
+                tmux = { enabled = true },
+                -- options = {
+                --     enabled = true,
+                --     ruler = false, -- disables the ruler text in the cmd line area
+                --     showcmd = true, -- disables the command in the last line of the screen
+                --     -- you may turn on/off statusline in zen mode by setting 'laststatus' 
+                --     -- statusline will be shown only if 'laststatus' == 3
+                --     laststatus = 3, -- turn off the statusline in zen mode
+                -- },
             },
             -- TODO: Update  this to auto commands
             -- callback where you can add custom code when the Zen window opens
@@ -512,6 +523,7 @@ return {
         "norcalli/nvim-colorizer.lua",
     },
     {
+        enabled = false,
         "sphamba/smear-cursor.nvim",
         opts = {                                -- Default  Range
             stiffness = 0.8,                      -- 0.6      [0, 1]
@@ -567,91 +579,4 @@ return {
             }
         }
     },
-    -- {
-    --     'gelguy/wilder.nvim',
-    --     dependencies = { 'romgrk/fzy-lua-native', 'nixprime/cpsm'},
-    --     config = function()
-    --         local wilder = require('wilder')
-    --         wilder.setup({modes = {':', '/', '?'}})
-    --
-    --         wilder.set_option('pipeline', {
-    --             wilder.branch(
-    --                 wilder.python_file_finder_pipeline({
-    --                     file_command = function(ctx, arg)
-    --                         if string.find(arg, '.') ~= nil then
-    --                             return {'fd', '-tf', '-H'}
-    --                         else
-    --                             return {'fd', '-tf'}
-    --                         end
-    --                     end,
-    --                     dir_command = {'fd', '-td'},
-    --                     filters = {'cpsm_filter'},
-    --                 }),
-    --                 wilder.substitute_pipeline({
-    --                     pipeline = wilder.python_search_pipeline({
-    --                         skip_cmdtype_check = 1,
-    --                         pattern = wilder.python_fuzzy_pattern({
-    --                             start_at_boundary = 0,
-    --                         }),
-    --                     }),
-    --                 }),
-    --                 wilder.cmdline_pipeline({
-    --                     fuzzy = 2,
-    --                     fuzzy_filter = wilder.lua_fzy_filter(),
-    --                 }),
-    --                 {
-    --                     wilder.check(function(ctx, x) return x == '' end),
-    --                     wilder.history(),
-    --                 },
-    --                 wilder.python_search_pipeline({
-    --                     pattern = wilder.python_fuzzy_pattern({
-    --                         start_at_boundary = 0,
-    --                     }),
-    --                 })
-    --             ),
-    --         })
-    --
-    --         local highlighters = {
-    --             wilder.pcre2_highlighter(),
-    --             wilder.lua_fzy_highlighter(),
-    --         }
-    --
-    --         local popupmenu_renderer = wilder.popupmenu_renderer(
-    --             wilder.popupmenu_palette_theme({
-    --                 -- border = 'single',
-    --                 empty_message = wilder.popupmenu_empty_message_with_spinner(),
-    --                 highlighter = highlighters,
-    --                 left = {
-    --                     ' ',
-    --                     wilder.popupmenu_devicons(),
-    --                     wilder.popupmenu_buffer_flags({
-    --                         flags = ' a + ',
-    --                         icons = {['+'] = '', a = '', h = ''},
-    --                     }),
-    --                 },
-    --                 right = {
-    --                     ' ',
-    --                 },
-    --                 -- wilder.popupmenu_scrollbar(),
-    --                 max_height = '75%',      -- max height of the palette
-    --                 min_height = 0,          -- set to the same as 'max_height' for a fixed height window
-    --                 prompt_position = 'top', -- 'top' or 'bottom' to set the location of the prompt
-    --                 reverse = 0,
-    --             })
-    --         )
-    --
-    --         local wildmenu_renderer = wilder.wildmenu_renderer({
-    --             highlighter = highlighters,
-    --             separator = ' · ',
-    --             left = {' ', wilder.wildmenu_spinner(), ' '},
-    --             right = {' ', wilder.wildmenu_index()},
-    --         })
-    --
-    --         wilder.set_option('renderer', wilder.renderer_mux({
-    --             [':'] = popupmenu_renderer,
-    --             ['/'] = wildmenu_renderer,
-    --             substitute = wildmenu_renderer,
-    --         }))
-    --     end
-    -- }
 }

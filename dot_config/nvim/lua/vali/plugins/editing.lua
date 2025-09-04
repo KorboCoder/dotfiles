@@ -2,6 +2,7 @@
 return {
     {
         "nvim-pack/nvim-spectre",
+        enabled =  false,
         dependencies = {"nvim-lua/plenary.nvim"},
         init =function()
             vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {

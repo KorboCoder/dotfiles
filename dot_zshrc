@@ -1,9 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # Amazon Q pre block. Keep at the top of this file.
 # [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
@@ -90,24 +90,24 @@ fi
 #     fi
 # fi
 # echo "TEST: $TMUX"
-if [[ $- == *i* && -z "$VSCODE_INJECTION" && "$TERM_PROGRAM" != "vscode" ]]; then
-    if which tmux 2>&1 >/dev/null; then
-        if [ -z $TMUX ]; then
-            # if we're not in :term and toggleterm, create a main session
-            if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
-                tmux new-session -A -t main || tmux new-session -s main
-                exit
-                # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
-            fi
-        else
-
-            if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
-                tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
-                exit
-            fi 
-        fi
-    fi
-fi
+# if [[ $- == *i* && -z "$VSCODE_INJECTION" && "$TERM_PROGRAM" != "vscode" ]]; then
+#     if which tmux 2>&1 >/dev/null; then
+#         if [ -z $TMUX ]; then
+#             # if we're not in :term and toggleterm, create a main session
+#             if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
+#                 tmux new-session -A -t main || tmux new-session -s main
+#                 exit
+#                 # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
+#             fi
+#         else
+#
+#             if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
+#                 tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
+#                 exit
+#             fi 
+#         fi
+#     fi
+# fi
 #NVM setup  
 # CLI stuff I've installed
 # bat
@@ -258,10 +258,10 @@ if command -v kubectl &> /dev/null; then
     # kubectl completion zsh > "${fpath[1]}/_kubectl"
 fi
 
-if command -v exa &> /dev/null; then
+if command -v eza &> /dev/null; then
     # detailas ls
-    alias ll="exa -lah"
-    alias ls="exa"
+    alias ll="eza -lah"
+    alias ls="eza"
 fi
 
 if command -v eza &> /dev/null; then
@@ -472,3 +472,9 @@ fi
 
 
 [[ -s "/Users/vali/.gvm/scripts/gvm" ]] && source "/Users/vali/.gvm/scripts/gvm"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi

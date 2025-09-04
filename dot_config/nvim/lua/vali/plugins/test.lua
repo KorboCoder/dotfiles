@@ -10,6 +10,7 @@ return {
             {"nvim-neotest/neotest-jest",commit = "c211844" },
             "antoinemadec/FixCursorHold.nvim",
             { "fredrikaverpil/neotest-golang", version = "1.14.*" }, -- Installation
+            "andythigpen/nvim-coverage",
         },
         config = function()
             require('neotest').setup({
@@ -22,19 +23,40 @@ return {
                             return vim.fn.getcwd()
                         end,
                     }),
-                    require("neotest-golang")({}), -- Registration
+                    require("neotest-golang")( {  -- Specify configuration
+                        runner = "go",
+                        go_test_args = {
+                            "-v",
+                            "-race",
+                            "-count=1",
+                            "-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
+                        },
+                    }),
                 },
+                -- discovery = {
+                --     enabled = true,
+                --     concurrent = 8,
+                -- },
+                -- running ={
+                --     concurrent = true,
+                -- },
                 consumers = {
                     -- notify when tests start and end
                     notify = function(client)
-                        client.listeners.started = function()
-                                require("neotest.lib").notify("Starting Tests...")
-                        end
-                        client.listeners.results = function(_, results, partial)
+                        local testStartTime = os.time()
 
+                        client.listeners.run = function()
+                                require("neotest.lib").notify("Tests Running...")
+                                testStartTime = os.time()
+                        end
+
+                        client.listeners.results = function(_, results, partial)
                             if partial then
                                 return
                             end
+
+                            local totalDuration = testStartTime ~= 0 and os.difftime(os.time(), testStartTime) .. "s" or "unknown time"
+
                             local firstResult = nil
                             local resTable = {
                                 passed = 0,
@@ -42,7 +64,7 @@ return {
                                 skipped = 0
 
                             }
-                            -- this is not accurate to actual test results, might need to configure for each test adapter
+                            -- this is not accurate to actual test results, might need to configure for each test. adapter
                             for _, value in pairs(results) do
                                 resTable[value.status] = resTable[value.status] + 1;
                                 if(value.status == 'passed' or value.status == 'failed') then
@@ -51,7 +73,7 @@ return {
                             end
 
                             if resTable.passed + resTable.failed > 1 then
-                                require("neotest.lib").notify("Tests completed:\nPassed: " ..
+                                require("neotest.lib").notify("Tests completed(" .. totalDuration .. "):\nPassed: " ..
                                 resTable.passed .. "\nFailed: " .. resTable.failed .. "\nSkipped: " .. resTable.skipped)
                             elseif firstResult ~= nil then
                                 local level = vim.log.levels.INFO
@@ -59,7 +81,7 @@ return {
                                     level = vim.log.levels.ERROR
                                 end
 
-                                require("neotest.lib").notify("Test Result: " .. firstResult.status, level)
+                                require("neotest.lib").notify("Test Result(" .. totalDuration .. "): " .. firstResult.status, level)
                             end
                         end
                         return {}
@@ -87,10 +109,17 @@ return {
 
             require("coverage").setup({
                 auto_reload = true,
+                commands = true,
                 highlights = {
                     -- customize highlight groups created by the plugin
-                    covered = { fg = macchiato.green},   -- supports style, fg, bg, sp (see :h highlight-gui)
+                    covered = { fg = macchiato.green },   -- supports style, fg, bg, sp (see :h highlight-gui)
                     uncovered = { fg = macchiato.red },
+                    partial = { fg = macchiato.mauve },
+                },
+                signs = {
+                    -- use your own highlight groups or text markers
+                    covered = { text = "█" },
+                    uncovered = { text = "█" },
                 },
             })
         end,
@@ -98,7 +127,7 @@ return {
             { "<leader>tcc", "<cmd>CoverageToggle<cr>", desc = "Toggle Coverage" },
             { "<leader>tcs", "<cmd>CoverageSummary<cr>", desc = "Coverage Summary" },
             { "<leader>tcl", "<cmd>CoverageLoad<cr>", desc = "Load Coverage" },
-            { "<leader>tcC", "<cmd>CoveragClear<cr>", desc = "Clear Coverage" },
+            { "<leader>tcC", "<cmd>CoverageClear<cr>", desc = "Clear Coverage" },
         },
     },
 }

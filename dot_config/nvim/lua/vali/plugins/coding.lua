@@ -76,6 +76,7 @@ return {
     },
     {
         "rachartier/tiny-inline-diagnostic.nvim",
+        enabled = false,
         event = "VeryLazy",
         priority = 1000,
         config = function()
@@ -87,12 +88,46 @@ return {
                         enabled = true,
 
                         -- Always show messages on all lines for multiline diagnostics
-                        always_show = true,
+                        always_show = false,
                     },
                 }
             })
             vim.diagnostic.config({ virtual_text = false }) -- Disable default virtual text
-        end
+        end,
+        keys = {
+            {
+                "<leader>ld",
+                function() require("tiny-inline-diagnostic").toggle() end,
+                desc = "Toggle Inline Diagnostics",
+            },
+            {
+                "<leader>le",
+                function() 
+                    require("tiny-inline-diagnostic").change_severities({vim.diagnostic.severity.ERROR})
+                end,
+                desc = "Toggle Only Error Diagnostics",
+            },
+            {
+
+                "<leader>lw",
+                function() 
+                    require("tiny-inline-diagnostic").change_severities({vim.diagnostic.severity.WARN})
+                end,
+                desc = "Toggle Only Warning Diagnostics",
+            },
+            {
+                "<leader>la",
+                function() require("tiny-inline-diagnostic").change_severities({
+                    vim.diagnostic.severity.WARN,
+                    vim.diagnostic.severity.ERROR,
+                    vim.diagnostic.severity.INFO,
+                    vim.diagnostic.severity.HINT
+                }) 
+                end,
+
+                desc = "Toggle All Diagnostics",
+            }
+        }
     },
     -- nice diagnosis UI
   --   {
@@ -395,23 +430,42 @@ return {
             })
         end
     },
-{
+    {
         'dnlhc/glance.nvim',
+        enabled = false,
         cmd = 'Glance',
         keys = {
-            { 'gD', '<cmd>Glance definitions<cr>', desc = 'Glance Definitions' },
-            { 'gr', '<cmd>Glance references<cr>', desc = 'Glance References' },
-            { 'gm', '<cmd>Glance implementations<cr>', desc = 'Glance Implementations' },
-            { 'gy', '<cmd>Glance type_definitions<cr>', desc = 'Glance Type Definitions' },
+            -- { 'gd', '<cmd>Glance definitions<cr>', desc = 'Glance Definitions' },
+            -- { 'gr', '<cmd>Glance references<cr>', desc = 'Glance References' },
+            -- { 'gm', '<cmd>Glance implementations<cr>', desc = 'Glance Implementations' },
+            -- { 'gy', '<cmd>Glance type_definitions<cr>', desc = 'Glance Type Definitions' },
         },
         opts ={
+            height = 30,
             border = {
                 enable = true, -- Show window borders. Only horizontal borders allowed
                 top_char = '═',
                 bottom_char = '═',
             },
-        }
+            hooks = {
+                before_open = function(results, open, jump, method)
+                    if #results == 1 then
+                        local uri = vim.uri_from_bufnr(0)
+                        local target_uri = results[1].uri or results[1].targetUri
 
+                        if target_uri == uri then
+                            jump(results[1])
+                        else
+                            open(results)
+                        end
+                    else
+                        open(results)
+                    end
+                end,
+
+            }
+
+        },
     },
     {
         "rachartier/tiny-code-action.nvim",
@@ -481,8 +535,8 @@ return {
         'piersolenski/import.nvim',
         dependencies = {
             -- One of the following pickers is required:
-            'nvim-telescope/telescope.nvim',
-            -- 'folke/snacks.nvim',
+            -- 'nvim-telescope/telescope.nvim',
+            'folke/snacks.nvim',
             -- 'ibhagwan/fzf-lua',
         },
         opts = {
@@ -497,5 +551,6 @@ return {
                 desc = "Import",
             },
         },
-    }
+    },
+    
 }

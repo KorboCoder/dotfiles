@@ -28,6 +28,7 @@ return {
             { '<leader>fg',      "<cmd>Telescope git_files<cr>",        desc = "Git Files" },
             { '<C-w>V',      ":vsplit<cr><cmd>Telescope git_files<cr>",        desc = "Split Vertical and Search" },
             { '<C-w>S',      ":split<cr><cmd>Telescope git_files<cr>",        desc = "Split Horizontal and Search" },
+            { "<leader>u", "<cmd>Telescope undo<cr>", desc = 'Undo Tree' }
             -- { '<leader>fG',      "<cmd>Telescope git_bcommits<cr>",        desc = "Git Files" },
         },
         config = function()
