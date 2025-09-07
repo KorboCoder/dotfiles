@@ -2,6 +2,7 @@
 return {
     {
         "yetone/avante.nvim",
+        enabled = false,
 
         build = vim.fn.has("win32") ~= 0
             and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
@@ -152,6 +153,7 @@ return {
     },
     {
         'NickvanDyke/opencode.nvim',
+        enabled = false,
         dependencies = {
             -- Recommended for better prompt input, and required to use opencode.nvim's embedded terminal — otherwise optional
             { 'folke/snacks.nvim', opts = { input = { enabled = true } } },

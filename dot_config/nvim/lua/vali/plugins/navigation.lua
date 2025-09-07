@@ -4,8 +4,13 @@ return {
     {
         'stevearc/oil.nvim',
         version = "2.15.0",
+        -- brach = "master",
         opts = {
             delete_to_trash=true,
+            watch_for_changes = false,
+            win_options = {
+                signcolumn = "yes:2",
+            },
         },
         -- Optional dependencies
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -27,6 +32,16 @@ return {
             --     end),
             -- })
         end
+    },
+    {
+        "benomahony/oil-git.nvim",
+        dependencies = { "stevearc/oil.nvim" },
+        -- No opts or config needed! Works automatically
+    },
+    {
+        "JezerM/oil-lsp-diagnostics.nvim",
+        dependencies = { "stevearc/oil.nvim" },
+        opts = {}
     },
     -- jump between files
     {
@@ -51,6 +66,7 @@ return {
     },
     {
         "cbochs/portal.nvim",
+        enabled = false,
         -- Optional dependencies
         dependencies = {
             "cbochs/grapple.nvim",
@@ -60,10 +76,10 @@ return {
             -- vim.keymap.set("n", "<leader>M", function() require("portal.builtin").grapple.tunnel() end )
             vim.keymap.set("n", "<C-M-o>", "<cmd>Portal jumplist backward<cr>")
             vim.keymap.set("n", "<C-M-i>", "<cmd>Portal jumplist forward<cr>")
-            vim.keymap.set("n", "[[q", "<cmd>Portal quickfix backward<cr>")
-            vim.keymap.set("n", "]]q", "<cmd>Portal quickfix forward<cr>")
-            vim.keymap.set("n", "[[c", "<cmd>Portal changelist backward<cr>")
-            vim.keymap.set("n", "]]c", "<cmd>Portal changelist forward<cr>")
+            -- vim.keymap.set("n", "[[q", "<cmd>Portal quickfix backward<cr>")
+            -- vim.keymap.set("n", "]]q", "<cmd>Portal quickfix forward<cr>")
+            -- vim.keymap.set("n", "[[c", "<cmd>Portal changelist backward<cr>")
+            -- vim.keymap.set("n", "]]c", "<cmd>Portal changelist forward<cr>")
         end,
         config = function()
             require('portal').setup({
@@ -79,7 +95,6 @@ return {
     },
     {
         "folke/flash.nvim",
-        enabled =false,
         event = "VeryLazy",
         ---@type Flash.Config
         opts = {

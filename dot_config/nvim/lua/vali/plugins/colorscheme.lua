@@ -86,38 +86,5 @@ return {
 			local function h(name) return vim.api.nvim_get_hl(0, { name = name }) end
 			vim.api.nvim_set_hl(0, 'LspInlayHint', { fg=h('Comment').fg, bg=h('CursorLine').bg, italic = true})
         end
-    },
-    {
-        "folke/tokyonight.nvim",
-        enabled = false;
-        lazy = false,
-        priority = 1000,
-        opts = {},
-        config = function()
-            require("tokyonight").setup({
-                style = "night",
-                transparent = true
-            })
-            -- vim.cmd([[colorscheme tokyonight-night]])
-        end,
-    },
-    {
-        "Mofiqul/vscode.nvim",
-        enabled = false;
-        lazy = false,
-        priority = 1000,
-        opts = {},
-        config = function()
-            require('vscode').setup();
-        end
-    },{
-        "rebelot/kanagawa.nvim",
-        enabled = false;
-        lazy = false,
-        priority = 1000,
-        opts = {},
-        config = {
-            transparent = true
-        }
     }
 }
