@@ -55,21 +55,21 @@ local builtin = require('telescope.builtin')
 
 wk.add({
 	{"<leader>f", group = "Search"},
-	{"<leader>ff", builtin.find_files, desc="Files"},
+	-- {"<leader>ff", builtin.find_files, desc="Files"},
 	{"<leader>fF", function() builtin.find_files({ hidden = true }) end, desc="Files (Hidden)"},
-	{"<leader>fb", "<cmd>Telescope buffers<cr>", desc="Buffers"},
-	{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
+	-- {"<leader>fb", "<cmd>Telescope buffers<cr>", desc="Buffers"},
+	-- { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
 	{"<leader>ft", builtin.current_buffer_fuzzy_find, desc='Text'},
 	{ "<leader>fT", "<cmd>Telescope live_grep<cr>", desc='Global Text' },
 	{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc='Help' },
 	{ "<leader>fm", "<cmd>Telescope man_pages<cr>", desc='Man' },
-	{ "<leader>fr", "<cmd>Telescope registers<cr>", desc="Registers" },
+	-- { "<leader>fr", "<cmd>Telescope registers<cr>", desc="Registers" },
 	{ "<leader>fk", "<cmd>Telescope keymaps<cr>", desc="Keymaps" },
-	{ "<leader>fc", "<cmd>Telescope commands<cr>", desc="Commands" },
-	{ "<leader>fC", "<cmd>Telescope command_history<cr>", desc="Command History" },
-	{ "<leader>fn", "<cmd>Noice telescope<cr>", desc="Notif History" },
-	{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc="Document Sybols" },
-	{ "<leader>fS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc="Workspace Symbols" },
+	-- { "<leader>fc", "<cmd>Telescope commands<cr>", desc="Commands" },
+	-- { "<leader>fC", "<cmd>Telescope command_history<cr>", desc="Command History" },
+	-- { "<leader>fn", "<cmd>Noice telescope<cr>", desc="Notif History" },
+	-- { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc="Document Sybols" },
+	-- { "<leader>fS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc="Workspace Symbols" },
 
 }
 )

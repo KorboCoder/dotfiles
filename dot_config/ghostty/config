@@ -1,4 +1,4 @@
-# This is the configuration file for Ghostty.
+#This is the configuration file for Ghostty.
 #
 # This template file has been automatically created at the following
 # path since Ghostty couldn't find any existing config files on your system:
@@ -58,6 +58,6 @@ quick-terminal-animation-duration = 0
 quick-terminal-screen = macos-menu-bar
 quick-terminal-autohide = false
 font-family = "Mononoki Nerd Font Mono"
-font-size = 19
+font-size = 21
 cursor-invert-fg-bg = true
 command = "/bin/zsh -l -c '$HOME/.config/ghostty/startup.sh'"
