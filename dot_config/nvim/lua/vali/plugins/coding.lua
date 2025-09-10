@@ -269,11 +269,11 @@ return {
     -- better yanking and pasta-ing
     {
         "gbprod/yanky.nvim",
-        dependencies = {
-            { "kkharji/sqlite.lua" }
-        },
+        -- dependencies = {
+        --     { "kkharji/sqlite.lua" }
+        -- },
         opts = {
-            ring = { storage = "sqlite" },
+            -- ring = { storage = "sqlite" },
             highlight = {
                 on_put = false,
                 on_yank = false,

@@ -5,10 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Amazon Q pre block. Keep at the top of this file.
-# [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
-# zmodload zsh/zprof
+export NIX_PREFIX="$HOME/.nix-profile"
 
 # check if we did a :term command in neovim
 is_nvim_term() {
@@ -28,207 +25,27 @@ if [ -n "$TMUX" ]; then
     export TERM="tmux-256color"
 fi
 
-# TODO: below code is terminfo installation, figure out how to automate detection and installation
-#
-# tempfile=$(mktemp) \
-# && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
-# && tic -x -o ~/.terminfo $tempfile \
-# && rm $tempfile
-
-# export TERM="xterm-256color"
-# [[ -n $TMUX ]] && export TERM="tmux-256color"
-
-# update_terminfo () {
-#     local x ncdir terms
-#     ncdir="/opt/homebrew/opt/ncurses"
-#     [[-n $NCURSES_PATH]] && ncdir=$NCURSES_PATH
-#     # terms=(alacritty-direct alacritty tmux tmux-256color)
-#     terms=(tmux tmux-256color)
-#
-#     mkdir -p ~/.terminfo && cd ~/.terminfo
-#
-#     if [ -d $ncdir ] ; then
-#         echo "ncurses detected"
-#         # sed : fix color for htop
-#         for x in $terms ; do
-#             $ncdir/bin/infocmp -x -A $ncdir/share/terminfo $x > ${x}.src &&
-#             sed -i '' 's|pairs#0x10000|pairs#32767|' ${x}.src &&
-#             /usr/bin/tic -x ${x}.src &&
-#             rm -f ${x}.src
-#         done
-#     else
-#         local url
-#         url="https://invisible-island.net/datafiles/current/terminfo.src.gz"
-#         if curl -sfLO $url ; then
-#             gunzip -f terminfo.src.gz &&
-#             sed -i '' 's|pairs#0x10000|pairs#32767|' terminfo.src &&
-#             /usr/bin/tic -xe ${(j:,:)terms} terminfo.src &&
-#             rm -f terminfo.src
-#         else
-#             echo "unable to download $url"
-#         fi
-#     fi
-#     cd - > /dev/null
-# }
-# Always work in a tmux session if tmux is installed
-# https://github.com/chrishunt/dot-files/blob/master/.zshrc
-# https://gist.github.com/chakrit/5004006
-# NOTE:OLD
-# if which tmux 2>&1 >/dev/null; then
-#     if [ $TERM != "tmux-256color" ] && [ $TERM != "tmux" ]; then
-#         # if we're not in :term and toggleterm, create a main session
-#         if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
-#             export TERM="tmux-256color"
-#             tmux new-session -A -t main || tmux new-session -s main
-#             exit
-#             # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
-#         fi
-#     else
-#
-#         if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
-#             tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
-#             exit
-#         fi 
-#     fi
-# fi
-# echo "TEST: $TMUX"
-# if [[ $- == *i* && -z "$VSCODE_INJECTION" && "$TERM_PROGRAM" != "vscode" ]]; then
-#     if which tmux 2>&1 >/dev/null; then
-#         if [ -z $TMUX ]; then
-#             # if we're not in :term and toggleterm, create a main session
-#             if [ ! $is_nvim_term ] && [ -z "$TOGGLETERM_ID" ] ; then 
-#                 tmux new-session -A -t main || tmux new-session -s main
-#                 exit
-#                 # else create a session using the set TOGGLETERM_ID, usually we use the cwd of the project as the id
-#             fi
-#         else
-#
-#             if [ -n "$TOGGLETERM_ID" ] && [ "$TOGGLETERM_ID" != "no-session" ]; then
-#                 tmux new-session -A -t $TOGGLETERM_ID || tmux new-session -s $TOGGLETERM_ID
-#                 exit
-#             fi 
-#         fi
-#     fi
-# fi
-#NVM setup  
-# CLI stuff I've installed
-# bat
-# btop
-# dust
-# exa
-# fd
-# fzf
-# jq
-# ncdu
-# neoftech
-# nvm
-# prettyping
-# ranger
-# tokei
-# w3m
-# jqp
-# duf
-# xh
-# dog
-# fd
-# ripgrep
-# lazygit
-# lazydocker
-# git checkout with fzf: https://medium.com/@mrWinston/smarter-git-checkout-using-fzf-to-supercharge-your-commandline-7507db600996
-# delta
-
 # source .nix.zshrc
 if [ -f "$HOME/.nix.zsh" ]; then
     source "$HOME/.nix.zsh"
 fi
+# nix home-manager setup
+if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+    source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
 
-gcha() {
-  git checkout "$(git branch --all | fzf | tr -d '[:space:]')"
-}
-gch() {
-  git checkout "$(git branch | fzf | tr -d '[:space:]')"
-}
-
-# vi mode
-# bindkey -v
-# export KEYTIMEOUT=1
-
-# gcloud setup
-# source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-# source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-#
 
 HISTSIZE=10000
 HISTFILESIZE=20000
-eval "$(mcfly init zsh)"
-# fix jupyter PATH issue with monterey
-export JUPYTER_PATH=/opt/homebrew/share/jupyter:$JUPYTER_PATH
 
 
-# completion setup
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-fi
-
-# Docker completions
-# fpath=($HOME/.docker/completions $fpath)
-
-# zsh autocomplete
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
-# zshautocomplete_path=$HOMEBREW_PREFIX/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# if [ -f "$zshautocomplete_path" ]; then # check if we have autocomplete plugin
-#     source "$zshautocomplete_path"
-# fi
-
-# zsh autosuggestion
-zshautosuggestion_path=$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-if [ -f "$zshautosuggestion_path" ]; then # check if we have autosuggestions
-    source "$zshautosuggestion_path"
-fi
-
-# zsh syntax-highlighting
-zshsyntax_highlighting_path=$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [ -f "$zshsyntax_highlighting_path" ]; then # check if we have the syntax highlighting file
-    source "$zshsyntax_highlighting_path"
-fi
 
 # compdef init
 autoload -U compinit && compinit -u
 
-# fzf-tab
-if [ -d "$HOME/fzf-tab" ]; then # check if we have fzf-tab tab repo dir
-    source $HOME/fzf-tab/fzf-tab.plugin.zsh
-
-    # Enable fzf-tab completion immediately
-    zstyle ':fzf-tab:*' switch-group ',' '.'
-    
-    # Auto-trigger fzf when there are multiple completions
-    zstyle ':fzf-tab:*' fzf-min-height 15
-    
-    # Show preview for files and directories
-    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-    zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza -1 --color=always $realpath'
-    zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath'
-    
-    # tmux popup (if you want to keep this)
-    zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-    
-    # Continuous completion - this makes it appear more readily
-    zstyle ':fzf-tab:*' continuous-trigger 'tab'
-    
-    # Set fzf flags for better experience
-    zstyle ':fzf-tab:*' fzf-flags '--height=50%' '--layout=reverse' '--border'
-    
-    # Make tab completion more aggressive
-    zstyle ':completion:*' menu select
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-fi
 
 # Fix starship load wrapping issue
 export LC_ALL=en_US.UTF-8
-
-# zsh-you-should-use settings: https://github.com/MichaelAquilina/zsh-you-should-use
-export YSU_MESSAGE_POSITION="after"
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
@@ -236,11 +53,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # set java jdk to homebrew installation
 export JAVA_HOME=/opt/homebrew/opt/openjdk/
-
-# starship steup
-if command -v starship &> /dev/null && false; then
-    eval "$(starship init zsh)"
-fi
 
 # colors
 export CLICOLOR=1
@@ -256,28 +68,7 @@ if command -v kubectl &> /dev/null; then
     alias kns="kubectl ns"
     # Load the kubectl completion code for zsh[1] into the current shell
     source <(kubectl completion zsh)
-    # Set the kubectl completion code for zsh[1] to autoload on startup
-    # kubectl completion zsh > "${fpath[1]}/_kubectl"
 fi
-
-if command -v eza &> /dev/null; then
-    # detailas ls
-    alias ll="eza -lah"
-    alias ls="eza"
-fi
-
-if command -v eza &> /dev/null; then
-    # detailas ls
-    alias ll="eza -lah"
-    alias ls="eza"
-fi
-
-# pretty ping
-alias pping="prettyping --nolegend"
-
-# lazygit
-export XDG_CONFIG_HOME="$HOME/.config"
-alias gg="lazygit"
 
 #nvimdiff
 alias nvimdiff="nvim -d"
@@ -288,37 +79,16 @@ alias zshconfig="nvim ~/.zshrc"
 # open ~/.config/nvimo
 alias nconfig="(cd ~/.config/nvim; nvim)"
 
-# configure tmux
-alias tmuxconfig="nvim ~/.tmux.conf"
-
 # reload this zshfile
 alias zshreload="source ~/.zshrc"
 
-# fzf setup
-alias fhistory="history | fzf"
-alias preview="fzf --preview 'bat --color \"always\" {}'"
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort' \
---color=spinner:#f4dbd6,hl:#ed8796 \
---color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6 \
---color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
-# --color=bg+:#363a4f,bg:#24273a \
 
 alias standups="nvim ~/standups.md"
+
 
 # set ctype locale to C
 export LC_CTYPE="C"
 
-function jsonbat (){
-  cat $1 |  json_pp | bat -l json; 
-}
-
-eval "$(batpipe)"
-
-# function f12 {
-#     print -n "\e[[24"
-#
-# }
-# zle -N f12
 # fix to iterm nav hotkeys
 bindkey "\e\e[D" backward-word
 bindkey "\e\e[C" forward-word
@@ -327,104 +97,9 @@ bindkey "\e\e[C" forward-word
 #krew setup
 export PATH="${PATH}:${HOME}/.krew/bin"
 
-# add short git alises
-# ref: https://gist.github.com/mwhite/6887990
-# function_exists() {
-    # declare -f -F $1 > /dev/null
-    # return $?
-# }
-#
-# for al in `git --list-cmds=alias`; do
-    # alias g$al="git $al"
-#
-    # complete_func=_git_$(git --list-cmds=alias $al)
-    # function_exists $complete_fnc && __git_complete g$al $complete_func
-# done
-#
-#
-#
-
-
 function get-millis(){
   date +%s000
 }
-
-
-if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
-fi
-
-###-begin-cdk-completions-###
-_cdk_yargs_completions()
-{
-  local reply
-  local si=$IFS
-  IFS=$'
-' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" cdk --get-yargs-completions "${words[@]}"))
-  IFS=$si
-  _describe 'values' reply
-}
-compdef _cdk_yargs_completions cdk
-###-end-cdk-completions-###
-# if [[ ($TERM_PROGRAM != "vscode") && ($TERM_PROGRAM != "WarpTerminal") && (-z $TMUX) ]]; then
-#   # zellij attach --index "0" --create
-#   eval "$(zellij setup --generate-auto-start zsh)"
-# fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
-#custom choose foreground job
-function fg_fzf (){
-	# List jobs with their status and command, select one with fzf, then foreground it
-	job_list=$(jobs -l)
-	if [ -z "$job_list" ]; then
-		echo "No jobs found."
-		return 1;
-	fi
-
-	# Count the number of jobs
-	job_count=$(echo "$job_list" | wc -l)
-
-	if [ "$job_count" -eq 1 ]; then
-		# Automatically select the single job
-		job_id=$(echo "$job_list" | awk '{print $1}' | sed 's/\]//g' | sed 's/\[//g')
-	else
-
-	  # Use fzf to select a job if there are multiple jobs
-	  selected_job=$(echo "$job_list" | fzf)
-	  if [ -n "$selected_job" ]; then
-		  job_id=$(echo "$selected_job" | awk '{print $1}' | sed 's/\]//g' | sed 's/\[//g')
-	  else
-		  echo "No job selected."
-		  return 1;
-	  fi
-	fi
-
-	# Bring the selected job to the foreground
-	fg "%$job_id"
-}
-alias zf="fg_fzf"
-
-#add cargo
-if [ -f "$HOME/.cargo/env" ]; then
-    source "$HOME/.cargo/env"
-    ~/.cargo/bin
-fi
-
-# check if ~/.cargo/bin exist
-if [ -d "$HOME/.cargo/bin" ]; then
-    export PATH="$HOME/.cargo/bin:$PATH"
-fi
-
-# init zoxide if it exists
-if command -v zoxide &> /dev/null; then
-    eval "$(zoxide init zsh)"
-fi
 
 
 if command -v goenv &> /dev/null; then
@@ -437,11 +112,6 @@ if command -v goenv &> /dev/null; then
     export GOBIN="$GOENV_ROOT/bin"
 fi
 
-#llvm
- # export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
- # export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
- # export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-
 # setup visaul and editor
 if command -v nvim &> /dev/null; then
     export EDITOR=nvim
@@ -451,31 +121,6 @@ if command -v bat &> /dev/null; then
     export VISUAL=nvim
 fi
 
-# setup atuin
-if command -v atuin &> /dev/null; then
-	eval "$(atuin init zsh --disable-up-arrow)"
-fi
-
-if [ -f "$HOMEBREW_PREFIX/.cargo/env" ]; then
-    . $HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh
-fi
-
-# check if powerlevel is installed in homebrew
-powerlevel10k_path=$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
-if [ -f  $powerlevel10k_path ]; then
-    source $powerlevel10k_path
-fi
-
-# Amazon Q post block. Keep at the bottom of this file.
-# [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
 [[ -s "/Users/vali/.gvm/scripts/gvm" ]] && source "/Users/vali/.gvm/scripts/gvm"
-
-# The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
 
 # zprof
