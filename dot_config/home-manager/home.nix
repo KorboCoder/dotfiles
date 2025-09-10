@@ -1,168 +1,169 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
-    inputs,
-        lib,
-        config,
-        pkgs,
-        ...
+# inputs,
+lib,
+# config,
+pkgs,
+username,
+...
 }: 
 let
-user = "danielvallesteros";
-in
-{
-# You can import other home-manager modules here
+
+    packagesToInstall = [
+        "bat"
+        "bat-extras.batdiff"
+        "bat-extras.batgrep"
+        "bat-extras.batman"
+        "bat-extras.batpipe"
+        "bat-extras.batwatch"
+        "bat-extras.prettybat"
+        "chezmoi"
+        "docker"
+        "delta"
+        "dust"
+        "difftastic"
+        "eza"
+        "fastfetch"
+        "fd"
+        "ffmpegthumbnailer"
+        "fzf"
+        "gnused"
+        "jq"
+        "mcfly"
+        "parallel"
+        "ripgrep"
+        "tldr"
+        "wishlist"
+        "tmux"
+        "unar"
+        "virtualenv"
+        "watch"
+        "xh"
+        "zoxide"
+        "git-lfs"
+
+        "gemini-cli"
+        "opencode"
+
+        "markdownlint-cli2"
+        "pandoc"
+        "poppler"
+
+        "atuin"
+        "btop"
+        "k9s"
+        "neofetch"
+        "lazydocker"
+        "lazygit"
+        "neovim"
+        "yazi"
+
+        "cargo"
+        "fnm"
+
+        "skhd"
+        "yabai"
+
+        "nerd-fonts.mononoki"
+
+        "zsh-autocomplete"
+        "zsh-autosuggestions"
+        "zsh-powerlevel10k"
+        "zsh-completions"
+        "zsh-syntax-highlighting"
+        "nix-zsh-completions"
+        "hping"
+        "zsh-fzf-tab"
+    ];
+    callPackage = path: overrides:
+        (import path) ({ inherit pkgs lib; } // overrides);
+
+    managedPackages = lib.map (name:
+        let
+            # Construct the path to the potential module for the package.
+            packageModulePath = ./packages + "/${name}.nix";
+        in
+            # The magic happens here!
+            if builtins.pathExists packageModulePath then
+            # IF the custom file exists, import and call it.
+            (callPackage packageModulePath { })
+        else
+            # ELSE, just use the package directly from nixpkgs.
+            let
+                attrPath = lib.strings.splitString "." name;
+            in
+                { package = lib.getAttrFromPath attrPath pkgs; }
+    ) packagesToInstall;
+
+    # 1. Map over your packages and pull out the initScript from each.
+    #    The `p.initScript or ""` handles packages that don't have a script.
+    allInitScripts = lib.map (name:
+        let
+            # Define the path to the potential script file
+            scriptPath = ./init_scripts + "/${name}.sh";
+        in
+            # First check if the file exists...
+            if builtins.pathExists scriptPath then
+            # ...only if it exists, read it.
+            builtins.readFile scriptPath
+        else
+            # ...otherwise, return an empty string.
+            ""
+    ) packagesToInstall;
+
+    nonEmptyScripts = lib.filter (script: script != "") allInitScripts;
+    #
+    # # 2. Join all the script snippets into one big string, separated by newlines.
+    collatedScript = lib.concatStringsSep "\n" nonEmptyScripts;
+in{
+    # You can import other home-manager modules here
     imports = [
-# If you want to use home-manager modules from other flakes (such as nix-colors):
-# inputs.nix-colors.homeManagerModule
+        # If you want to use home-manager modules from other flakes (such as nix-colors):
+        # inputs.nix-colors.homeManagerModule
 
-# You can also split up your configuration and import pieces of it here:
-# ./nvim.nix
+        # You can also split up your configuration and import pieces of it here:
+        # ./nvim.nix
 
-# ./zsh-autocomplete.nix
-# ./zsh-autosuggestions.nix
+        # ./zsh-autocomplete.nix
+        # ./zsh-autosuggestions.nix
     ];
 
-    nixpkgs = {
 
-# You can add overlays here
-        overlays = [
-# If you want to use overlays exported from other flakes:
-# neovim-nightly-overlay.overlays.default
 
-# Or define it inline, for example:
-# (final: prev: {
-#   hi = final.hello.overrideAttrs (oldAttrs: {
-#     patches = [ ./change-hello-to-hi.patch ];
-#   });
-# })
-        ];
-# Configure your nixpkgs instance
-        config = {
-# Disable if you don't want unfree packages
-            allowUnfree = true;
-# Workaround for https://github.com/nix-community/home-manager/issues/2942
-            allowUnfreePredicate = _: true;
-        };
-    };
-
-# TODO: Set your username
     home = {
-        username = "${user}";
-        homeDirectory = "/Users/${user}";
+        inherit username;
+        homeDirectory = "/Users/${username}";
     };
 
 
-    home.packages = [
-# terminal tools
-        pkgs.bat
-            pkgs.bat-extras.batman
-            pkgs.bat-extras.batpipe
-            pkgs.bat-extras.batgrep
-            pkgs.bat-extras.batdiff
-            pkgs.bat-extras.batwatch
-            pkgs.bat-extras.prettybat
-            pkgs.gnused
-            pkgs.delta
-            pkgs.fzf
-            pkgs.eza
-            pkgs.fd
-            pkgs.ffmpegthumbnailer
-            pkgs.jq
-            pkgs.mcfly
-            pkgs.ripgrep
-            pkgs.thefuck
-            pkgs.tldr
-            pkgs.tmux
-            pkgs.unar
-            pkgs.virtualenv
-            pkgs.watch
-            pkgs.xh
-            pkgs.zoxide
-            pkgs.chezmoi
-            pkgs.difftastic
-            pkgs.fastfetch
+    home.packages = (lib.map (p: p.package) managedPackages);
 
-# docs
-            pkgs.markdownlint-cli2
-            pkgs.pandoc
-            pkgs.poppler
+    home.file.".nix.zsh".text = collatedScript;
 
-# tui
-            pkgs.btop
-            pkgs.lazydocker
-            pkgs.lazygit
-            pkgs.k9s
-            pkgs.neovim
-            pkgs.ranger
-            pkgs.yazi
-			pkgs.atuin
+    ##''
+    #       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+    #       source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh    
+    #       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    #
+    #       eval "$(batpipe)"
+    # eval "$(fnm env --use-on-cd)"
+    #
+    #       fpath=(${pkgs.zsh-completions}/share/zsh-completions/src $fpath)
+    #       source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
+    #       fpath=(${pkgs.nix-zsh-completions}/share/zsh/plugins/nix $fpath)
+    #       fpath=($HOME/.docker/completions $fpath)
+    #       autoload -U compinit && compinit
+    # '';
 
-#languages
-            pkgs.fnm
-            pkgs.cargo
-            pkgs.go
+    # Add stuff for your user as you see fit:
+    # programs.neovim.enable = true;
+    # home.packages = with pkgs; [ steam ];
 
-# window manager
-            pkgs.skhd
-            pkgs.yabai
-
-# shell
-			pkgs.wezterm
-            pkgs.zsh-autocomplete
-            pkgs.zsh-autosuggestions
-            pkgs.zsh-powerlevel10k
-            pkgs.zsh-completions
-            pkgs.zsh-syntax-highlighting
-            pkgs.nix-zsh-completions
-			pkgs.hping
-            ];
-   home.file.".nix.zsh".text = ''
-        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh    
-        source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-        eval "$(batpipe)"
-		eval "$(fnm env --use-on-cd)"
-
-        fpath=(${pkgs.zsh-completions}/share/zsh-completions/src $fpath)
-        source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
-        fpath=(${pkgs.nix-zsh-completions}/share/zsh/plugins/nix $fpath)
-        fpath=($HOME/.docker/completions $fpath)
-        autoload -U compinit && compinit
-    '';
-
-# Add stuff for your user as you see fit:
-# programs.neovim.enable = true;
-# home.packages = with pkgs; [ steam ];
-
-# Enable home-manager and git
+    # Enable home-manager and git
     programs.home-manager.enable = true;
 
-    programs.git = {
-        enable = true;
-        includes = [
-            { path = "~/.gitconfig.local"; }
-        ];
-    };
 
-    programs.zsh = {
-        enable = false;
-        autosuggestion = {
-            enable = true;
-            highlight = "fg=8,underline";
-        };
-        enableCompletion = true;
-        # enableAutocomplete = true;
-        syntaxHighlighting.enable = true;
-        initExtraFirst  = (builtins.readFile ./extraFirst.sh);
-        initExtra = (builtins.readFile ./extra.sh);
-        # initExtraBeforeCompInit = (builtins.readFile ./extraBeforeCompInit.sh);
-    };
-
-# Nicely reload system units when changing configs
-# systemd.user.startServices = "sd-switch";
-
-# https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-    home.stateVersion = "23.05";
+    # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    home.stateVersion = "25.05";
 }
