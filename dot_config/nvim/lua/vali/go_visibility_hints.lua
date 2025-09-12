@@ -34,8 +34,9 @@ end
 
 local function place_hints(bufnr)
   if not is_go(bufnr) then return end
-  local parser = vim.treesitter.get_parser(bufnr, "go")
-  if not parser then return end
+  local success, parser = pcall(vim.treesitter.get_parser, bufnr, "go")
+  if not success then return end -- if get_parser errors out
+  if not parser then return end -- if there is no parser available
 
   vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
@@ -181,7 +182,7 @@ function M.setup(opts)
   ensure_hlgroups()
 
   local aug = vim.api.nvim_create_augroup("GoVisibilityHints", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "TextChangedI" }, {
+  vim.api.nvim_create_autocmd({ "LspAttach", "BufWritePost", "TextChanged", "TextChangedI" }, {
     group = aug,
     pattern = "*.go",
     callback = function(args)

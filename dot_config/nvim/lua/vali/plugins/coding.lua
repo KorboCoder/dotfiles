@@ -62,15 +62,18 @@ return {
     -- automatically pair stuff
     {
         'windwp/nvim-autopairs',
+        dependencies = {
+            "saghen/blink.cmp"
+        },
         event = "InsertEnter",
         config = function()
             require('nvim-autopairs').setup {}
             require('nvim-autopairs').remove_rule('"') -- remove rule (
             require('nvim-autopairs').remove_rule('\'') -- remove rule (
             -- If you want to automatically add `(` after selecting a function or method
-            local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-            local cmp = require 'cmp'
-            cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+            -- local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+            -- local cmp = require 'cmp'
+            -- cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
         end,
     },
@@ -303,6 +306,7 @@ return {
     -- run selected snippets
     {
         "michaelb/sniprun",
+        enabled = false,
         build = "sh ./install.sh",
         -- do 'sh install.sh 1' if you want to force compile locally
         -- (instead of fetching a binary from the github release). Requires Rust >= 1.65
@@ -552,5 +556,4 @@ return {
             },
         },
     },
-    
 }
