@@ -124,3 +124,6 @@ fi
 [[ -s "/Users/vali/.gvm/scripts/gvm" ]] && source "/Users/vali/.gvm/scripts/gvm"
 
 # zprof
+
+# opencode
+export PATH=/Users/vali/.opencode/bin:$PATH

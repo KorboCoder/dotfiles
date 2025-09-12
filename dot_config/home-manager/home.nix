@@ -42,9 +42,10 @@ let
         "xh"
         "zoxide"
         "git-lfs"
+        "jdk"
 
-        "gemini-cli"
-        "opencode"
+        # "gemini-cli"
+        # "opencode"
 
         "markdownlint-cli2"
         "pandoc"

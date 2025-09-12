@@ -3,6 +3,7 @@ return {
     {
 
         "nvim-neotest/neotest",
+        version = "5.11.*",
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
@@ -33,13 +34,13 @@ return {
                         },
                     }),
                 },
-                -- discovery = {
-                --     enabled = true,
-                --     concurrent = 8,
-                -- },
-                -- running ={
-                --     concurrent = true,
-                -- },
+                discovery = {
+                    enabled = true,
+                    concurrent = 1,
+                },
+                running ={
+                    concurrent = false,
+                },
                 consumers = {
                     -- notify when tests start and end
                     notify = function(client)
