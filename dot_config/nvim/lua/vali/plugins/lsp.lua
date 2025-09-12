@@ -230,6 +230,12 @@ return {
                 bashls = {
                     filetypes = { 'sh', 'zsh', },
                 },
+                -- groovy = {
+                --     cmd = { vim.fn.stdpath('data') .. "/mason/packages/groovy-language-server/build/libs/groovy-language-server-all.jar" },
+                --     groovy = {
+                --         classpath = {"~/jenkins.util/vars"},
+                --     }
+                -- },
                 astro = {},
                 tailwindcss = {},
                 vtsls = {
@@ -340,7 +346,7 @@ return {
                     ui = {
                         border = "rounded",
                     }
-                } 
+                }
             },
             "neovim/nvim-lspconfig",
             "saghen/blink.cmp"

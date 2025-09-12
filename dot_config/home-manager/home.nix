@@ -42,7 +42,7 @@ let
         "xh"
         "zoxide"
         "git-lfs"
-        "jdk"
+        # "jdk"
 
         # "gemini-cli"
         # "opencode"
@@ -163,6 +163,7 @@ in{
 
     # Enable home-manager and git
     programs.home-manager.enable = true;
+    programs.java.enable = true;
 
 
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

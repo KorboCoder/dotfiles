@@ -93,9 +93,10 @@ return {
             dap.set_breakpoint(nil, nil,vim.fn.input 'Log point message: ')
         end, { desc = 'Debug: Set Log point' })
         vim.keymap.set('n', '<leader>dr', dap.repl.toggle, { desc = 'Debug: REPL' })
+        vim.keymap.set('n', '<leader>dc', dap.clear_breakpoints, { desc = 'Clear breakpoints' })
         vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
         vim.keymap.set('n', '<leader>B', function()
-            dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+            dap.set_breakpoint(vim.fn.input 'Breakpont condition: ')
         end, { desc = 'Debug: Set Breakpoint' })
 
 
@@ -147,6 +148,16 @@ return {
 
         -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
         vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
+
+        -- Decides when and how to jump when stopping at a breakpoint
+        -- The order matters!
+        --
+        -- (1) If the line with the breakpoint is visible, don't jump at all
+        -- (2) If the buffer is opened in a tab, jump to it instead
+        -- (3) Else, create a new tab with the buffer
+        --
+        -- This avoid unnecessary jumps
+        require("dap").defaults.fallback.switchbuf = "usevisible,usetab,newtab"
 
         -- Install golang specific config
         require('dap-go').setup()
