@@ -61,3 +61,4 @@ font-family = "Mononoki Nerd Font Mono"
 font-size = 21
 cursor-invert-fg-bg = true
 command = "/bin/zsh -l -c '$HOME/.config/ghostty/startup.sh'"
+macos-option-as-alt = left

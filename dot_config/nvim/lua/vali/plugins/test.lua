@@ -24,7 +24,7 @@ return {
                         end,
                     }),
                     require("neotest-golang")( {  -- Specify configuration
-                        runner = "go",
+                        runner = "gotestsum",
                         go_test_args = {
                             "-v",
                             "-race",
