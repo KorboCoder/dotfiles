@@ -4,11 +4,11 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-        bigfile = { enabled = true },
+        bigfile = { enabled = false },
         dashboard = { enabled = false },
         explorer = { enabled = false },
         indent = { enabled = false },
-        input = { enabled = true },
+        input = { enabled = false },
         notifier = {
             enabled = true,
             top_down =false,
@@ -19,7 +19,7 @@ return {
         scope = { enabled = false },
         scroll = { enabled = false },
         statuscolumn = { enabled = false },
-        words = { enabled = true },
+        words = { enabled = false },
         styles = {
             notification = {
                 -- wo = { wrap = true } -- Wrap notifications
@@ -95,15 +95,15 @@ return {
         { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
         { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
         { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
-        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+        -- { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
         { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
         -- { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
         -- { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
         { "<leader>cn", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
         -- { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
         -- { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore" },
-        { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-        { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+        -- { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+        -- { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
     },
     init = function()
         vim.api.nvim_create_autocmd("User", {
