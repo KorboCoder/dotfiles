@@ -25,6 +25,10 @@ return {
     -- pretter context line at the bottom
     {
         "nvim-lualine/lualine.nvim",
+        dependencies = {
+            { 'AndreM222/copilot-lualine' }
+
+        },
         opts = {
             options = {
                 icons_enabled = true,
@@ -107,6 +111,7 @@ return {
                     -- },
                 },
                 lualine_y = {
+                    {"copilot"},
                     {
                     -- Yoinked from:  https://github.com/LunarVim/LunarVim/blob/420817e617dcc05fa110b59f3e7af64096d3f2ea/lua/lvim/core/lualine/components.lua
                     -- for knowing which language server is attached
