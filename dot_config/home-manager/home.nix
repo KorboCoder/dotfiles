@@ -5,7 +5,9 @@
 lib,
 # config,
 pkgs,
+pkgs-unstable,
 username,
+ghostty,
 ...
 }: 
 let
@@ -63,8 +65,8 @@ let
         "cargo"
         "fnm"
 
-        "skhd"
-        "yabai"
+        # "skhd"
+        # "yabai"
 
         "nerd-fonts.mononoki"
 
@@ -124,17 +126,15 @@ in{
         # inputs.nix-colors.homeManagerModule
 
         # You can also split up your configuration and import pieces of it here:
-        # ./nvim.nix
+        # ./ghostty.nix
 
         # ./zsh-autocomplete.nix
         # ./zsh-autosuggestions.nix
     ];
 
-
-
     home = {
         inherit username;
-        homeDirectory = "/Users/${username}";
+        homeDirectory = "/home/${username}";
     };
 
 
@@ -164,7 +164,8 @@ in{
     # Enable home-manager and git
     programs.home-manager.enable = true;
     programs.java.enable = true;
-
+    programs.ghostty.enable = true;
+    programs.ghostty.package = ghostty.packages.${pkgs-unstable.stdenv.hostPlatform.system}.default;
 
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     home.stateVersion = "25.05";
