@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 SESSION_NAME="main"
 NIX_BIN_PATH="$HOME/.nix-profile/bin"
 

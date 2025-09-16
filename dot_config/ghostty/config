@@ -44,6 +44,7 @@
 #
 # For feference, config file in project repo: https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig
 theme = "catppuccin-macchiato"
+window-decoration=server
 background-image="~/.config/assets/power_wallpaper5.png"
 background-image-opacity=0.05
 background-image-position = center-right
@@ -60,5 +61,5 @@ quick-terminal-autohide = false
 font-family = "Mononoki Nerd Font Mono"
 font-size = 21
 cursor-invert-fg-bg = true
-command = "/bin/zsh -l -c '$HOME/.config/ghostty/startup.sh'"
+command = "/usr/bin/env zsh -l -c '$HOME/.config/ghostty/startup.sh'"
 macos-option-as-alt = left
