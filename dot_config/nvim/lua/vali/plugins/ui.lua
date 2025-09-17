@@ -6,17 +6,6 @@ return {
         opts = {},
     },
     -- fade background of unselected window
-    -- TODO: This has been archived, consider replacing with: https://github.com/TaDaa/vimade
-    {
-        "levouh/tint.nvim",
-        enabled = false,
-        opts = {
-            -- tint = -20,
-            -- saturation = 0.5
-            saturation = 1.0,
-            tint = 0,
-        }
-    },
     {
         'tadaa/vimade',
         event = 'VeryLazy',
