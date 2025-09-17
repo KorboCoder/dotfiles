@@ -43,7 +43,7 @@
 # resize-overlay-duration = 4s 200ms
 #
 # For feference, config file in project repo: https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig
-theme = "catppuccin-macchiato"
+theme = "Catppuccin Macchiato"
 background-image="~/.config/assets/power_wallpaper5.png"
 background-image-opacity=0.05
 background-image-position = center-right

@@ -9,11 +9,25 @@ return {
     -- TODO: This has been archived, consider replacing with: https://github.com/TaDaa/vimade
     {
         "levouh/tint.nvim",
+        enabled = false,
         opts = {
             -- tint = -20,
             -- saturation = 0.5
             saturation = 1.0,
             tint = 0,
+        }
+    },
+    {
+        'tadaa/vimade',
+        event = 'VeryLazy',
+        opts = {
+            recipe = {
+                'default',
+                {
+                    animate = true,
+                },
+            },
+            fadelevel = 0.7
         }
     },
     -- tmux like border for active window
