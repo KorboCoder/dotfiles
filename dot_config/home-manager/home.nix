@@ -42,6 +42,7 @@ let
         "xh"
         "zoxide"
         "git-lfs"
+        "sshfs"
         # "jdk"
 
         # "gemini-cli"
@@ -67,6 +68,7 @@ let
         "yabai"
 
         "nerd-fonts.mononoki"
+        "utm"
 
         "zsh-autocomplete"
         "zsh-autosuggestions"

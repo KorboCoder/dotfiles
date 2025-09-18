@@ -86,4 +86,8 @@ cmd - return: osascript -e 'tell application "Arc" to make new window'
 # cmd + shift - 0x2A: osascript -e 'tell application "iTerm2" to create window with default profile'
 # cmd - 0x2A: ~/.config/skhd/quake.sh
 
+.blacklist [
+    "UTM"
+    "VMware Fusion"
+]
 

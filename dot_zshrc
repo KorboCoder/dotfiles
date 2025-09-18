@@ -84,6 +84,7 @@ alias zshreload="source ~/.zshrc"
 
 
 alias standups="nvim ~/standups.md"
+alias scratch="nvim ~/scratch.md"
 
 
 # set ctype locale to C

@@ -34,3 +34,17 @@ customCommands:
     context: 'global'
     command: "git commit"
     output: terminal
+  - key: "<c-w>"
+    context: "global"
+    description: "Create worktree ../{project-folder}_{branch}"
+    command: "git worktree add ./.worktrees/$(echo '{{.Form.Branch}}'| tr '/' '-') {{.Form.Branch}} && tmux new-window -c ./.worktrees/$(echo '{{.Form.Branch}}'| tr '/' '-')"
+    prompts:
+      - type: 'input'
+        title: 'Which branch?'
+        key: 'Branch'
+        suggestions:
+          command: > 
+            git branch -a | sed -e 's/^.\sremotes\///' 
+      - type: "confirm"
+        title: "Create worktree?"
+        body: "Create worktree at ./.worktrees for branch {{.Form.Branch}}?"
