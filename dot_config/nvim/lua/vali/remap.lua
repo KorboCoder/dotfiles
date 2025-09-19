@@ -56,7 +56,7 @@ local builtin = require('telescope.builtin')
 wk.add({
 	{"<leader>f", group = "Search"},
 	-- {"<leader>ff", builtin.find_files, desc="Files"},
-	{"<leader>fF", function() builtin.find_files({ hidden = true }) end, desc="Files (Hidden)"},
+	-- {"<leader>fF", function() builtin.find_files({ hidden = true }) end, desc="Files (Hidden)"},
 	-- {"<leader>fb", "<cmd>Telescope buffers<cr>", desc="Buffers"},
 	-- { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
 	{"<leader>ft", builtin.current_buffer_fuzzy_find, desc='Text'},

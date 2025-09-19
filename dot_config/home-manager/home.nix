@@ -5,6 +5,7 @@
 lib,
 # config,
 pkgs,
+pkgs-unstable,
 username,
 ...
 }: 
@@ -12,6 +13,8 @@ let
 
     packagesToInstall = [
         "bat"
+        "jujutsu"
+        "lazyjj"
         "bat-extras.batdiff"
         "bat-extras.batgrep"
         "bat-extras.batman"
@@ -79,6 +82,11 @@ let
         "hping"
         "zsh-fzf-tab"
     ];
+
+    unstablePackages = [
+        pkgs-unstable.jira-cli-go
+        pkgs-unstable.jjui
+    ];
     callPackage = path: overrides:
         (import path) ({ inherit pkgs lib; } // overrides);
 
@@ -140,7 +148,7 @@ in{
     };
 
 
-    home.packages = (lib.map (p: p.package) managedPackages);
+    home.packages = (lib.map (p: p.package) managedPackages) ++ unstablePackages;
 
     home.file.".nix.zsh".text = collatedScript;
 

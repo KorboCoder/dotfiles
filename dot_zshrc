@@ -25,6 +25,7 @@ if [ -n "$TMUX" ]; then
     export TERM="tmux-256color"
 fi
 
+
 # source .nix.zshrc
 if [ -f "$HOME/.nix.zsh" ]; then
     source "$HOME/.nix.zsh"
@@ -34,14 +35,14 @@ if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
     source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
 
-
 HISTSIZE=10000
 HISTFILESIZE=20000
 
-
-
 # compdef init
 autoload -U compinit && compinit -u
+
+# jujutsu completion
+source <(jj util completion zsh)
 
 
 # Fix starship load wrapping issue
@@ -85,6 +86,7 @@ alias zshreload="source ~/.zshrc"
 
 alias standups="nvim ~/standups.md"
 alias scratch="nvim ~/scratch.md"
+
 
 
 # set ctype locale to C
