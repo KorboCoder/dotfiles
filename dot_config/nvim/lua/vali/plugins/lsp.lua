@@ -24,7 +24,7 @@ return {
         },
 
         -- use a release tag to download pre-built binaries
-        version = '1.*',
+        version = '1.7.0',
         -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
         -- build = 'cargo build --release',
         -- If you use nix, you can build from source using latest nightly rust with:
@@ -87,6 +87,7 @@ return {
                 },
 
                 menu = {
+                    border = 'rounded',
                     draw = {
                         components = {
                             kind_icon = {
@@ -98,7 +99,12 @@ return {
                         }
                     }
                 },
-                documentation = { auto_show = true } },
+                documentation = { 
+                    window = { border = 'rounded' },
+                    auto_show = true 
+                } 
+            },
+            signature = { window = { border = 'rounded' } },
 
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
@@ -117,6 +123,7 @@ return {
     },
     {
         "mason-org/mason-lspconfig.nvim",
+        version = "1.2.0",
         config = function()
             -- Workaround for truncating long TypeScript inlay hints from your old config
             local methods = vim.lsp.protocol.Methods
@@ -183,7 +190,7 @@ return {
             end
 
             -- Get capabilities from blink.cmp
-            local capabilities = require("blink.cmp").get_lsp_capabilities()
+            -- local capabilities = require("blink.cmp").get_lsp_capabilities()
 
             -- Language servers configuration from your old config
             local servers = {
@@ -269,34 +276,34 @@ return {
             }
 
             -- Rust tools setup from your old config
-            local rust_opts = {
-                tools = {
-                    runnables = {
-                        use_telescope = true,
-                    },
-                    inlay_hints = {
-                        auto = true,
-                        show_parameter_hints = false,
-                        parameter_hints_prefix = "",
-                        other_hints_prefix = "",
-                    },
-                },
-                server = {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                    settings = {
-                        ["rust-analyzer"] = {
-                            checkOnSave = {
-                                command = "clippy",
-                            },
-                            cargo = {
-                                allfeatures = true
-                            }
-                        },
-                    },
-                },
-            }
-            require("rust-tools").setup(rust_opts)
+            -- local rust_opts = {
+            --     tools = {
+            --         runnables = {
+            --             use_telescope = true,
+            --         },
+            --         inlay_hints = {
+            --             auto = true,
+            --             show_parameter_hints = false,
+            --             parameter_hints_prefix = "",
+            --             other_hints_prefix = "",
+            --         },
+            --     },
+            --     server = {
+            --         on_attach = on_attach,
+            --         capabilities = capabilities,
+            --         settings = {
+            --             ["rust-analyzer"] = {
+            --                 checkOnSave = {
+            --                     command = "clippy",
+            --                 },
+            --                 cargo = {
+            --                     allfeatures = true
+            --                 }
+            --             },
+            --         },
+            --     },
+            -- }
+            -- require("rust-tools").setup(rust_opts)
 
             -- Mason LSP setup
             local mason_lspconfig = require('mason-lspconfig')
@@ -305,39 +312,24 @@ return {
                 automatic_installation = true,
             }
 
-            local lspconfig = require('lspconfig')
             mason_lspconfig.setup_handlers {
                 function(server_name)
                     local lspconfig_name = server_name
 
-                    -- use omnisharp if omnisharp_mono is detected
-                    if server_name == 'omnisharp_mono' then 
-                        lspconfig_name = 'omnisharp'
-                    end
+                    local server_config = {
+                        capabilities = require("blink.cmp").get_lsp_capabilities(),
+                        on_attach = on_attach,
+                        settings = servers[server_name],
+                    }
 
-                    if lspconfig[lspconfig_name] and lspconfig[lspconfig_name].setup then
-                        local server_config = {
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            settings = servers[server_name],
-                        }
-
-                        -- Add special handlers for omnisharp
-                        if server_name == 'omnisharp_mono' then
-                            server_config.handlers = {
-                                ["textDocument/definition"] = require('omnisharp_extended').handler,
-                            }
-                        end
-
-                        lspconfig[lspconfig_name].setup(server_config)
-                    else
-                        vim.notify("Server not found for " .. server_name, vim.log.levels.WARN)
-                    end
+                    vim.lsp.config(lspconfig_name, server_config)
+                    vim.lsp.enable(lspconfig_name)
                 end,
             }
         end,
         dependencies = {
             { "mason-org/mason.nvim", 
+                version = "2.0.1",
                 opts = {
                     registries = {
                         "github:mason-org/mason-registry",
@@ -348,7 +340,11 @@ return {
                     }
                 }
             },
-            "neovim/nvim-lspconfig",
+            {
+                "neovim/nvim-lspconfig",
+                version = "2.5.0",
+
+            },
             "saghen/blink.cmp"
         },
     },
@@ -371,7 +367,7 @@ return {
         },
         config = function(_, opts)
             local cfg = require("yaml-companion").setup(opts)
-            require("lspconfig")["yamlls"].setup(cfg)
+            vim.lsp.config("yamlls",cfg)
             require("telescope").load_extension("yaml_schema")
         end
     },

@@ -61,7 +61,7 @@ wk.add({
 	-- { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc="Diagnostics" },
 	{"<leader>ft", builtin.current_buffer_fuzzy_find, desc='Text'},
 	{ "<leader>fT", "<cmd>Telescope live_grep<cr>", desc='Global Text' },
-	{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc='Help' },
+	-- { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc='Help' },
 	{ "<leader>fm", "<cmd>Telescope man_pages<cr>", desc='Man' },
 	-- { "<leader>fr", "<cmd>Telescope registers<cr>", desc="Registers" },
 	{ "<leader>fk", "<cmd>Telescope keymaps<cr>", desc="Keymaps" },

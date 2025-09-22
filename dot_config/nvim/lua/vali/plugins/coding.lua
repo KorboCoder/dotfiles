@@ -490,7 +490,7 @@ return {
                         return t
                     end,
                     auto_preview = true,
-                    winborder ="double"
+                    winborder ="rounded"
                 }
             }
         },
