@@ -18,3 +18,5 @@ require("vali.commands")
 -- setup key mappings
 require("vali.remap");
 
+require("vali.copilot_spinner");
+
