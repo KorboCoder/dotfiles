@@ -34,6 +34,8 @@
                     inherit username; 
                     inherit pkgs-unstable;
                 };
+                # for android-tools
+                # extraGroups = ["adbusers"];
                 modules = [ ./home.nix ];
             };
 

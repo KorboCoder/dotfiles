@@ -1,5 +1,6 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+# Reference for searching options: https://home-manager-options.extranix.com
 {
 # inputs,
 lib,
@@ -7,13 +8,13 @@ lib,
 pkgs,
 pkgs-unstable,
 username,
+config,
+users,
 ...
 }: 
 let
 
     packagesToInstall = [
-        "bat"
-        "jujutsu"
         "lazyjj"
         "bat-extras.batdiff"
         "bat-extras.batgrep"
@@ -46,10 +47,6 @@ let
         "zoxide"
         "git-lfs"
         "sshfs"
-        # "jdk"
-
-        # "gemini-cli"
-        # "opencode"
 
         "markdownlint-cli2"
         "pandoc"
@@ -81,11 +78,17 @@ let
         "nix-zsh-completions"
         "hping"
         "zsh-fzf-tab"
+        "android-tools"
     ];
 
-    unstablePackages = [
-        pkgs-unstable.jira-cli-go
-        pkgs-unstable.jjui
+    packages = with pkgs; [
+        bat
+    ];
+
+    unstablePackages = with pkgs-unstable; [
+        jira-cli-go
+        jjui
+        jujutsu
     ];
     callPackage = path: overrides:
         (import path) ({ inherit pkgs lib; } // overrides);
@@ -148,9 +151,27 @@ in{
     };
 
 
-    home.packages = (lib.map (p: p.package) managedPackages) ++ unstablePackages;
+    home.packages = (lib.map (p: p.package) managedPackages) ++ packages ++ unstablePackages;
 
     home.file.".nix.zsh".text = collatedScript;
+    # shell setup
+    programs.zsh = {
+        enable = true;
+        dotDir = ".config/zsh";
+        sessionVariables = {
+            PATH = "$HOME/.local/bin:$PATH";
+        };
+        initContent = ''
+            [[ -f "$HOME/.zshrc" ]] && source "$HOME/.zshrc"
+        '';
+    };
+
+    programs.atuin = {
+        enable = true;
+        # disable up arrow
+        flags = ["--disable-up-arrow"];
+
+    };
 
     ##''
     #       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
@@ -174,6 +195,9 @@ in{
     # Enable home-manager and git
     programs.home-manager.enable = true;
     programs.java.enable = true;
+
+    # programs.adb.enable = true;
+    # users.users.${username}.extraGroups = ["adbusers"];
 
 
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

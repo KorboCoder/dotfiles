@@ -165,7 +165,12 @@ return {
                 -- Your keybindings from old config
                 nmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
                 vmap('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-                nmap('<leader>rn', ':IncRename ', '[R]e[n]ame')
+                nmap('<leader>RN', ':IncRename ', 'Delete then [R]e[n]ame')
+
+                nmap('<leader>rn',
+                    function()
+                            vim.lsp.buf.rename()
+                    end, '[R]e[n]ame')
                 nmap('<leader>cq', vim.diagnostic.setqflist, 'Set Quickfix List')
                 -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 -- nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

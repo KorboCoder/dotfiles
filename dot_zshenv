@@ -1,3 +1,0 @@
-export PATH=/Users/$USER/.local/bin:$PATH
-
-[ -d "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

@@ -40,7 +40,15 @@ vim.opt.cursorcolumn = true
 -- vim.o.winborder = "rounded"
 
 vim.diagnostic.config({
-	signs = false,
+	signs = true,
+    float = {
+        focusable = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+    },
 })
 
 vim.opt.completeopt = 'menu,menuone,preview'

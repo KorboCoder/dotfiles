@@ -136,3 +136,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format({ async = false })
   end,
 })
+
+-- vim.api.nvim_create_autocmd('CursorHold', {
+--     callback = function()
+--         vim.diagnostic.open_float(0, { scope = "cursor", focusable = false })
+--     end,
+-- })
+
+

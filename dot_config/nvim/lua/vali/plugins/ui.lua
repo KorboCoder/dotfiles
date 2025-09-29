@@ -453,7 +453,9 @@ return {
             -- },
             {
                 "smjonas/inc-rename.nvim",
-                opts = {},
+                opts = {
+                    post_hook = function() vim.cmd('silent! wa') end
+                },
             }
         }
     },
