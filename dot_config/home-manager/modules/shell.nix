@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
     home.packages = with pkgs; [
@@ -16,7 +16,6 @@
         watch
         xh
         atuin
-        yazi
         btop
         bat
         bat-extras.core
@@ -38,7 +37,9 @@
 
         delta
         difftastic
-    ];
+    ] ++ (with pkgs-unstable; [
+            yazi
+        ]);
 
 
     # home.sessionVariables = {
