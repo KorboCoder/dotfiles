@@ -331,6 +331,9 @@ return {
                     vim.lsp.enable(lspconfig_name)
                 end,
             }
+
+            -- custom setup for LSPs that don't work with mason
+            vim.lsp.enable('nixd')
         end,
         dependencies = {
             { "mason-org/mason.nvim", 
